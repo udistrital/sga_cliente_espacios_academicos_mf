@@ -1,0 +1,174 @@
+<mat-card>
+    <mat-card-header class="header">
+        <button mat-raised-button class="btn-regresar">Regresar</button>
+        <h1 class="titulo">Creación de espacios académicos</h1>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-stepper orientation="vertical" [linear]="false" #stepper>
+            <mat-step [stepControl]="formProyecto">
+                <ng-template matStepLabel>Seleccionar proyecto curricular</ng-template>
+                <form [formGroup]="formProyecto" class="proyecto">
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Nivel</mat-label>
+                            <mat-select formControlName="nivel">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Sub nivel</mat-label>
+                            <mat-select formControlName="sub_nivel">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field>
+                        <mat-label>Proyecto curricular</mat-label>
+                        <mat-select formControlName="proyecto_curricular">
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div>
+                        <button mat-raised-button matStepperNext>Siguiente</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="formEspacioAcademico">
+                <ng-template matStepLabel>Información sobre el espacio académico</ng-template>
+                <form [formGroup]="formEspacioAcademico" class="espacio-academico">
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Nombre</mat-label>
+                            <input matInput formControlName="nombre">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Código</mat-label>
+                            <input matInput formControlName="codigo">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Código abreviación</mat-label>
+                            <input matInput formControlName="codigo_abreviacion">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Plan de estudios</mat-label>
+                            <input matInput type="number" formControlName="plan_estudios">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Tipo</mat-label>
+                            <mat-select formControlName="tipo">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Clase</mat-label>
+                            <mat-select formControlName="clase">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Enfoque</mat-label>
+                            <mat-select formControlName="enfoque">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Créditos</mat-label>
+                            <input matInput type="number" formControlName="creditos">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Espacio modular</mat-label>
+                            <mat-select formControlName="espacio_modular">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Agrupación espacios académicos</mat-label>
+                            <mat-select formControlName="agrupacion_espacios">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Color</mat-label>
+                            <mat-select formControlName="agrupacion_espacios_color">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" class="btn-agregar-agrupacion">Agregar agrupación
+                            espacios académicos</button>
+                    </div>
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>HTD</mat-label>
+                            <input matInput type="number" formControlName="htd">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>HTC</mat-label>
+                            <input matInput type="number" formControlName="htc">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>HTA</mat-label>
+                            <input matInput type="number" formControlName="hta">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Total</mat-label>
+                            <input matInput type="number" formControlName="total">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Grupos</mat-label>
+                            <input matInput formControlName="grupos">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Espacios requeridos (pre requisitos)</mat-label>
+                            <mat-select formControlName="espacios_requeridos">
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </form>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Anterior</button>
+                    <button mat-raised-button matStepperNext>Siguiente</button>
+                </div>
+            </mat-step>
+            <mat-step [stepControl]="formSoportes">
+                <ng-template matStepLabel>Carga de soportes y observaciones</ng-template>
+                <form [formGroup]="formSoportes" class="soporte">
+                    <mat-form-field>
+                        <mat-label>Soporte documental (puede agregar varios archivos si lo requiere)</mat-label>
+                        <input matInput type="number" formControlName="soporte">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Aprobación de espacio académico</mat-label>
+                        <mat-select formControlName="aprobado">
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Aprobación de espacio académico</mat-label>
+                        <textarea matInput formControlName="observaciones"></textarea>
+                    </mat-form-field>
+                </form>
+                <div>
+                    <button mat-raised-button matStepperPrevious>Anterior</button>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </mat-card-content>
+</mat-card>

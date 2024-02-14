@@ -1,0 +1,61 @@
+.btn-regresar {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 3;
+}
+
+.titulo {
+    margin: 0 auto;
+    font-size: large;
+}
+
+.header {
+    height: 50px;
+    align-items: center;
+    padding: 0;
+}
+
+.proyecto mat-form-field {
+    margin: 15px 0;
+    height: 75px;
+    width: 45%;
+}
+
+mat-select {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    margin: 5px 0;
+}
+
+.proyecto .row {
+    justify-content: space-between;
+    display: flex;
+    margin: auto;
+}
+
+.espacio-academico .row {
+    margin: 25px 0 !important;
+    justify-content: space-between;
+    display: flex;
+    margin: auto;
+    align-items: center;
+}
+
+.espacio-academico input {
+    height: 45px;
+}
+
+.espacio-academico mat-form-field {
+    width: 20%;
+}
+
+.btn-agregar-agrupacion {
+    width: 20%;
+}
+
+.soporte mat-form-field {
+    width: 80%;
+}
