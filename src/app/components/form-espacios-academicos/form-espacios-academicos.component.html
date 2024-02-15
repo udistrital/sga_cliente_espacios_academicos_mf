@@ -11,24 +11,27 @@
                     <div class="row">
                         <mat-form-field>
                             <mat-label>Nivel</mat-label>
-                            <mat-select formControlName="nivel">
-                                <mat-option value="one">First option</mat-option>
-                                <mat-option value="two">Second option</mat-option>
+                            <mat-select formControlName="nivel" (selectionChange)="onNivelChange($event)">
+                                <mat-option *ngFor="let nivel of niveles"
+                                    [value]="nivel.Id">{{nivel.Nombre}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Sub nivel</mat-label>
-                            <mat-select formControlName="sub_nivel">
-                                <mat-option value="one">First option</mat-option>
-                                <mat-option value="two">Second option</mat-option>
+                            <mat-select formControlName="sub_nivel" (selectionChange)="onSubNivelChange($event)">
+                                <ng-container *ngIf="nivelSeleccionado === 1">
+                                    <mat-option *ngFor="let nivel of subNivelesPregrado" [value]="nivel.Id">{{ nivel.Nombre}}</mat-option>
+                                </ng-container>
+                                <ng-container *ngIf="nivelSeleccionado === 2">
+                                    <mat-option *ngFor="let nivel of subNivelesPosgrado" [value]="nivel.Id">{{ nivel.Nombre}}</mat-option>
+                                </ng-container>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <mat-form-field>
                         <mat-label>Proyecto curricular</mat-label>
                         <mat-select formControlName="proyecto_curricular">
-                            <mat-option value="one">First option</mat-option>
-                            <mat-option value="two">Second option</mat-option>
+                            <mat-option *ngFor="let proyecto of proyectosSelect" [value]="proyecto.Id">{{ proyecto.Nombre}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div>

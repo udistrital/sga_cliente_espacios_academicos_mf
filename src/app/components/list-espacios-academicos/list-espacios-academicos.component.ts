@@ -49,7 +49,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
 
   async cargarDatosTabla() {
     this.loading = true;
-    console.log(this.espacios_academicos)
     try{
       await this.cargarEspaciosAcademicos();
       await this.cargarEstadosAprobacion();
@@ -61,7 +60,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.ajustarBotonesSegunEstado(espacio);
     });
 
-    console.log(this.espacios_academicos);
     this.dataSource = new MatTableDataSource<EspacioAcademico>(this.espacios_academicos);
     this.dataSource.paginator = this.paginator
     this.loading = false;
@@ -72,7 +70,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.espaciosAcademicosService.get('espacio-academico?query=espacio_academico_padre,activo:true&limit=0').subscribe(
         (response: any) => {
           this.espacios_academicos = response["Data"];
-          console.log(this.espacios_academicos)
           resolve(true);
         },
         error => {
@@ -87,7 +84,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.espaciosAcademicosService.get('estado-aprobacion?query=activo:true&limit=0').subscribe(
         (response: any) => {
           this.estados_aprobacion = response["Data"];
-          console.log(this.estados_aprobacion)
           resolve(true);
         },
         error => {
