@@ -20,6 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatListModule } from '@angular/material/list';
 import { EspaciosAcademicosService } from './services/espacios_academicos.service';
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
 
@@ -40,6 +41,7 @@ import { FormEspaciosAcademicosComponent } from './components/form-espacios-acad
     MatTableModule,
     MatButtonModule,
     MatIconModule,
+    MatListModule,
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
