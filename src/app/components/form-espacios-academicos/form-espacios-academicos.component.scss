@@ -96,6 +96,10 @@ mat-select {
     align-items: end;
 }
 
+.label-texta ::ng-deep .mdc-floating-label {
+    display: contents;
+}
+
 .btn-form-1 {
     margin: 20px 0;
 }

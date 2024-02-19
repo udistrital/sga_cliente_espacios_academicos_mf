@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-header class="header">
-        <button mat-raised-button class="btn-regresar">Regresar</button>
+        <button mat-raised-button class="btn-regresar" routerLink="">Regresar</button>
         <h1 class="titulo">Creación de espacios académicos</h1>
     </mat-card-header>
     <mat-card-content>
@@ -120,7 +120,7 @@
                         <input class="color-box" matInput formControlName="agrupacion_espacios_color" type="text"
                             readonly [style.background-color]="inputBoxColor">
                     </mat-form-field>
-                    <button mat-raised-button color="primary" class="btn-agregar-agrupacion" routerLink="/agrupacion-espacios/{{ agrupacionFacultadId }}">Agregar agrupación
+                    <button mat-raised-button color="primary" class="btn-agregar-agrupacion" routerLink="/agrupacion-espacios/{{ agrupacionFacultadId }}" [disabled]="btnAgrupaciondisabled">Agregar agrupación
                         espacios académicos</button>
                     <div class="horas-trabajo">
                         <h5>Asignar horas de trabajo</h5>
@@ -205,7 +205,7 @@
                             </mat-list>
                         </div>
                         <input matInput formControlName="soporte" type="text" [value]="archivosSoporte && archivosSoporte.length > 0 ? 'Archivo(s) cargado(s)' : 'Archivo(s) NO cargado(s)'">
-                        <mat-hint *ngIf="formSoportes?.get('soporte')?.touched && formSoportes?.get('soporte')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                        <mat-hint *ngIf="formSoportes?.get('soporte')?.touched && validarErrorArchivosSeleccionados()" align="start">** Debe llenar este campo</mat-hint>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Aprobación de espacio académico</mat-label>
@@ -214,7 +214,7 @@
                                 [value]="estado._id">{{estado.nombre}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="label-texta">
                         <mat-label>Aprobación de espacio académico</mat-label>
                         <textarea matInput formControlName="observaciones"></textarea>
                     </mat-form-field>

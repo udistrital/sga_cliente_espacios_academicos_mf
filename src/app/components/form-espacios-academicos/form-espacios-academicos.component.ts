@@ -10,8 +10,8 @@ import { ImplicitAutenticationService } from 'src/app/services/implicit_autentic
 import { AgrupacionEspacios } from 'src/app/models/agrupacion_espacios';
 import { EspacioAcademico } from 'src/app/models/espacio_academico';
 import { EstadoAprobacion, STD } from 'src/app/models/estado_aprobacion';
-import { ACTIONS, MODALS, ROLES } from 'src/app/models/diccionario';
-import { ActivatedRoute } from '@angular/router'; 
+import { MODALS, ROLES } from 'src/app/models/diccionario';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-espacios-academicos',
@@ -45,6 +45,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   mensajeTotalHoras!: String;
   loading: boolean = false;
   IsAdmin!: boolean;
+  btnAgrupaciondisabled: boolean = false;
 
   formStep1!: FormGroup;
   formStep2!: FormGroup;
@@ -91,7 +92,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     private sgaMidService: SgaMidService,
     private autenticationService: ImplicitAutenticationService,
     private popUpManager: PopUpManager,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private readonly router: Router
   ) { }
 
   async ngOnInit() {
@@ -313,7 +315,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       this.espaciosRequeridos.push(espacio[0]);
       console.log(this.espaciosRequeridos);
     }
-
   }
 
   onNivelChange(event: any): void {
@@ -340,7 +341,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     this.inputBoxColor = "white"
     const proyecto: any = this.proyectosSelect.filter((proyecto: any) => proyecto.Id === event.value)
     console.log(proyecto, proyecto[0].FacultadId);
-    this.agrupacionFacultadId =proyecto[0].FacultadId
+    this.agrupacionFacultadId = proyecto[0].FacultadId
     if (proyecto) {
       this.cargarAgrupacionEspacios(proyecto[0].FacultadId).then((agrupacion_espacios) => {
         this.agrupacionEspacios = agrupacion_espacios;
@@ -354,6 +355,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     const agrupacion: any = this.agrupacionEspacios.filter((agrupacion: any) => agrupacion._id === event.value);
     console.log(agrupacion, agrupacion[0].color_hex);
     this.inputBoxColor = agrupacion[0].color_hex
+    this.btnAgrupaciondisabled = true;
   }
 
   onChangeArchivosSeleccionados(event: any) {
@@ -390,6 +392,14 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     }
   }
 
+  validarErrorArchivosSeleccionados(): boolean {
+    let error = true;
+    if (this.archivosSoporte.length > 0) {
+      error = false;
+    }
+    return error;
+  }
+
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
@@ -419,15 +429,15 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     return formsValid && totalHoras && archivosValid;
   }
 
-  validarErrorHorasCredito() : boolean {
+  validarErrorHorasCredito(): boolean {
     let error = false;
-    if (Number(this.formEspacioAcademico.get('total')!.value) != (Number(this.formEspacioAcademico.get('creditos')!.value) * this.horasCredito)) {
+    if (this.valorHorasTotal != (Number(this.formEspacioAcademico.get('creditos')!.value) * this.horasCredito)) {
       this.mensajeTotalHoras = "El total de horas debe ser igual a: " + Number(this.formEspacioAcademico.get('creditos')!.value) * this.horasCredito + "h"
       error = true;
     } else {
       this.mensajeTotalHoras = ""
     }
-    return error; 
+    return error;
   }
 
   CalcularHorasTotal() {
@@ -447,7 +457,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     return archivosErroneos;
   }
 
-  prepararArchivos(): any[]{
+  prepararArchivos(): any[] {
     const idTipoDocument = 71; // carpeta Nuxeo
     if (this.archivosSoporte && this.archivosSoporte.length > 0) {
       return this.archivosSoporte.map(archivo => {
@@ -476,24 +486,73 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     });
   }
 
+  checkIfAlreadyDownloaded(idArchivos: any[]): Promise<number[]> {
+    let notDonwloaded: any[] = []
+    return new Promise<number[]>((resolve) => {
+      if (idArchivos.length > 0) {
+        idArchivos.forEach((id, i) => {
+          this.gestorDocumentalService.getByIdLocal(id).subscribe(
+            () => {/* Ya está */ },
+            () => { notDonwloaded.push(id); }
+          );
+          if ((i + 1) == idArchivos.length) {
+            resolve(notDonwloaded);
+          }
+        });
+      } else {
+        resolve(notDonwloaded);
+      }
+    });
+  }
+
+  descargarArchivos(idArchivos: any[]): Promise<any> {
+    this.loading = true;
+    return new Promise<any>((resolve, reject) => {
+      this.checkIfAlreadyDownloaded(idArchivos).then(
+        faltantes => {
+          const limitQuery = faltantes.length;
+          let idsForQuery = "";
+          faltantes.forEach((id, i) => {
+            idsForQuery += String(id);
+            if (i < limitQuery - 1) idsForQuery += '|';
+          });
+          if (limitQuery > 0) {
+            this.gestorDocumentalService.getManyFiles('?query=Id__in:' + idsForQuery + '&limit=' + limitQuery).subscribe(
+              r => {
+                if (!r.downloadProgress) {
+                  this.loading = false;
+                  resolve(true);
+                }
+              }, e => {
+                this.loading = false;
+                reject(false);
+              }
+            );
+          } else {
+            this.loading = false;
+            resolve(true)
+          }
+        });
+    });
+  }
+
   postEspacio_Academico(espacio_academico: EspacioAcademico) {
     this.loading = true;
     this.sgaMidService.post('espacios_academicos/espacio_academico_hijos', espacio_academico).subscribe(
-      resp => {
+      (resp: any) => {
         console.log(resp)
-        /*if (resp.status == "201") {
+        if (resp.Status == "201") {
           this.loading = false;
-          this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.creacion_espacio_ok'));
-          this.recargarEspaciosAcademicos();
-          this.vista = VIEWS.LIST;
+          this.popUpManager.showSuccessAlert("¡Creación exitosa de espacio académico!");
+          this.router.navigate(['/']);
         } else {
           this.loading = false;
-          this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.creacion_espacio_fallo'));
-        }*/
+          this.popUpManager.showErrorAlert("¡No se pudo crear el espacio académico!");
+        }
       },
       err => {
-          this.loading = false;
-          this.popUpManager.showErrorAlert("¡No se pudo crear el espacio académico!");
+        this.loading = false;
+        this.popUpManager.showErrorAlert("¡No se pudo crear el espacio académico!");
       }
     );
   }
@@ -501,24 +560,26 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   async prepararCreacion() {
     this.loading = true;
     let newEspacio_Academico = new EspacioAcademico();
-    newEspacio_Academico.proyecto_academico_id = (this.formStep1.get('proyecto_curricular')!.value).Id;
+    console.log((this.formStep2.get('agrupacion_espacios')!.value)._id, (this.formStep1.get('proyecto_curricular')!.value).Id, (this.formStep2.get('clase')!.value).Id, (this.formStep2.get('enfoque')!.value).Id, (this.formStep2.get('espacio_modular')!.value).Value, this.formStep2.get('espacios_requeridos')!.value, (this.formStep2.get('agrupacion_espacios')!.value), (this.formStep1.get('proyecto_curricular')!.value), (this.formStep2.get('clase')!.value), (this.formStep2.get('enfoque')!.value), (this.formStep2.get('espacio_modular')!.value))
+    newEspacio_Academico.proyecto_academico_id = (this.formStep1.get('proyecto_curricular')!.value);
     newEspacio_Academico.nombre = this.formStep2.get('nombre')!.value;
     newEspacio_Academico.codigo = this.formStep2.get('codigo')!.value;
     newEspacio_Academico.codigo_abreviacion = this.formStep2.get('codigo_abreviacion')!.value;
     newEspacio_Academico.plan_estudio_id = this.formStep2.get('plan_estudios')!.value;
-    newEspacio_Academico.tipo_espacio_id = (this.formStep2.get('tipo')!.value).Id;
-    newEspacio_Academico.clasificacion_espacio_id = (this.formStep2.get('clase')!.value).Id;
-    newEspacio_Academico.enfoque_id = (this.formStep2.get('enfoque')!.value).Id;
+    newEspacio_Academico.tipo_espacio_id = (this.formStep2.get('tipo')!.value);
+    newEspacio_Academico.clasificacion_espacio_id = (this.formStep2.get('clase')!.value);
+    newEspacio_Academico.enfoque_id = (this.formStep2.get('enfoque')!.value);
     newEspacio_Academico.creditos = Number(this.formStep2.get('creditos')!.value);
-    newEspacio_Academico.espacio_modular = (this.formStep2.get('espacio_modular')!.value).Value;
-    newEspacio_Academico.agrupacion_espacios_id = (this.formStep2.get('agrupacion_espacios')!.value)._id;
+    newEspacio_Academico.espacio_modular = (this.formStep2.get('espacio_modular')!.value);
+    newEspacio_Academico.agrupacion_espacios_id = (this.formStep2.get('agrupacion_espacios')!.value);
     newEspacio_Academico.distribucion_horas = {
       HTD: Number(this.formStep2.get('htd')!.value),
       HTC: Number(this.formStep2.get('htc')!.value),
       HTA: Number(this.formStep2.get('hta')!.value)
     };
     newEspacio_Academico.grupo = this.formStep2.get('grupos')!.value;
-    newEspacio_Academico.espacios_requeridos = <any[]>(this.formStep2.get('espacios_requeridos')!.value || []).map((espacio: any) => espacio._id);
+    //newEspacio_Academico.espacios_requeridos = <any[]>(this.formStep2.get('espacios_requeridos')!.value || []).map((espacio: any) => espacio._id);
+    newEspacio_Academico.espacios_requeridos = this.formStep2.get('espacios_requeridos')!.value;
     const archivos = this.prepararArchivos();
     newEspacio_Academico.soporte_documental = await this.cargarArchivos(archivos);
     // que no están disponibles para primer instante, y tampoco en rol ASIS_PROYECTO
@@ -532,7 +593,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     newEspacio_Academico.horario_id = "0";
     console.log(newEspacio_Academico);
     this.loading = false;
-    //this.postEspacio_Academico(newEspacio_Academico);
+    this.postEspacio_Academico(newEspacio_Academico);
   }
 
   elegirAccion() {
@@ -613,7 +674,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     }
 
     const agrupacion: any = this.agrupacionEspacios.filter((agrupacion: any) => agrupacion._id === espacioAcademico.agrupacion_espacios_id);
-    console.log(espacioAcademico.espacio_modular, this.agrupacionEspacios, agrupacion[0], espacioAcademico.agrupacion_espacios_id, proyectoSelect);
+    console.log(espacioAcademico.espacio_modular, espacioAcademico.espacios_requeridos, agrupacion[0], agrupacion);
     this.inputBoxColor = agrupacion[0].color_hex
 
     this.formStep1.patchValue({
@@ -621,10 +682,23 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       sub_nivel: subnivel.Id,
       proyecto_curricular: proyecto.Id
     })
-    const horas: any = espacioAcademico.distribucion_horas 
-    
+
+    const horas: any = espacioAcademico.distribucion_horas
+    this.btnAgrupaciondisabled = true;
+
+    if (espacioAcademico.espacios_requeridos) {
+      for (let i = 0; i < espacioAcademico.espacios_requeridos.length; i++) {
+        const espacio: any = this.espaciosAcademicos.filter((espacio: any) => espacio._id == espacioAcademico.espacios_requeridos[i]);
+
+        if (espacio) {
+          this.espaciosRequeridos.push(espacio[0]);
+          console.log(this.espaciosRequeridos);
+        }
+      }
+    }
+
     this.formStep2.patchValue({
-      nombre: espacioAcademico.nombre, 
+      nombre: espacioAcademico.nombre,
       codigo: espacioAcademico.codigo,
       codigo_abreviacion: espacioAcademico.codigo_abreviacion,
       plan_estudios: espacioAcademico.plan_estudio_id,
@@ -637,8 +711,29 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       htd: horas.HTD,
       htc: horas.HTC,
       hta: horas.HTA,
+      total: Number(horas.HTD) + Number(horas.HTC) + Number(horas.HTA),
       grupos: espacioAcademico.grupo,
-      espacios_requeridos: this.espaciosAcademicos.filter(espacio => espacioAcademico.espacios_requeridos.includes(espacio._id))
+      espacios_requeridos: espacioAcademico.espacios_requeridos
     })
+
+    //const idx = this.formDef.campos_p3.findIndex(campo => campo.nombre == 'soporte');
+    let fillSoporte = '';
+    this.descargarArchivos(espacioAcademico.soporte_documental).then(() => {
+      espacioAcademico.soporte_documental.forEach((idSoporte: any) => {
+        this.gestorDocumentalService.getByIdLocal(idSoporte).subscribe(f => {
+          this.archivosSoporte.push(f);
+          fillSoporte += f.nombre + ', ';
+          this.formStep3.patchValue({
+            soporte: fillSoporte, // solo para que el campo de formulario no esté vacio y lo valide ok si no se añaden nuevos archivos
+          });
+        });
+
+      });
+    });
+
+    this.formStep3.patchValue({
+      aprobado: espacioAcademico.estado_aprobacion_id,
+      observaciones: espacioAcademico.observacion
+    });
   }
 }
