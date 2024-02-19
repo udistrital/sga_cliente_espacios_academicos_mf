@@ -23,12 +23,14 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatListModule } from '@angular/material/list';
 import { EspaciosAcademicosService } from './services/espacios_academicos.service';
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
+import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListEspaciosAcademicosComponent,
-    FormEspaciosAcademicosComponent
+    FormEspaciosAcademicosComponent,
+    AgrupacionEspaciosAcademicosComponent
   ],
   imports: [
     BrowserModule,

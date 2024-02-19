@@ -1,0 +1,67 @@
+<mat-card>
+    <mat-card-header class="header">
+        <button mat-raised-button class="btn-regresar">Regresar</button>
+        <h1 class="titulo">Agregar agrupación espacios académicos</h1>
+    </mat-card-header>
+    <mat-card-content>
+        <fieldset class=" border contenido">
+            <legend>Listado agrupación espacios académicos</legend>
+
+            <mat-form-field>
+                <input matInput (keyup)="aplicarFiltro($event)" placeholder="Buscar" #input>
+            </mat-form-field>
+
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z5">
+
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="descripcion">
+                    <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="color">
+                    <th mat-header-cell *matHeaderCellDef> Color </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div [style]="{'background-color': element.color_hex}" class="box-color"></div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </fieldset>
+        <fieldset class=" border contenido">
+            <legend>Agregar agrupación espacios académicos</legend>
+
+            <form [formGroup]="formAgrupacion">
+                <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre">
+                    <mat-hint *ngIf="formAgrupacion?.get('nombre')?.touched && formAgrupacion?.get('nombre')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Código abreviación</mat-label>
+                    <input matInput formControlName="codigo_abreviacion">
+                    <mat-hint *ngIf="formAgrupacion?.get('codigo_abreviacion')?.touched && formAgrupacion?.get('codigo_abreviacion')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput formControlName="descripcion"></textarea>
+                    <mat-hint *ngIf="formAgrupacion?.get('descripcion')?.touched && formAgrupacion?.get('descripcion')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Color agrupación espacios académicos</mat-label>
+                    <input matInput formControlName="color_hex" [type]="'color'">
+                    <mat-hint *ngIf="formAgrupacion?.get('color_hex')?.touched && formAgrupacion?.get('color_hex')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                </mat-form-field>
+            </form>
+            <div class="div-boton">
+                <button mat-raised-button (click)="guardarAgrupacion()">Guardar</button>
+            </div>
+        </fieldset>
+    </mat-card-content>
+</mat-card>

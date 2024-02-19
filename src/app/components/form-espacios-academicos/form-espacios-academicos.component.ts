@@ -37,6 +37,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   espacioEdicion!: EspacioAcademico;
 
   inputBoxColor: string = "white";
+  agrupacionFacultadId!: string;
   archivosSoporte: any[] = [];
   accion!: String;
   readonly horasCredito: number = 48;
@@ -119,7 +120,9 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       console.log(params)
       this.accion = params['accion']
       const espacio: any = this.espaciosAcademicos.filter((espacio: any) => espacio._id === params['elemento'])
-      this.espacioEdicion = espacio[0]
+      if (espacio) {
+        this.espacioEdicion = espacio[0]
+      }
       console.log(this.accion, params['elemento'], espacio, this.espacioEdicion)
     })
 
@@ -337,6 +340,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     this.inputBoxColor = "white"
     const proyecto: any = this.proyectosSelect.filter((proyecto: any) => proyecto.Id === event.value)
     console.log(proyecto, proyecto[0].FacultadId);
+    this.agrupacionFacultadId =proyecto[0].FacultadId
     if (proyecto) {
       this.cargarAgrupacionEspacios(proyecto[0].FacultadId).then((agrupacion_espacios) => {
         this.agrupacionEspacios = agrupacion_espacios;
