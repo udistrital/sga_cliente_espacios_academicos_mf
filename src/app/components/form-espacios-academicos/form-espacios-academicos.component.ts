@@ -27,7 +27,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   subNivelesPosgrado!: any[];
   subNivelesPregrado!: any[];
   subNiveles!: any[];
-  proyectos!: any[];
+  proyectos: any[] = [];
   tipos!: any[];
   clases!: any[];
   enfoques!: any[];
@@ -40,6 +40,10 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   agrupacionFacultadId!: string;
   archivosSoporte: any[] = [];
   accion!: String;
+  editar!: boolean;
+  visualizar!: boolean;
+  camposDisabled: boolean = false;
+  modificandoEspacio: boolean = false
   readonly horasCredito: number = 48;
   valorHorasTotal: number = 0;
   mensajeTotalHoras!: String;
@@ -97,6 +101,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.loading = true;
     this.autenticationService.getRole().then(
       (rol: any) => {
         const r1 = rol.find((role: string) => (role == ROLES.ADMIN_SGA));
@@ -129,18 +134,26 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     })
 
     this.manejoDeAcciones();
+    this.loading = false;
   }
 
   manejoDeAcciones() {
     console.log('Entro MA', this.accion)
     if (this.accion == 'crear') {
-
+      this.modificandoEspacio = true;
     } else if (this.accion == 'editar') {
       console.log('Entro editar')
+      this.modificandoEspacio = true;
+      this.editar = true;
       this.cargarFormulario(this.espacioEdicion);
     } else if (this.accion == 'visualizar') {
       console.log('Entro ver')
+      this.visualizar = true;
       this.cargarFormulario(this.espacioEdicion);
+    }
+
+    if (this.visualizar || this.editar) {
+      this.camposDisabled = true;
     }
   }
 
@@ -560,7 +573,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   async prepararCreacion() {
     this.loading = true;
     let newEspacio_Academico = new EspacioAcademico();
-    console.log((this.formStep2.get('agrupacion_espacios')!.value)._id, (this.formStep1.get('proyecto_curricular')!.value).Id, (this.formStep2.get('clase')!.value).Id, (this.formStep2.get('enfoque')!.value).Id, (this.formStep2.get('espacio_modular')!.value).Value, this.formStep2.get('espacios_requeridos')!.value, (this.formStep2.get('agrupacion_espacios')!.value), (this.formStep1.get('proyecto_curricular')!.value), (this.formStep2.get('clase')!.value), (this.formStep2.get('enfoque')!.value), (this.formStep2.get('espacio_modular')!.value))
     newEspacio_Academico.proyecto_academico_id = (this.formStep1.get('proyecto_curricular')!.value);
     newEspacio_Academico.nombre = this.formStep2.get('nombre')!.value;
     newEspacio_Academico.codigo = this.formStep2.get('codigo')!.value;
@@ -577,6 +589,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       HTC: Number(this.formStep2.get('htc')!.value),
       HTA: Number(this.formStep2.get('hta')!.value)
     };
+    this.CalcularHorasTotal();
     newEspacio_Academico.grupo = this.formStep2.get('grupos')!.value;
     //newEspacio_Academico.espacios_requeridos = <any[]>(this.formStep2.get('espacios_requeridos')!.value || []).map((espacio: any) => espacio._id);
     newEspacio_Academico.espacios_requeridos = this.formStep2.get('espacios_requeridos')!.value;
@@ -596,6 +609,57 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     this.postEspacio_Academico(newEspacio_Academico);
   }
 
+  async prepararEdicion() {
+    this.loading = true;
+    let editEspacio_Academico = new EspacioAcademico();
+    editEspacio_Academico.proyecto_academico_id = (this.formStep1.get('proyecto_curricular')!.value);
+    editEspacio_Academico.nombre = this.formStep2.get('nombre')!.value;
+    editEspacio_Academico.codigo = this.formStep2.get('codigo')!.value;
+    editEspacio_Academico.codigo_abreviacion = this.formStep2.get('codigo_abreviacion')!.value;
+    editEspacio_Academico.plan_estudio_id = this.formStep2.get('plan_estudios')!.value;
+    editEspacio_Academico.tipo_espacio_id = (this.formStep2.get('tipo')!.value);
+    editEspacio_Academico.clasificacion_espacio_id = (this.formStep2.get('clase')!.value);
+    editEspacio_Academico.enfoque_id = (this.formStep2.get('enfoque')!.value);
+    editEspacio_Academico.creditos = Number(this.formStep2.get('creditos')!.value);
+    editEspacio_Academico.espacio_modular = (this.formStep2.get('espacio_modular')!.value);
+    editEspacio_Academico.agrupacion_espacios_id = (this.formStep2.get('agrupacion_espacios')!.value);
+    editEspacio_Academico.distribucion_horas = {
+      HTD: Number(this.formStep2.get('htd')!.value),
+      HTC: Number(this.formStep2.get('htc')!.value),
+      HTA: Number(this.formStep2.get('hta')!.value)
+    };
+    editEspacio_Academico.grupo = this.formStep2.get('grupos')!.value;
+    editEspacio_Academico.espacios_requeridos = this.formStep2.get('espacios_requeridos')!.value;
+    const archivosNuevos = this.prepararArchivos();
+    if (archivosNuevos.length > 0) {
+      editEspacio_Academico.soporte_documental = await this.cargarArchivos(archivosNuevos);
+    } else {
+      editEspacio_Academico.soporte_documental = [];
+    }
+    // const idx = this.formDef.campos_p3.findIndex(campo => campo.nombre == 'soporte');
+    // if (idx != -1) {
+    //   this.formDef.campos_p3[idx].archivosEnLinea.forEach(f => {
+    //     editEspacio_Academico.soporte_documental.push(f.Id);
+    //   });
+    // }
+    if (this.IsAdmin) {
+      editEspacio_Academico.estado_aprobacion_id = (this.formStep3.get('aprobado')!.value);
+      editEspacio_Academico.observacion = this.formStep3.get('observaciones')!.value;
+    } else {
+      // Si no es admin no puede cambiar el estado ni poner observación
+      editEspacio_Academico.estado_aprobacion_id = this.estadosAprobacion.find(estado => estado.codigo_abreviacion == STD.IN_EDIT)!._id;
+      editEspacio_Academico.observacion = this.formStep3.get('observaciones')!.value;
+    }
+    // que no se manejan pero requieren
+    editEspacio_Academico.inscritos = 0;
+    editEspacio_Academico.periodo_id = 0;
+    editEspacio_Academico.docente_id = 0;
+    editEspacio_Academico.horario_id = "0";
+    console.log(editEspacio_Academico);
+    this.loading = false;
+    //this.putEspacio_Academico(editEspacio_Academico);
+  }
+
   elegirAccion() {
     if (this.formularioCompleto()) {
       if (this.accion == 'crear') {
@@ -606,15 +670,15 @@ export class FormEspaciosAcademicosComponent implements OnInit {
             }
           }
         );
-      } /*else if (this.accion == ACTIONS.EDIT) {
+      } else if (this.accion == 'editar') {
         this.popUpManager.showPopUpGeneric("Edición de espacios académicos", "A punto de editar un espacio académico, ¿Desea continuar?", MODALS.INFO, true).then(
           action => {
             if (action.value) {
-              this.prepareEdit();
+              this.prepararEdicion();
             }
           }
         );
-      }*/
+      }
     } else {
       this.formProyecto.markAllAsTouched();
       this.formEspacioAcademico.markAllAsTouched();
@@ -648,6 +712,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   async cargarFormulario(espacioAcademico: EspacioAcademico) {
+    this.loading = true;
     this.limpiarFormulario();
     const proyecto = this.proyectos.find(proyecto => proyecto.Id == espacioAcademico.proyecto_academico_id);
     console.log(proyecto);
@@ -663,6 +728,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       }
     });
 
+    console.log(this.proyectosSelect)
+
     const proyectoSelect: any = this.proyectosSelect.filter((item: any) => item.Id === proyecto.Id)
     if (proyectoSelect) {
       await this.cargarAgrupacionEspacios(proyectoSelect[0].FacultadId).then((agrupacion_espacios) => {
@@ -675,7 +742,9 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
     const agrupacion: any = this.agrupacionEspacios.filter((agrupacion: any) => agrupacion._id === espacioAcademico.agrupacion_espacios_id);
     console.log(espacioAcademico.espacio_modular, espacioAcademico.espacios_requeridos, agrupacion[0], agrupacion);
-    this.inputBoxColor = agrupacion[0].color_hex
+    if (agrupacion[0]) {
+      this.inputBoxColor = agrupacion[0].color_hex
+    }
 
     this.formStep1.patchValue({
       nivel: nivel.Id,
@@ -717,11 +786,14 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     })
 
     //const idx = this.formDef.campos_p3.findIndex(campo => campo.nombre == 'soporte');
+    console.log(espacioAcademico.soporte_documental, )
     let fillSoporte = '';
     this.descargarArchivos(espacioAcademico.soporte_documental).then(() => {
       espacioAcademico.soporte_documental.forEach((idSoporte: any) => {
         this.gestorDocumentalService.getByIdLocal(idSoporte).subscribe(f => {
+          console.log(f, this.archivosSoporte);
           this.archivosSoporte.push(f);
+          console.log(f, this.archivosSoporte);
           fillSoporte += f.nombre + ', ';
           this.formStep3.patchValue({
             soporte: fillSoporte, // solo para que el campo de formulario no esté vacio y lo valide ok si no se añaden nuevos archivos
@@ -735,5 +807,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       aprobado: espacioAcademico.estado_aprobacion_id,
       observaciones: espacioAcademico.observacion
     });
+    this.loading = false;
   }
 }
