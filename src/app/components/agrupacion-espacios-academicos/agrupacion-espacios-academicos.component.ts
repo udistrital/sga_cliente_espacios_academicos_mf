@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AgrupacionEspacios } from 'src/app/models/agrupacion_espacios';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
@@ -30,16 +30,19 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
     private fb: FormBuilder,
     private espaciosAcademicosService: EspaciosAcademicosService,
     private popUpManager: PopUpManager,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   async ngOnInit() {
+    this.loading = true;
     this.activatedRoute.params.subscribe(params => {
       this.facultadId = params['facultad_id']
       console.log(this.facultadId, params)
     })
 
-    await this.cargarDatosTabla()
+    await this.cargarDatosTabla();
+    this.loading = false;
   }
 
   async cargarDatosTabla() {
@@ -93,13 +96,8 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
         this.loading = false;
         this.formAgrupacion.reset();
         this.agrupacionEspacios.push(resp.Data);
-        // this.dataAgrupacionEspacios.load(this.agrupacionEspacios);
-        // const idx = this.formDef.campos_p2.findIndex(campo => campo.nombre == 'agrupacion_espacios');
-        // if (idx != -1) {
-        //   this.formDef.campos_p2[idx].opciones = this.agrupacionEspacios;
-        // }
-        // this.formStep2.patchValue({agrupacion_espacios: resp.Data});
         this.popUpManager.showSuccessAlert("La Agrupación ha sido agregada")
+        this.router.navigate(['/']);
       }, (error) => {
         this.loading = false;
         console.warn(error);
