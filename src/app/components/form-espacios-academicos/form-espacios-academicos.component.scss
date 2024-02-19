@@ -64,6 +64,11 @@ form {
     margin: 25px auto;
 }
 
+mat-hint {
+    color: red;
+    margin: 5px 0;
+}
+
 mat-form-field input {
     height: 60px;
 }
@@ -89,6 +94,10 @@ mat-select {
     display: flex;
     height: 100%;
     align-items: end;
+}
+
+.btn-form-1 {
+    margin: 20px 0;
 }
 
 .proyecto {
@@ -199,6 +208,16 @@ mat-select {
 
 .archivos-soporte {
     text-align: center;
+}
+
+.botones-formulario {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.botones-formulario button {
+    margin: auto;
 }
 
 @media(width > 500px) {

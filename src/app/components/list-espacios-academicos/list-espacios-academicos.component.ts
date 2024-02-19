@@ -8,6 +8,7 @@ import { PopUpManager } from 'src/app/managers/popUpManager';
 import { OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'list-espacios-academicos',
@@ -26,7 +27,8 @@ export class ListEspaciosAcademicosComponent implements OnInit {
   constructor(
     private espaciosAcademicosService: EspaciosAcademicosService,
     private popUpManager: PopUpManager,
-    private autenticationService: ImplicitAutenticationService
+    private autenticationService: ImplicitAutenticationService,
+    private router: Router
   ) { }
 
   async ngOnInit() {

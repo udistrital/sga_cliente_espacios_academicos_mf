@@ -13,7 +13,7 @@ const routes: Routes = [
     //canActivate: [AuthGuard],
   },
   {
-    path: 'formulario',
+    path: 'formulario/:accion/:elemento',
     component: FormEspaciosAcademicosComponent,
     //canActivate: [AuthGuard],
   }

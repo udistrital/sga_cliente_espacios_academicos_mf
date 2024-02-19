@@ -23,3 +23,11 @@ export const ROLES = Object.freeze({
     SEC_DECANATURA: 'SEC_DECANATURA',
     DECANO: 'DECANO'
 })
+
+export const MODALS = Object.freeze({
+    INFO: 'info',
+    WARNING: 'warning',
+    ERROR: 'error',
+    SUCCESS: 'success',
+    QUESTION: 'question',
+})
