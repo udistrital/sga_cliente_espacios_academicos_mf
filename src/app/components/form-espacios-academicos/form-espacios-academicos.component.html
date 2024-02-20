@@ -210,7 +210,7 @@
                         <input matInput [readonly]="camposDisabled" formControlName="soporte" type="text" [value]="archivosSoporte && archivosSoporte.length > 0 ? 'Archivo(s) cargado(s)' : 'Archivo(s) NO cargado(s)'">
                         <mat-hint *ngIf="formSoportes?.get('soporte')?.touched && validarErrorArchivosSeleccionados()" align="start">** Debe llenar este campo</mat-hint>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field *ngIf="IsAdmin">
                         <mat-label>Aprobación de espacio académico</mat-label>
                         <mat-select formControlName="aprobado" [disabled]="visualizar">
                             <mat-option *ngFor="let estado of estadosAprobacion"
@@ -218,7 +218,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="label-texta">
-                        <mat-label>Aprobación de espacio académico</mat-label>
+                        <mat-label>Observaciones</mat-label>
                         <textarea matInput formControlName="observaciones" [readonly]="visualizar"></textarea>
                     </mat-form-field>
                 </form>

@@ -472,12 +472,18 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
   prepararArchivos(): any[] {
     const idTipoDocument = 71; // carpeta Nuxeo
+    let name = ""
     if (this.archivosSoporte && this.archivosSoporte.length > 0) {
       return this.archivosSoporte.map(archivo => {
         console.log(archivo);
+        if (archivo.name) {
+          name = archivo.name
+        } else {
+          name = archivo.nombre
+        }
         return {
           IdDocumento: idTipoDocument,
-          nombre: (archivo.name).split('.')[0],
+          nombre: name.split('.')[0],
           descripcion: "Soporte Espacio Academico",
           file: archivo
         }
@@ -570,6 +576,35 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     );
   }
 
+  putEspacio_Academico(espacio_academico: EspacioAcademico) {
+    this.loading = true;
+    this.espaciosAcademicosService.put('espacio-academico/'+this.espacioEdicion._id, espacio_academico).subscribe(
+      (resp: any) => {
+        if (resp.Status == "200") {
+          // const idx = this.formDef.campos_p3.findIndex(campo => campo.nombre == 'soporte');
+          // if (idx != -1) {
+          //   this.desactivarSuprimidos(this.formDef.campos_p3[idx].archivosEnLineaSuprimidos, this.id_espacio_academico);
+          // }
+          this.loading = false;
+          this.popUpManager.showSuccessAlert("¡Edición exitosa del espacio académico actual!");
+          //this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.edicion_espacio_ok'));
+          // this.recargarEspaciosAcademicos();
+          // this.vista = VIEWS.LIST;
+          // this.id_espacio_academico = undefined;
+          // this.espacio_academico = undefined;
+          this.router.navigate(['/']);
+        } else {
+          this.loading = false;
+          this.popUpManager.showErrorAlert("¡No se pudo editar el espacio académico actual!");
+        }
+      },
+      err => {
+          this.loading = false;
+          this.popUpManager.showErrorAlert("¡No se pudo editar el espacio académico actual!");
+      }
+    );
+  }
+
   async prepararCreacion() {
     this.loading = true;
     let newEspacio_Academico = new EspacioAcademico();
@@ -589,7 +624,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       HTC: Number(this.formStep2.get('htc')!.value),
       HTA: Number(this.formStep2.get('hta')!.value)
     };
-    this.CalcularHorasTotal();
     newEspacio_Academico.grupo = this.formStep2.get('grupos')!.value;
     //newEspacio_Academico.espacios_requeridos = <any[]>(this.formStep2.get('espacios_requeridos')!.value || []).map((espacio: any) => espacio._id);
     newEspacio_Academico.espacios_requeridos = this.formStep2.get('espacios_requeridos')!.value;
@@ -631,7 +665,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     editEspacio_Academico.grupo = this.formStep2.get('grupos')!.value;
     editEspacio_Academico.espacios_requeridos = this.formStep2.get('espacios_requeridos')!.value;
     const archivosNuevos = this.prepararArchivos();
-    if (archivosNuevos.length > 0) {
+    if (archivosNuevos.length > this.archivosSoporte.length) {
       editEspacio_Academico.soporte_documental = await this.cargarArchivos(archivosNuevos);
     } else {
       editEspacio_Academico.soporte_documental = [];
@@ -657,7 +691,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     editEspacio_Academico.horario_id = "0";
     console.log(editEspacio_Academico);
     this.loading = false;
-    //this.putEspacio_Academico(editEspacio_Academico);
+    this.putEspacio_Academico(editEspacio_Academico);
   }
 
   elegirAccion() {
@@ -784,6 +818,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       grupos: espacioAcademico.grupo,
       espacios_requeridos: espacioAcademico.espacios_requeridos
     })
+    this.CalcularHorasTotal();
 
     //const idx = this.formDef.campos_p3.findIndex(campo => campo.nombre == 'soporte');
     console.log(espacioAcademico.soporte_documental, )
@@ -793,7 +828,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         this.gestorDocumentalService.getByIdLocal(idSoporte).subscribe(f => {
           console.log(f, this.archivosSoporte);
           this.archivosSoporte.push(f);
-          console.log(f, this.archivosSoporte);
+          console.log(f, this.archivosSoporte.length);
           fillSoporte += f.nombre + ', ';
           this.formStep3.patchValue({
             soporte: fillSoporte, // solo para que el campo de formulario no esté vacio y lo valide ok si no se añaden nuevos archivos

@@ -18,7 +18,7 @@ export class EspaciosAcademicosService {
     return this.requestManager.post(endpoint, element);
   }
 
-  put(endpoint: any, element: { Id: any; }) {
+  put(endpoint: any, element: any) {
     this.requestManager.setPath('ESPACIOS_ACADEMICOS_SERVICE');
     return this.requestManager.put(endpoint, element);
   }

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { EspacioAcademico } from 'src/app/models/espacio_academico';
 import { EstadoAprobacion, STD } from 'src/app/models/estado_aprobacion';
-import { ROLES, ACTIONS } from 'src/app/models/diccionario';
+import { ROLES, ACTIONS, MODALS } from 'src/app/models/diccionario';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { ImplicitAutenticationService } from 'src/app/services/implicit_autentication.service';
 import { PopUpManager } from 'src/app/managers/popUpManager';
@@ -51,7 +51,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
 
   async cargarDatosTabla() {
     this.loading = true;
-    try{
+    try {
       await this.cargarEspaciosAcademicos();
       await this.cargarEstadosAprobacion();
     } catch (error) {
@@ -133,6 +133,69 @@ export class ListEspaciosAcademicosComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  enviaraRevision(id: string) {
+    const espacio: any = this.espacios_academicos.filter((espacio: any) => espacio._id === id);
+    console.log(id, espacio[0]);
+    let espacio_edit = espacio[0];
+
+    this.popUpManager.showPopUpGeneric(
+      "Espacios Académicos",
+      "A punto de enviar a revisión, ¿Desea continuar?", MODALS.INFO, true).then(
+        action => {
+          if (action.value) {
+            this.loading = true;
+            espacio_edit.estado_aprobacion_id = this.estados_aprobacion.find(estado => estado.codigo_abreviacion == STD.IN_REV)?._id;
+            console.log(espacio_edit.estado_aprobacion_id, espacio_edit);
+            this.espaciosAcademicosService.put('espacio-academico/' + id, espacio_edit).subscribe(
+              (resp: any) => {
+                if (resp.Status == "200") {
+                  this.loading = false;
+                  this.popUpManager.showSuccessAlert("¡Envío a revisión exitoso!");
+                  this.recargarEspaciosAcademicos();
+                  //this.vista = VIEWS.LIST;
+                } else {
+                  this.loading = false;
+                  this.popUpManager.showErrorAlert("¡No se pudo enviar a revisión!");
+                }
+              },
+              err => {
+                this.loading = false;
+                this.popUpManager.showErrorAlert("¡No se pudo enviar a revisión!");
+              }
+            );
+          }
+        }
+      );
+  }
+
+  async recargarEspaciosAcademicos() {
+    this.loading = true;
+    try {
+      await this.cargarDatosTabla();
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+      this.popUpManager.showPopUpGeneric("Consulta espacios académicos", "No se ha encontrado información sobre" + ': <b>' + "Espacios Académicos" + '</b>.', MODALS.WARNING, false);
+    }
+    // this.loadEspaciosAcademicos().then(espacios => {
+    //   this.espacios_academicos = espacios;
+    //   this.espacios_academicos.forEach(espacio => {
+    //     this.ajustarBotonesSegunEstado(espacio);
+    //   });
+    //   this.dataEspaciosAcademicos.load(this.espacios_academicos);
+    //   const idx = this.formDef.campos_p2.findIndex(campo => campo.nombre == 'espacios_requeridos')
+    //   if (idx != -1) {
+    //     this.formDef.campos_p2[idx].opciones = this.espacios_academicos;
+    //   }
+    //   this.loading = false;
+    // }).catch(err => {
+    //   this.loading = false;
+    //   this.popUpManager.showPopUpGeneric(this.translate.instant('espacios_academicos.consulta_espacios'),
+    //     this.translate.instant('ERROR.sin_informacion_en') + ': <b>' + this.translate.instant('espacios_academicos.espacios_academicos') + '</b>.',
+    //     MODALS.WARNING, false);
+    // })
   }
 
 }
