@@ -1,14 +1,14 @@
 <mat-card>
     <mat-card-header class="header">
-        <button mat-raised-button class="btn-regresar" routerLink="">Regresar</button>
-        <h1 class="titulo">Agregar agrupación espacios académicos</h1>
+        <button mat-raised-button class="btn-regresar" routerLink="">{{ 'GLOBAL.regresar' | translate }}</button>
+        <h1 class="titulo">{{ 'espacios_academicos.agregar_agrupacion_espacios' | translate }}</h1>
     </mat-card-header>
     <mat-card-content>
         <div [class.loader-div]="loading">
             <mat-spinner *ngIf="loading" diameter="100" color="primary"></mat-spinner>
         </div>
         <fieldset class=" border contenido">
-            <legend>Listado agrupación espacios académicos</legend>
+            <legend>{{ 'espacios_academicos.lista_agrupaciones' | translate }}</legend>
 
             <mat-form-field>
                 <input matInput (keyup)="aplicarFiltro($event)" placeholder="Buscar" #input>
@@ -38,32 +38,32 @@
             </table>
         </fieldset>
         <fieldset class=" border contenido">
-            <legend>Agregar agrupación espacios académicos</legend>
+            <legend>{{ 'espacios_academicos.agregar_agrupacion_espacios' | translate }}</legend>
 
             <form [formGroup]="formAgrupacion">
                 <mat-form-field>
                     <mat-label>Nombre</mat-label>
                     <input matInput formControlName="nombre">
-                    <mat-hint *ngIf="formAgrupacion?.get('nombre')?.touched && formAgrupacion?.get('nombre')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                    <mat-hint *ngIf="formAgrupacion?.get('nombre')?.touched && formAgrupacion?.get('nombre')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Código abreviación</mat-label>
                     <input matInput formControlName="codigo_abreviacion">
-                    <mat-hint *ngIf="formAgrupacion?.get('codigo_abreviacion')?.touched && formAgrupacion?.get('codigo_abreviacion')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                    <mat-hint *ngIf="formAgrupacion?.get('codigo_abreviacion')?.touched && formAgrupacion?.get('codigo_abreviacion')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
                 </mat-form-field>
                 <mat-form-field class="label-texta">
                     <mat-label>Descripción</mat-label>
                     <textarea matInput formControlName="descripcion"></textarea>
-                    <mat-hint *ngIf="formAgrupacion?.get('descripcion')?.touched && formAgrupacion?.get('descripcion')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                    <mat-hint *ngIf="formAgrupacion?.get('descripcion')?.touched && formAgrupacion?.get('descripcion')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Color agrupación espacios académicos</mat-label>
                     <input matInput formControlName="color_hex" [type]="'color'">
-                    <mat-hint *ngIf="formAgrupacion?.get('color_hex')?.touched && formAgrupacion?.get('color_hex')?.invalid" align="start">** Debe llenar este campo</mat-hint>
+                    <mat-hint *ngIf="formAgrupacion?.get('color_hex')?.touched && formAgrupacion?.get('color_hex')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
                 </mat-form-field>
             </form>
             <div class="div-boton">
-                <button mat-raised-button (click)="guardarAgrupacion()">Guardar</button>
+                <button mat-raised-button (click)="guardarAgrupacion()">{{ 'GLOBAL.guardar' | translate }}</button>
             </div>
         </fieldset>
     </mat-card-content>

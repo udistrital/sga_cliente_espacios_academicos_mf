@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { PopUpManager } from 'src/app/managers/popUpManager';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { ParametrosService } from 'src/app/services/parametros.service';
@@ -88,6 +89,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   })
 
   constructor(
+    private translate: TranslateService,
     private fb: FormBuilder,
     private projectService: ProyectoAcademicoService,
     private parametrosService: ParametrosService,
@@ -562,16 +564,16 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         console.log(resp)
         if (resp.Status == "201") {
           this.loading = false;
-          this.popUpManager.showSuccessAlert("¡Creación exitosa de espacio académico!");
+          this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.creacion_espacio_ok'));
           this.router.navigate(['/']);
         } else {
           this.loading = false;
-          this.popUpManager.showErrorAlert("¡No se pudo crear el espacio académico!");
+          this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.creacion_espacio_fallo'));
         }
       },
       err => {
         this.loading = false;
-        this.popUpManager.showErrorAlert("¡No se pudo crear el espacio académico!");
+        this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.creacion_espacio_fallo'));
       }
     );
   }
@@ -586,7 +588,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
           //   this.desactivarSuprimidos(this.formDef.campos_p3[idx].archivosEnLineaSuprimidos, this.id_espacio_academico);
           // }
           this.loading = false;
-          this.popUpManager.showSuccessAlert("¡Edición exitosa del espacio académico actual!");
+          this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.edicion_espacio_ok'));
           //this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.edicion_espacio_ok'));
           // this.recargarEspaciosAcademicos();
           // this.vista = VIEWS.LIST;
@@ -595,12 +597,12 @@ export class FormEspaciosAcademicosComponent implements OnInit {
           this.router.navigate(['/']);
         } else {
           this.loading = false;
-          this.popUpManager.showErrorAlert("¡No se pudo editar el espacio académico actual!");
+          this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.edicion_espacio_fallo'));
         }
       },
       err => {
           this.loading = false;
-          this.popUpManager.showErrorAlert("¡No se pudo editar el espacio académico actual!");
+          this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.edicion_espacio_fallo'));
       }
     );
   }
@@ -697,7 +699,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   elegirAccion() {
     if (this.formularioCompleto()) {
       if (this.accion == 'crear') {
-        this.popUpManager.showPopUpGeneric("Creación de espacios académicos", "A punto de crear un espacio académico, ¿Desea continuar?", MODALS.INFO, true).then(
+        this.popUpManager.showPopUpGeneric(this.translate.instant('espacios_academicos.crear_espacios'),
+        this.translate.instant('espacios_academicos.crear_espacios_pregunta'), MODALS.INFO, true).then(
           action => {
             if (action.value) {
               this.prepararCreacion();
@@ -705,7 +708,9 @@ export class FormEspaciosAcademicosComponent implements OnInit {
           }
         );
       } else if (this.accion == 'editar') {
-        this.popUpManager.showPopUpGeneric("Edición de espacios académicos", "A punto de editar un espacio académico, ¿Desea continuar?", MODALS.INFO, true).then(
+        this.popUpManager.showPopUpGeneric(
+          this.translate.instant('espacios_academicos.editar_espacios'),
+          this.translate.instant('espacios_academicos.editar_espacios_pregunta'), MODALS.INFO, true).then(
           action => {
             if (action.value) {
               this.prepararEdicion();
@@ -717,7 +722,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       this.formProyecto.markAllAsTouched();
       this.formEspacioAcademico.markAllAsTouched();
       this.formSoportes.markAllAsTouched();
-      this.popUpManager.showPopUpGeneric("Espacios Académicos", "El formulario no está completo o hay información errónea, revise e ingrese la información faltante o válida", MODALS.INFO, false);
+      this.popUpManager.showPopUpGeneric(this.translate.instant('espacios_academicos.espacios_academicos'),
+      this.translate.instant('espacios_academicos.formulario_no_completo'), MODALS.INFO, false);
     }
   }
 

@@ -1,9 +1,9 @@
 <mat-card>
     <mat-card-header class="justify-centred">
-        <mat-card-title>Consulta espacios académicos</mat-card-title>
+        <mat-card-title>{{ 'espacios_academicos.consulta_espacios' | translate }}</mat-card-title>
     </mat-card-header>
     <fieldset class="border contenido">
-        <legend>Resultados</legend>
+        <legend>{{ 'espacios_academicos.resultados_espacios' | translate }}</legend>
         <div [class.loader-div]="loading">
             <mat-spinner *ngIf="loading" diameter="100" color="primary"></mat-spinner>
         </div>
@@ -61,8 +61,8 @@
             <mat-paginator class="paginacion" [pageSize]="10">
             </mat-paginator>
             <div class="botones">
-                <button mat-raised-button (click)="recargarEspaciosAcademicos()">Actualizar</button>
-                <button mat-raised-button color="primary" routerLink="/formulario/crear/0">Nuevo espacio académico</button>
+                <button mat-raised-button (click)="recargarEspaciosAcademicos()">{{ 'GLOBAL.actualizar' | translate }}</button>
+                <button mat-raised-button color="primary" routerLink="/formulario/crear/0">{{ 'espacios_academicos.nuevo_espacio' | translate }}</button>
             </div>
         </mat-card-footer>
     </fieldset>

@@ -5,6 +5,7 @@ import { AgrupacionEspacios } from 'src/app/models/agrupacion_espacios';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { PopUpManager } from 'src/app/managers/popUpManager';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-agrupacion-espacios-academicos',
@@ -27,6 +28,7 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   
 
   constructor(
+    private translate: TranslateService,
     private fb: FormBuilder,
     private espaciosAcademicosService: EspaciosAcademicosService,
     private popUpManager: PopUpManager,
@@ -96,12 +98,12 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
         this.loading = false;
         this.formAgrupacion.reset();
         this.agrupacionEspacios.push(resp.Data);
-        this.popUpManager.showSuccessAlert("La Agrupación ha sido agregada")
+        this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.agregar_agrupacion_ok'))
         this.router.navigate(['/']);
       }, (error) => {
         this.loading = false;
         console.warn(error);
-        this.popUpManager.showErrorAlert( "No se pudo agregar la agrupación")
+        this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.agregar_agrupacion_fail'))
       });
     } else {
       this.formAgrupacion.markAllAsTouched();

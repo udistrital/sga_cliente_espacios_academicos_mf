@@ -5,6 +5,7 @@ import { ROLES, ACTIONS, MODALS } from 'src/app/models/diccionario';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { ImplicitAutenticationService } from 'src/app/services/implicit_autentication.service';
 import { PopUpManager } from 'src/app/managers/popUpManager';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -25,6 +26,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
   constructor(
+    private translate: TranslateService,
     private espaciosAcademicosService: EspaciosAcademicosService,
     private popUpManager: PopUpManager,
     private autenticationService: ImplicitAutenticationService,
@@ -141,8 +143,8 @@ export class ListEspaciosAcademicosComponent implements OnInit {
     let espacio_edit = espacio[0];
 
     this.popUpManager.showPopUpGeneric(
-      "Espacios Académicos",
-      "A punto de enviar a revisión, ¿Desea continuar?", MODALS.INFO, true).then(
+      this.translate.instant('espacios_academicos.espacios_academicos'),
+      this.translate.instant('espacios_academicos.enviar_revision_pregunta'), MODALS.INFO, true).then(
         action => {
           if (action.value) {
             this.loading = true;
@@ -152,17 +154,17 @@ export class ListEspaciosAcademicosComponent implements OnInit {
               (resp: any) => {
                 if (resp.Status == "200") {
                   this.loading = false;
-                  this.popUpManager.showSuccessAlert("¡Envío a revisión exitoso!");
+                  this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.enviar_revision_ok'));
                   this.recargarEspaciosAcademicos();
                   //this.vista = VIEWS.LIST;
                 } else {
                   this.loading = false;
-                  this.popUpManager.showErrorAlert("¡No se pudo enviar a revisión!");
+                  this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.enviar_revision_fallo'));
                 }
               },
               err => {
                 this.loading = false;
-                this.popUpManager.showErrorAlert("¡No se pudo enviar a revisión!");
+                this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.enviar_revision_fallo'));
               }
             );
           }
@@ -177,7 +179,9 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.loading = false;
     } catch (error) {
       this.loading = false;
-      this.popUpManager.showPopUpGeneric("Consulta espacios académicos", "No se ha encontrado información sobre" + ': <b>' + "Espacios Académicos" + '</b>.', MODALS.WARNING, false);
+      this.popUpManager.showPopUpGeneric(this.translate.instant('espacios_academicos.consulta_espacios'),
+      this.translate.instant('ERROR.sin_informacion_en') + ': <b>' + this.translate.instant('espacios_academicos.espacios_academicos') + '</b>.',
+      MODALS.WARNING, false);
     }
     // this.loadEspaciosAcademicos().then(espacios => {
     //   this.espacios_academicos = espacios;
