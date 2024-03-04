@@ -156,7 +156,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
                   this.loading = false;
                   this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.enviar_revision_ok'));
                   this.recargarEspaciosAcademicos();
-                  //this.vista = VIEWS.LIST;
                 } else {
                   this.loading = false;
                   this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.enviar_revision_fallo'));
@@ -183,23 +182,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.translate.instant('ERROR.sin_informacion_en') + ': <b>' + this.translate.instant('espacios_academicos.espacios_academicos') + '</b>.',
       MODALS.WARNING, false);
     }
-    // this.loadEspaciosAcademicos().then(espacios => {
-    //   this.espacios_academicos = espacios;
-    //   this.espacios_academicos.forEach(espacio => {
-    //     this.ajustarBotonesSegunEstado(espacio);
-    //   });
-    //   this.dataEspaciosAcademicos.load(this.espacios_academicos);
-    //   const idx = this.formDef.campos_p2.findIndex(campo => campo.nombre == 'espacios_requeridos')
-    //   if (idx != -1) {
-    //     this.formDef.campos_p2[idx].opciones = this.espacios_academicos;
-    //   }
-    //   this.loading = false;
-    // }).catch(err => {
-    //   this.loading = false;
-    //   this.popUpManager.showPopUpGeneric(this.translate.instant('espacios_academicos.consulta_espacios'),
-    //     this.translate.instant('ERROR.sin_informacion_en') + ': <b>' + this.translate.instant('espacios_academicos.espacios_academicos') + '</b>.',
-    //     MODALS.WARNING, false);
-    // })
   }
 
 }
