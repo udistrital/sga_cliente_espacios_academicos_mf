@@ -1,0 +1,300 @@
+.btn-regresar {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 3;
+}
+
+.titulo {
+    margin: 0 auto;
+    font-size: large;
+}
+
+.header {
+    height: 50px;
+    align-items: center;
+    padding: 0;
+}
+
+/*.proyecto mat-form-field {
+    margin: 15px 0;
+    height: 75px;
+    width: 45%;
+}
+
+mat-select {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    margin: 5px 0;
+}
+
+.proyecto .row {
+    justify-content: space-between;
+    display: flex;
+    margin: auto;
+}
+
+.espacio-academico .row {
+    margin: 25px 0 !important;
+    justify-content: space-between;
+    display: flex;
+    margin: auto;
+    align-items: center;
+}
+
+.espacio-academico input {
+    height: 45px;
+}
+
+.espacio-academico mat-form-field {
+    width: 20%;
+}
+
+.btn-agregar-agrupacion {
+    width: 20%;
+}
+
+.soporte mat-form-field {
+    width: 80%;
+}*/
+
+form {
+    margin: 25px auto;
+}
+
+mat-hint {
+    color: red;
+    margin: 5px 0;
+}
+
+mat-form-field input {
+    height: 60px;
+}
+
+mat-form-field {
+    margin: 15px 0;
+    height: 75px;
+}
+
+mat-select {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 45px;
+    margin: 5px 0;
+}
+
+::ng-deep .mat-mdc-select-trigger {
+    height: 100%;
+}
+
+::ng-deep .mat-mdc-select-value {
+    display: flex;
+    height: 100%;
+    align-items: end;
+}
+
+.label-texta ::ng-deep .mdc-floating-label {
+    display: contents;
+}
+
+.btn-form-1 {
+    margin: 20px 0;
+}
+
+.proyecto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 25px;
+}
+
+.espacio-academico {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.espacio-academico button {
+    margin: auto;
+    height: 68px;
+}
+
+.horas-trabajo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    grid-column: span 1;
+    border: solid #03678f 2px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.horas-trabajo h5 {
+    grid-column: span 1;
+    text-align: center;
+    margin: 0;
+}
+
+.horas-trabajo p {
+    grid-column: span 1;
+    text-align: center;
+    margin: 0;
+}
+
+.botones-step {
+    display: flex;
+    justify-content: space-between;
+}
+
+.soporte {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.color-box {
+    height: 50px !important;
+    cursor: auto;
+    border: 1px solid gray; 
+    border-radius: 3px;
+}
+
+.espacios-requeridos {
+    text-align: center;
+    margin: 25px 0;
+    border: #03678f solid 2px;
+    border-radius: 5px;
+}
+
+.espacios-requeridos mat-card-header {
+    margin: auto;
+    padding: 8px 0;
+}
+
+.espacios-requeridos mat-card-content {
+    border-top: #03678f solid 2px;
+}
+
+.campo-archivos {
+    height: auto;
+}
+
+.oculto {
+    display: none;
+}
+
+.loader-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(117, 115, 115, 0.5);
+    /* Fondo semitransparente rojo */
+    z-index: 1;
+}
+
+#dropzone {
+    text-align: center;
+    border: 2px dashed #03678f;
+    margin: 10px 0 0;
+    border-radius: 10px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#dropzone p {
+    margin: auto;
+}
+
+#dropzone #archivos {
+    display: none;
+}
+
+#dropzone label {
+    border-bottom: #03678f 1px solid;
+    color: #03678f;
+    cursor: pointer;
+}
+
+.eliminar-archivo {
+    color: #03678f;
+    cursor: pointer;
+}
+
+.archivos-soporte {
+    text-align: center;
+}
+
+.botones-formulario {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+}
+
+.botones-formulario button {
+    margin: auto;
+}
+
+@media(width > 500px) {
+    .espacio-academico {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .horas-trabajo {
+        grid-template-columns: 1fr 1fr;
+        grid-column: span 2;
+    }
+
+    .horas-trabajo h5 {
+        grid-column: span 2;
+    }
+
+    .horas-trabajo p {
+        grid-column: span 2;
+    }
+}
+
+@media(width > 700px) {
+    .espacio-academico {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .horas-trabajo {
+        grid-template-columns: 1fr 1fr;
+        grid-column: span 3;
+    }
+
+    .horas-trabajo h5 {
+        grid-column: span 2;
+    }
+
+    .horas-trabajo p {
+        grid-column: span 2;
+    }
+}
+
+@media(width > 900px) {
+    .espacio-academico {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .horas-trabajo {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-column: span 4;
+    }
+
+    .horas-trabajo h5 {
+        grid-column: span 4;
+    }
+
+    .horas-trabajo p {
+        grid-column: span 4;
+    }
+}

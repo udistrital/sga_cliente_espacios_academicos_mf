@@ -1,13 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { EspacioAcademico } from 'src/app/models/espacio_academico';
 import { EstadoAprobacion, STD } from 'src/app/models/estado_aprobacion';
-import { ROLES, ACTIONS } from 'src/app/models/diccionario';
+import { ROLES, ACTIONS, MODALS } from 'src/app/models/diccionario';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { ImplicitAutenticationService } from 'src/app/services/implicit_autentication.service';
 import { PopUpManager } from 'src/app/managers/popUpManager';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'list-espacios-academicos',
@@ -24,9 +26,11 @@ export class ListEspaciosAcademicosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator
 
   constructor(
+    private translate: TranslateService,
     private espaciosAcademicosService: EspaciosAcademicosService,
     private popUpManager: PopUpManager,
-    private autenticationService: ImplicitAutenticationService
+    private autenticationService: ImplicitAutenticationService,
+    private router: Router
   ) { }
 
   async ngOnInit() {
@@ -49,8 +53,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
 
   async cargarDatosTabla() {
     this.loading = true;
-    console.log(this.espacios_academicos)
-    try{
+    try {
       await this.cargarEspaciosAcademicos();
       await this.cargarEstadosAprobacion();
     } catch (error) {
@@ -61,7 +64,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.ajustarBotonesSegunEstado(espacio);
     });
 
-    console.log(this.espacios_academicos);
     this.dataSource = new MatTableDataSource<EspacioAcademico>(this.espacios_academicos);
     this.dataSource.paginator = this.paginator
     this.loading = false;
@@ -72,7 +74,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.espaciosAcademicosService.get('espacio-academico?query=espacio_academico_padre,activo:true&limit=0').subscribe(
         (response: any) => {
           this.espacios_academicos = response["Data"];
-          console.log(this.espacios_academicos)
           resolve(true);
         },
         error => {
@@ -87,7 +88,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.espaciosAcademicosService.get('estado-aprobacion?query=activo:true&limit=0').subscribe(
         (response: any) => {
           this.estados_aprobacion = response["Data"];
-          console.log(this.estados_aprobacion)
           resolve(true);
         },
         error => {
@@ -134,6 +134,53 @@ export class ListEspaciosAcademicosComponent implements OnInit {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+
+  enviaraRevision(id: string) {
+    const espacio: any = this.espacios_academicos.filter((espacio: any) => espacio._id === id);
+    console.log(id, espacio[0]);
+    let espacio_edit = espacio[0];
+
+    this.popUpManager.showPopUpGeneric(
+      this.translate.instant('espacios_academicos.espacios_academicos'),
+      this.translate.instant('espacios_academicos.enviar_revision_pregunta'), MODALS.INFO, true).then(
+        action => {
+          if (action.value) {
+            this.loading = true;
+            espacio_edit.estado_aprobacion_id = this.estados_aprobacion.find(estado => estado.codigo_abreviacion == STD.IN_REV)?._id;
+            console.log(espacio_edit.estado_aprobacion_id, espacio_edit);
+            this.espaciosAcademicosService.put('espacio-academico/' + id, espacio_edit).subscribe(
+              (resp: any) => {
+                if (resp.Status == "200") {
+                  this.loading = false;
+                  this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.enviar_revision_ok'));
+                  this.recargarEspaciosAcademicos();
+                } else {
+                  this.loading = false;
+                  this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.enviar_revision_fallo'));
+                }
+              },
+              err => {
+                this.loading = false;
+                this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.enviar_revision_fallo'));
+              }
+            );
+          }
+        }
+      );
+  }
+
+  async recargarEspaciosAcademicos() {
+    this.loading = true;
+    try {
+      await this.cargarDatosTabla();
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+      this.popUpManager.showPopUpGeneric(this.translate.instant('espacios_academicos.consulta_espacios'),
+      this.translate.instant('ERROR.sin_informacion_en') + ': <b>' + this.translate.instant('espacios_academicos.espacios_academicos') + '</b>.',
+      MODALS.WARNING, false);
     }
   }
 
