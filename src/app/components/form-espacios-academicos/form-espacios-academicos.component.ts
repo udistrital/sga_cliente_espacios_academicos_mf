@@ -13,6 +13,7 @@ import { EspacioAcademico } from 'src/app/models/espacio_academico';
 import { EstadoAprobacion, STD } from 'src/app/models/estado_aprobacion';
 import { MODALS, ROLES } from 'src/app/models/diccionario';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EspacioAcademicoMidService } from 'src/app/services/espacio_academico_mid.service';
 
 @Component({
   selector: 'app-form-espacios-academicos',
@@ -96,6 +97,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     private espaciosAcademicosService: EspaciosAcademicosService,
     private gestorDocumentalService: NewNuxeoService,
     private sgaMidService: SgaMidService,
+    private espacioAcademicoMidService: EspacioAcademicoMidService,
     private autenticationService: ImplicitAutenticationService,
     private popUpManager: PopUpManager,
     private activatedRoute: ActivatedRoute,
@@ -558,10 +560,10 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
   postEspacio_Academico(espacio_academico: EspacioAcademico) {
     this.loading = true;
-    this.sgaMidService.post('espacios_academicos/espacio_academico_hijos', espacio_academico).subscribe(
+    this.espacioAcademicoMidService.post('espacios-academicos/hijos', espacio_academico).subscribe(
       (resp: any) => {
-        console.log(resp)
-        if (resp.Status == "201") {
+        console.log(resp, resp.status, typeof resp.status);
+        if (resp.status == "201" || resp.status == 201) {
           this.loading = false;
           this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.creacion_espacio_ok'));
           this.router.navigate(['/']);
