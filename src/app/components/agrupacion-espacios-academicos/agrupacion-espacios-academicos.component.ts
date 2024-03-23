@@ -17,7 +17,6 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   agrupacionEspacios: AgrupacionEspacios[] = [];
   facultadId!: string;
   dataSource!: MatTableDataSource<AgrupacionEspacios>;
-  loading!: boolean;
 
   formAgrupacion = this.fb.group({
     'nombre': ['', Validators.required],
@@ -37,14 +36,12 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.loading = true;
     this.activatedRoute.params.subscribe(params => {
       this.facultadId = params['facultad_id']
       console.log(this.facultadId, params)
     })
 
     await this.cargarDatosTabla();
-    this.loading = false;
   }
 
   async cargarDatosTabla() {
@@ -93,15 +90,12 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
       postAgrupacionEspacios.descripcion = this.formAgrupacion.get('descripcion')!.value ?? '';
       postAgrupacionEspacios.color_hex = this.formAgrupacion.get('color_hex')!.value ?? '';
       postAgrupacionEspacios.facultad_id = Number(this.facultadId);
-      this.loading = true;
       this.espaciosAcademicosService.post('agrupacion-espacios', postAgrupacionEspacios).subscribe((resp: any) => {
-        this.loading = false;
         this.formAgrupacion.reset();
         this.agrupacionEspacios.push(resp.Data);
         this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.agregar_agrupacion_ok'))
         this.router.navigate(['/']);
       }, (error) => {
-        this.loading = false;
         console.warn(error);
         this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.agregar_agrupacion_fail'))
       });
