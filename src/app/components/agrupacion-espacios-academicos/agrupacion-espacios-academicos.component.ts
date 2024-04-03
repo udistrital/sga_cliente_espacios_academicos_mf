@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AgrupacionEspacios } from 'src/app/models/agrupacion_espacios';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,12 +18,13 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   facultadId!: string;
   dataSource!: MatTableDataSource<AgrupacionEspacios>;
   loading!: boolean;
+  
 
   formAgrupacion = this.fb.group({
     'nombre': ['', Validators.required],
     'codigo_abreviacion': ['', Validators.required],
     'descripcion': ['', Validators.required],
-    'color_hex': ['', Validators.required]
+    'color_hex': ['#E0E0E0', Validators.required]
   })
   
 
