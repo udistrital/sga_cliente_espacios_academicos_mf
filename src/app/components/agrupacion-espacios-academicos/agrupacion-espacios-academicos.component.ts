@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AgrupacionEspacios } from 'src/app/models/agrupacion_espacios';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { PopUpManager } from 'src/app/managers/popUpManager';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-agrupacion-espacios-academicos',
