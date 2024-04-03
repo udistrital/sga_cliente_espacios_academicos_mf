@@ -67,5 +67,5 @@ import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-e
 export class AppModule { }
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'http://localhost:4208/assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, 'http://localhost:4212/assets/i18n/', '.json');
 }
