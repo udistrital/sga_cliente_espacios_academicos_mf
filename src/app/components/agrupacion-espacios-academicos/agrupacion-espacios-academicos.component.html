@@ -1,70 +1,156 @@
 <mat-card>
-    <mat-card-header class="header">
-        <button mat-raised-button class="btn-regresar" routerLink="">{{ 'GLOBAL.regresar' | translate }}</button>
-        <h1 class="titulo">{{ 'espacios_academicos.agregar_agrupacion_espacios' | translate }}</h1>
-    </mat-card-header>
-    <mat-card-content>
-        <div [class.loader-div]="loading">
-            <mat-spinner *ngIf="loading" diameter="100" color="primary"></mat-spinner>
-        </div>
-        <fieldset class=" border contenido">
-            <legend>{{ 'espacios_academicos.lista_agrupaciones' | translate }}</legend>
+  <button mat-mini-fab color="primary" routerLink="">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <mat-card-header class="margin-y">
+    <h1 class="titulo">
+      {{ "espacios_academicos.agregar_agrupacion_espacios" | translate }}
+    </h1>
+  </mat-card-header>
+  <mat-card-content class="margin-y">
+    <div [class.loader-div]="loading">
+      <mat-spinner *ngIf="loading" diameter="100" color="primary"></mat-spinner>
+    </div>
 
-            <mat-form-field>
-                <input matInput (keyup)="aplicarFiltro($event)" placeholder="{{ 'GLOBAL.regresar' | translate }}" #input>
+    <h2 class="margin-y"></h2>
+
+    <mat-card class="margin-y">
+      <mat-card-header class="justify-centred">
+        <mat-card-title>{{
+          "espacios_academicos.lista_agrupaciones" | translate
+        }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="responsive-form">
+          <div class="form-item one-third-width">
+            <mat-form-field class="form-field">
+              <input
+                matInput
+                (keyup)="aplicarFiltro($event)"
+                placeholder="{{ 'GLOBAL.regresar' | translate }}"
+                #input
+              />
             </mat-form-field>
+          </div>
+        </div>
 
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z5">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z5">
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "GLOBAL.nombre" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          </ng-container>
 
-                <ng-container matColumnDef="nombre">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'GLOBAL.nombre' | translate }} </th>
-                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-                </ng-container>
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "GLOBAL.descripcion" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          </ng-container>
 
-                <ng-container matColumnDef="descripcion">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'GLOBAL.descripcion' | translate }} </th>
-                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
-                </ng-container>
+          <ng-container matColumnDef="color">
+            <th mat-header-cell *matHeaderCellDef>
+              {{ "espacios_academicos.color" | translate }}
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div
+                [style]="{
+                  'background-color': element.color_hex,
+                  width: '1.5rem',
+                  height: '1.5rem',
+                  display: 'inline-block',
+                    'border-radius': '50%'
+                }"
+                class="box-color"
+              ></div>
+            </td>
+          </ng-container>
 
-                <ng-container matColumnDef="color">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'espacios_academicos.color' | translate }} </th>
-                    <td mat-cell *matCellDef="let element">
-                        <div [style]="{'background-color': element.color_hex}" class="box-color"></div>
-                    </td>
-                </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </fieldset>
-        <fieldset class=" border contenido">
-            <legend>{{ 'espacios_academicos.agregar_agrupacion_espacios' | translate }}</legend>
+    <mat-card class="margin-y">
+      <mat-card-header>
+        <mat-card-title>
+          {{ "espacios_academicos.agregar_agrupacion_espacios" | translate }}
+        </mat-card-title>
+      </mat-card-header>
 
-            <form [formGroup]="formAgrupacion">
-                <mat-form-field>
-                    <mat-label>{{ 'GLOBAL.nombre' | translate }}</mat-label>
-                    <input matInput formControlName="nombre">
-                    <mat-hint *ngIf="formAgrupacion?.get('nombre')?.touched && formAgrupacion?.get('nombre')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>{{ 'GLOBAL.codigo_abreviacion' | translate }}</mat-label>
-                    <input matInput formControlName="codigo_abreviacion">
-                    <mat-hint *ngIf="formAgrupacion?.get('codigo_abreviacion')?.touched && formAgrupacion?.get('codigo_abreviacion')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
-                </mat-form-field>
-                <mat-form-field class="label-texta">
-                    <mat-label>{{ 'GLOBAL.descripcion' | translate }}</mat-label>
-                    <textarea matInput formControlName="descripcion"></textarea>
-                    <mat-hint *ngIf="formAgrupacion?.get('descripcion')?.touched && formAgrupacion?.get('descripcion')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>{{ 'espacios_academicos.agrupacion_espacios_color' | translate }}</mat-label>
-                    <input matInput formControlName="color_hex" [type]="'color'">
-                    <mat-hint *ngIf="formAgrupacion?.get('color_hex')?.touched && formAgrupacion?.get('color_hex')?.invalid" align="start">{{ 'GLOBAL.falta_campo' | translate }}</mat-hint>
-                </mat-form-field>
-            </form>
-            <div class="div-boton">
-                <button mat-raised-button (click)="guardarAgrupacion()">{{ 'GLOBAL.guardar' | translate }}</button>
+      <mat-card-content>
+        <form [formGroup]="formAgrupacion">
+          <div class="responsive-form">
+            <div class="form-item one-third-width">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.nombre" | translate }}</mat-label>
+                <input matInput formControlName="nombre" />
+                <mat-hint
+                  *ngIf="
+                    formAgrupacion?.get('nombre')?.touched &&
+                    formAgrupacion?.get('nombre')?.invalid
+                  "
+                  align="start"
+                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+                >
+              </mat-form-field>
             </div>
-        </fieldset>
-    </mat-card-content>
+            <div class="form-item one-third-width">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "GLOBAL.codigo_abreviacion" | translate
+                }}</mat-label>
+                <input matInput formControlName="codigo_abreviacion" />
+                <mat-hint
+                  *ngIf="
+                    formAgrupacion?.get('codigo_abreviacion')?.touched &&
+                    formAgrupacion?.get('codigo_abreviacion')?.invalid
+                  "
+                  align="start"
+                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+                >
+              </mat-form-field>
+            </div>
+            <div class="form-item one-third-width">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.agrupacion_espacios_color" | translate
+                }}</mat-label>
+                <input matInput formControlName="color_hex" [type]="'color'" />
+                <mat-hint
+                  *ngIf="
+                    formAgrupacion?.get('color_hex')?.touched &&
+                    formAgrupacion?.get('color_hex')?.invalid
+                  "
+                  align="start"
+                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+                >
+              </mat-form-field>
+            </div>
+            <div class="form-item full-width">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.descripcion" | translate }}</mat-label>
+                <textarea matInput formControlName="descripcion"></textarea>
+                <mat-hint
+                  *ngIf="
+                    formAgrupacion?.get('descripcion')?.touched &&
+                    formAgrupacion?.get('descripcion')?.invalid
+                  "
+                  align="start"
+                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="accent" (click)="guardarAgrupacion()">
+          {{ "GLOBAL.guardar" | translate }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-card-content>
 </mat-card>
