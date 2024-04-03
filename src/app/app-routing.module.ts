@@ -11,18 +11,15 @@ const routes: Routes = [
   {
     path: '',
     component: ListEspaciosAcademicosComponent,
-    //canActivate: [AuthGuard],
   },
   {
     path: 'formulario/:accion/:elemento',
     component: FormEspaciosAcademicosComponent,
-    //canActivate: [AuthGuard],
   },
   {
     path: 'agrupacion-espacios/:facultad_id',
     component: AgrupacionEspaciosAcademicosComponent,
-    //canActivate: [AuthGuard],
-  }
+  },
 ];
 
 @NgModule({
@@ -32,7 +29,7 @@ const routes: Routes = [
     provideRouter(routes),
     { provide: APP_BASE_HREF, useValue: '/espacios-academicos/' },
     getSingleSpaExtraProviders(),
-    provideHttpClient(withFetch()) 
-  ]
+    provideHttpClient(withFetch()),
+  ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
