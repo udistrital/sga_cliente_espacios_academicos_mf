@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+.margin-y {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.container-bottons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.table {
+    overflow-x: auto;
+}
