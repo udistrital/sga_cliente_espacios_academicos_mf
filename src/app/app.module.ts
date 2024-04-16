@@ -24,6 +24,11 @@ import { MatListModule } from '@angular/material/list';
 import { EspaciosAcademicosService } from './services/espacios_academicos.service';
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
 import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
+import { environment } from 'src/environments/environment';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -65,7 +70,3 @@ import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-e
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'http://localhost:4208/assets/i18n/', '.json');
-}

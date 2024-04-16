@@ -79,6 +79,14 @@ form {
     z-index: 1;
 }
 
+mat-table {
+    display: table;
+}
+
+fieldset {
+    overflow: overlay;
+}
+
 @media(width > 500px) {
     form {
         grid-template-columns: 1fr 1fr;
