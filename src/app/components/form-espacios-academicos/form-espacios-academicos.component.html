@@ -4,9 +4,6 @@
         <h1 class="titulo">{{ 'espacios_academicos.crear_espacios' | translate }}</h1>
     </mat-card-header>
     <mat-card-content>
-        <div [class.loader-div]="loading">
-            <mat-spinner *ngIf="loading" diameter="100" color="primary"></mat-spinner>
-        </div>
         <mat-stepper orientation="vertical" [linear]="false" #stepper>
             <mat-step [stepControl]="formStep1">
                 <ng-template matStepLabel>{{ 'espacios_academicos.select_proyecto' | translate }}</ng-template>
