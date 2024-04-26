@@ -11,28 +11,28 @@
                 <input matInput (keyup)="aplicarFiltro($event)" placeholder="{{ 'GLOBAL.regresar' | translate }}" #input>
             </mat-form-field>
 
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z5">
+            <mat-table [dataSource]="dataSource" class="mat-elevation-z5">
 
                 <ng-container matColumnDef="nombre">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'GLOBAL.nombre' | translate }} </th>
-                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                    <mat-header-cell *matHeaderCellDef> {{ 'GLOBAL.nombre' | translate }} </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="descripcion">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'GLOBAL.descripcion' | translate }} </th>
-                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                    <mat-header-cell *matHeaderCellDef> {{ 'GLOBAL.descripcion' | translate }} </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.nombre}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="color">
-                    <th mat-header-cell *matHeaderCellDef> {{ 'espacios_academicos.color' | translate }} </th>
-                    <td mat-cell *matCellDef="let element">
+                    <mat-header-cell *matHeaderCellDef> {{ 'espacios_academicos.color' | translate }} </mat-header-cell>
+                    <mat-cell *matCellDef="let element">
                         <div [style]="{'background-color': element.color_hex}" class="box-color"></div>
-                    </td>
+                    </mat-cell>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
         </fieldset>
         <fieldset class=" border contenido">
             <legend>{{ 'espacios_academicos.agregar_agrupacion_espacios' | translate }}</legend>

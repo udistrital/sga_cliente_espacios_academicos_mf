@@ -25,6 +25,11 @@ import { EspaciosAcademicosService } from './services/espacios_academicos.servic
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
 import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
+import { environment } from 'src/environments/environment';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -68,7 +73,3 @@ import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'http://localhost:4208/assets/i18n/', '.json');
-}
