@@ -27,7 +27,6 @@ export const environment = {
     NUXEO_SERVICE:'',
     DOCUMENTO_SERVICE: '',
     PROYECTO_ACADEMICO_SERVICE: '',
-    SGA_MID_SERVICE: '',
     PARAMETROS_SERVICE: '',
     ESPACIOS_ACADEMICOS_SERVICE: '',
   };

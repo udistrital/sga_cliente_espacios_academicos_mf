@@ -38,7 +38,6 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   async ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.facultadId = params['facultad_id']
-      console.log(this.facultadId, params)
     })
 
     await this.cargarDatosTabla();
@@ -48,15 +47,12 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
     await this.cargarAgrupacionEspacios(this.facultadId).then((agrupacion_espacios) => {
       this.agrupacionEspacios = agrupacion_espacios;
     }).catch((error) => {
-      console.log(error);
     })
-    console.log(this.agrupacionEspacios)
 
     this.dataSource = new MatTableDataSource<AgrupacionEspacios>(this.agrupacionEspacios);
   }
 
   async cargarAgrupacionEspacios(byFacultad?: any): Promise<AgrupacionEspacios[]> {
-    console.log(byFacultad)
     let facuId = "";
     if (byFacultad != undefined) {
       facuId = `,facultad_id:${byFacultad}`;
@@ -65,7 +61,6 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
       this.espaciosAcademicosService.get('agrupacion-espacios?query=activo:true' + facuId + '&limit=0').subscribe(
         (response: any) => {
           if (Object.keys(response.Data[0]).length > 0) {
-            console.log(response.Data)
             resolve(response.Data);
           } else {
             reject({ "agrupacion_espacios": null });
