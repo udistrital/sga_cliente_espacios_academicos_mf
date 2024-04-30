@@ -39,10 +39,8 @@ export class ListEspaciosAcademicosComponent implements OnInit {
         const r2 = rol.find((role: string) => (role == ROLES.ASIS_PROYECTO));
         if (r1) {
           this.IsAdmin = true;
-          console.log(r1)
         } else if (r2) {
           this.IsAdmin = false;
-          console.log(r2)
         }
       }
     );
@@ -136,7 +134,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
 
   enviaraRevision(id: string) {
     const espacio: any = this.espacios_academicos.filter((espacio: any) => espacio._id === id);
-    console.log(id, espacio[0]);
     let espacio_edit = espacio[0];
 
     this.popUpManager.showPopUpGeneric(
@@ -145,7 +142,6 @@ export class ListEspaciosAcademicosComponent implements OnInit {
         action => {
           if (action.value) {
             espacio_edit.estado_aprobacion_id = this.estados_aprobacion.find(estado => estado.codigo_abreviacion == STD.IN_REV)?._id;
-            console.log(espacio_edit.estado_aprobacion_id, espacio_edit);
             this.espaciosAcademicosService.put('espacio-academico/' + id, espacio_edit).subscribe(
               (resp: any) => {
                 if (resp.Status == "200") {

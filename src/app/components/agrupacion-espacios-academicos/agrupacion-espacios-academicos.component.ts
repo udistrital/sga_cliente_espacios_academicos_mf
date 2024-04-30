@@ -5,7 +5,7 @@ import { AgrupacionEspacios } from 'src/app/models/agrupacion_espacios';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { PopUpManager } from 'src/app/managers/popUpManager';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-agrupacion-espacios-academicos',
@@ -22,7 +22,7 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
     'nombre': ['', Validators.required],
     'codigo_abreviacion': ['', Validators.required],
     'descripcion': ['', Validators.required],
-    'color_hex': ['', Validators.required]
+    'color_hex': ['#E0E0E0', Validators.required]
   })
   
 
@@ -38,7 +38,6 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   async ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.facultadId = params['facultad_id']
-      console.log(this.facultadId, params)
     })
 
     await this.cargarDatosTabla();
@@ -48,15 +47,12 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
     await this.cargarAgrupacionEspacios(this.facultadId).then((agrupacion_espacios) => {
       this.agrupacionEspacios = agrupacion_espacios;
     }).catch((error) => {
-      console.log(error);
     })
-    console.log(this.agrupacionEspacios)
 
     this.dataSource = new MatTableDataSource<AgrupacionEspacios>(this.agrupacionEspacios);
   }
 
   async cargarAgrupacionEspacios(byFacultad?: any): Promise<AgrupacionEspacios[]> {
-    console.log(byFacultad)
     let facuId = "";
     if (byFacultad != undefined) {
       facuId = `,facultad_id:${byFacultad}`;
@@ -65,7 +61,6 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
       this.espaciosAcademicosService.get('agrupacion-espacios?query=activo:true' + facuId + '&limit=0').subscribe(
         (response: any) => {
           if (Object.keys(response.Data[0]).length > 0) {
-            console.log(response.Data)
             resolve(response.Data);
           } else {
             reject({ "agrupacion_espacios": null });
