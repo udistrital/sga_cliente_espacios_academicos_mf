@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListEspaciosAcademicosComponent } from './components/list-espacios-academicos/list-espacios-academicos.component';
@@ -24,6 +24,12 @@ import { MatListModule } from '@angular/material/list';
 import { EspaciosAcademicosService } from './services/espacios_academicos.service';
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
 import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
+import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
+import { environment } from 'src/environments/environment';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -50,6 +56,7 @@ import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-e
     MatSelectModule,
     MatProgressSpinnerModule,
     MatStepperModule,
+    SpinnerUtilModule,
     TranslateModule.forRoot({
       loader:{
         provide:TranslateLoader,
@@ -60,12 +67,9 @@ import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-e
   ],
   providers: [
     EspaciosAcademicosService,
-    MatSnackBar
+    MatSnackBar,
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, 'http://localhost:4208/assets/i18n/', '.json');
-}

@@ -13,6 +13,7 @@ import { EspacioAcademico } from 'src/app/models/espacio_academico';
 import { EstadoAprobacion, STD } from 'src/app/models/estado_aprobacion';
 import { MODALS, ROLES } from 'src/app/models/diccionario';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EspacioAcademicoMidService } from 'src/app/services/espacio_academico_mid.service';
 
 @Component({
   selector: 'app-form-espacios-academicos',
@@ -48,7 +49,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   readonly horasCredito: number = 48;
   valorHorasTotal: number = 0;
   mensajeTotalHoras!: String;
-  loading: boolean = false;
   IsAdmin!: boolean;
   btnAgrupaciondisabled: boolean = false;
 
@@ -96,6 +96,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     private espaciosAcademicosService: EspaciosAcademicosService,
     private gestorDocumentalService: NewNuxeoService,
     private sgaMidService: SgaMidService,
+    private espacioAcademicoMidService: EspacioAcademicoMidService,
     private autenticationService: ImplicitAutenticationService,
     private popUpManager: PopUpManager,
     private activatedRoute: ActivatedRoute,
@@ -103,7 +104,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.loading = true;
     this.autenticationService.getRole().then(
       (rol: any) => {
         const r1 = rol.find((role: string) => (role == ROLES.ADMIN_SGA));
@@ -136,7 +136,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     })
 
     this.manejoDeAcciones();
-    this.loading = false;
   }
 
   manejoDeAcciones() {
@@ -526,7 +525,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   descargarArchivos(idArchivos: any[]): Promise<any> {
-    this.loading = true;
     return new Promise<any>((resolve, reject) => {
       this.checkIfAlreadyDownloaded(idArchivos).then(
         faltantes => {
@@ -540,16 +538,13 @@ export class FormEspaciosAcademicosComponent implements OnInit {
             this.gestorDocumentalService.getManyFiles('?query=Id__in:' + idsForQuery + '&limit=' + limitQuery).subscribe(
               r => {
                 if (!r.downloadProgress) {
-                  this.loading = false;
                   resolve(true);
                 }
               }, e => {
-                this.loading = false;
                 reject(false);
               }
             );
           } else {
-            this.loading = false;
             resolve(true)
           }
         });
@@ -558,47 +553,40 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
   postEspacio_Academico(espacio_academico: EspacioAcademico) {
     this.loading = true;
-    this.sgaMidService.post('espacios_academicos/espacio_academico_hijos', espacio_academico).subscribe(
+    this.espacioAcademicoMidService.post('espacios-academicos/hijos', espacio_academico).subscribe(
       (resp: any) => {
-        console.log(resp)
-        if (resp.Status == "201") {
+        console.log(resp, resp.status, typeof resp.status);
+        if (resp.status == "201" || resp.status == 201) {
           this.loading = false;
           this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.creacion_espacio_ok'));
           this.router.navigate(['/']);
         } else {
-          this.loading = false;
           this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.creacion_espacio_fallo'));
         }
       },
       err => {
-        this.loading = false;
         this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.creacion_espacio_fallo'));
       }
     );
   }
 
   putEspacio_Academico(espacio_academico: EspacioAcademico) {
-    this.loading = true;
     this.espaciosAcademicosService.put('espacio-academico/'+this.espacioEdicion._id, espacio_academico).subscribe(
       (resp: any) => {
         if (resp.Status == "200") {
-          this.loading = false;
           this.popUpManager.showSuccessAlert(this.translate.instant('espacios_academicos.edicion_espacio_ok'));
           this.router.navigate(['/']);
         } else {
-          this.loading = false;
           this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.edicion_espacio_fallo'));
         }
       },
       err => {
-          this.loading = false;
           this.popUpManager.showErrorAlert(this.translate.instant('espacios_academicos.edicion_espacio_fallo'));
       }
     );
   }
 
   async prepararCreacion() {
-    this.loading = true;
     let newEspacio_Academico = new EspacioAcademico();
     newEspacio_Academico.proyecto_academico_id = (this.formStep1.get('proyecto_curricular')!.value);
     newEspacio_Academico.nombre = this.formStep2.get('nombre')!.value;
@@ -630,12 +618,10 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     newEspacio_Academico.docente_id = 0;
     newEspacio_Academico.horario_id = "0";
     console.log(newEspacio_Academico);
-    this.loading = false;
     this.postEspacio_Academico(newEspacio_Academico);
   }
 
   async prepararEdicion() {
-    this.loading = true;
     let editEspacio_Academico = new EspacioAcademico();
     editEspacio_Academico.proyecto_academico_id = (this.formStep1.get('proyecto_curricular')!.value);
     editEspacio_Academico.nombre = this.formStep2.get('nombre')!.value;
@@ -675,7 +661,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     editEspacio_Academico.docente_id = 0;
     editEspacio_Academico.horario_id = "0";
     console.log(editEspacio_Academico);
-    this.loading = false;
     this.putEspacio_Academico(editEspacio_Academico);
   }
 
@@ -718,7 +703,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   async cargarFormulario(espacioAcademico: EspacioAcademico) {
-    this.loading = true;
     this.limpiarFormulario();
     const proyecto = this.proyectos.find(proyecto => proyecto.Id == espacioAcademico.proyecto_academico_id);
     console.log(proyecto);
@@ -813,6 +797,5 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       aprobado: espacioAcademico.estado_aprobacion_id,
       observaciones: espacioAcademico.observacion
     });
-    this.loading = false;
   }
 }
