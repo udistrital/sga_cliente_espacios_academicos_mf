@@ -608,7 +608,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       .post('espacios-academicos/hijos', espacio_academico)
       .subscribe(
         (resp: any) => {
-          if (resp.status == '201' || resp.status == 201) {
+          if (resp.Status == '201' || resp.Status == 201) {
             this.popUpManager.showSuccessAlert(
               this.translate.instant('espacios_academicos.creacion_espacio_ok')
             );
