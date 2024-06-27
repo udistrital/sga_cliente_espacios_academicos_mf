@@ -572,7 +572,8 @@
         "item": "Ítem",
         "evaluar": "Evaluar",
         "arrastrar_archivos": "Arrastre los archivos a esta zona",
-        "o_hacer_click": "o haga clic aquí"
+        "o_hacer_click": "o haga clic aquí",
+        "seleccione_opcion": "Seleccione una opción"
     },
     "ERROR": {
         "general": "La solicitud no pudo ser cumplida",

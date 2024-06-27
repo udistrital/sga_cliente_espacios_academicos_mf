@@ -396,11 +396,16 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   onAgrupacionEspaciosChange(event: any): void {
-    const agrupacion: any = this.agrupacionEspacios.filter(
-      (agrupacion: any) => agrupacion._id === event.value
-    );
-    this.inputBoxColor = agrupacion[0].color_hex;
-    this.btnAgrupaciondisabled = true;
+    if (event.value) {
+      const agrupacion: any = this.agrupacionEspacios.filter(
+        (agrupacion: any) => agrupacion._id === event.value
+      );
+      this.inputBoxColor = agrupacion[0].color_hex;
+      this.btnAgrupaciondisabled = true;
+    }else {
+      this.inputBoxColor = 'white';
+      this.btnAgrupaciondisabled = false;
+    }
   }
 
   onChangeArchivosSeleccionados(event: any) {
@@ -851,8 +856,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         .then((agrupacion_espacios) => {
           this.agrupacionEspacios = agrupacion_espacios;
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
 
     const agrupacion: any = this.agrupacionEspacios.filter(
