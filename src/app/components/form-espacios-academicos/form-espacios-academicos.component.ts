@@ -402,7 +402,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       );
       this.inputBoxColor = agrupacion[0].color_hex;
       this.btnAgrupaciondisabled = true;
-    }else {
+    } else {
       this.inputBoxColor = 'white';
       this.btnAgrupaciondisabled = false;
     }
@@ -412,13 +412,18 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     const archivosSeleccionados: FileList | null = event.target.files;
 
     if (archivosSeleccionados) {
+      let fillArhivos = '';
       for (let i = 0; i < archivosSeleccionados.length; i++) {
         const archivo = archivosSeleccionados[i];
         if (archivo.type === 'application/pdf') {
           this.archivosSoporte.push(archivo);
+          fillArhivos += archivo.name + ', ';
         } else {
         }
       }
+      this.formStep3.patchValue({
+        soporte: fillArhivos, // solo para que el campo de formulario no esté vacio y lo valide ok si no se añaden nuevos archivos
+      });
     }
   }
 
