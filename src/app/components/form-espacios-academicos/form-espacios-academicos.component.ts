@@ -948,18 +948,21 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     ];
 
     for (const controlGroup of controlGroups) {
-      Object.keys(controlGroup.controls).forEach((controlKey) => {
-        const control = controlGroup.get(controlKey);
-        if (control && control.invalid) {
-          const element = document.querySelector(
-            `[formcontrolname="${controlKey}"]`
-          );
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            element.classList.add('highlight-error');
+      for (const controlKey in controlGroup.controls) {
+        if (controlGroup.controls.hasOwnProperty(controlKey)) {
+          const control = controlGroup.get(controlKey);
+          if (control && control.invalid) {
+            const element = document.querySelector(
+              `[formcontrolname="${controlKey}"]`
+            );
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              element.classList.add('highlight-error');
+              return; // Break after highlighting the first invalid field
+            }
           }
         }
-      });
+      }
     }
   }
 }
