@@ -813,6 +813,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       this.formProyecto.markAllAsTouched();
       this.formEspacioAcademico.markAllAsTouched();
       this.formSoportes.markAllAsTouched();
+      this.highlightInvalidFields(); // Llama al método para resaltar campos inválidos
       this.popUpManager.showPopUpGeneric(
         this.translate.instant('espacios_academicos.espacios_academicos'),
         this.translate.instant('espacios_academicos.formulario_no_completo'),
@@ -937,5 +938,28 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       aprobado: espacioAcademico.estado_aprobacion_id,
       observaciones: espacioAcademico.observacion,
     });
+  }
+
+  highlightInvalidFields() {
+    const controlGroups: FormGroup[] = [
+      this.formProyecto,
+      this.formEspacioAcademico,
+      this.formSoportes,
+    ];
+
+    for (const controlGroup of controlGroups) {
+      Object.keys(controlGroup.controls).forEach((controlKey) => {
+        const control = controlGroup.get(controlKey);
+        if (control && control.invalid) {
+          const element = document.querySelector(
+            `[formcontrolname="${controlKey}"]`
+          );
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.classList.add('highlight-error');
+          }
+        }
+      });
+    }
   }
 }
