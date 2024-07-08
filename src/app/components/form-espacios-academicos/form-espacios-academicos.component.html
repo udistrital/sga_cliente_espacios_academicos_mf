@@ -1,11 +1,11 @@
-<mat-card >
-  <mat-card-header style="display: flex; flex-direction: column; gap: 1rem;">
-    <button mat-mini-fab color="primary" routerLink="">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <h1>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <button mat-mini-fab color="primary" routerLink="">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
       {{ "espacios_academicos.crear_espacios" | translate }}
-    </h1>
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-stepper orientation="vertical" [linear]="false" #stepper>
@@ -14,101 +14,87 @@
           "espacios_academicos.select_proyecto" | translate
         }}</ng-template>
         <form [formGroup]="formStep1">
-          <div class="responsive-form margin-y">
-            <div class="form-item one-third-width">
-              <mat-form-field class="form-field">
-                <mat-label>{{ "GLOBAL.nivel" | translate }}</mat-label>
-                <mat-select
-                  formControlName="nivel"
-                  (selectionChange)="onNivelChange($event)"
-                  [disabled]="camposDisabled"
-                >
-                  <mat-option>{{
-                    "GLOBAL.seleccionar" | translate
-                  }}</mat-option>
-                  <mat-option
-                    *ngFor="let nivel of niveles"
-                    [value]="nivel.Id"
-                    >{{ nivel.Nombre }}</mat-option
-                  >
-                </mat-select>
-                <mat-hint
-                  *ngIf="
-                    formProyecto?.get('nivel')?.touched &&
-                    formProyecto?.get('nivel')?.invalid
-                  "
-                  align="start"
-                  >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                >
-              </mat-form-field>
-            </div>
-            <div class="form-item one-third-width">
-              <mat-form-field class="form-field">
-                <mat-label>{{ "GLOBAL.subnivel" | translate }}</mat-label>
-                <mat-select
-                  formControlName="sub_nivel"
-                  (selectionChange)="onSubNivelChange($event)"
-                  [disabled]="camposDisabled"
-                >
-                  <mat-option>{{
-                    "GLOBAL.seleccionar" | translate
-                  }}</mat-option>
-                  <ng-container *ngIf="nivelSeleccionado === 1">
-                    <mat-option
-                      *ngFor="let nivel of subNivelesPregrado"
-                      [value]="nivel.Id"
-                      >{{ nivel.Nombre }}</mat-option
-                    >
-                  </ng-container>
-                  <ng-container *ngIf="nivelSeleccionado === 2">
-                    <mat-option
-                      *ngFor="let nivel of subNivelesPosgrado"
-                      [value]="nivel.Id"
-                      >{{ nivel.Nombre }}</mat-option
-                    >
-                  </ng-container>
-                </mat-select>
-                <mat-hint
-                  *ngIf="
-                    formProyecto?.get('sub_nivel')?.touched &&
-                    formProyecto?.get('sub_nivel')?.invalid
-                  "
-                  align="start"
-                  >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                >
-              </mat-form-field>
-            </div>
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.nivel" | translate }}</mat-label>
+            <mat-select
+              formControlName="nivel"
+              (selectionChange)="onNivelChange($event)"
+              [disabled]="camposDisabled"
+            >
+              <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
+              <mat-option *ngFor="let nivel of niveles" [value]="nivel.Id">{{
+                nivel.Nombre
+              }}</mat-option>
+            </mat-select>
+            <mat-hint
+              *ngIf="
+                formProyecto?.get('nivel')?.touched &&
+                formProyecto?.get('nivel')?.invalid
+              "
+              align="start"
+              >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
+            >
+          </mat-form-field>
 
-            <div class="form-item one-third-width">
-              <mat-form-field class="form-field">
-                <mat-label>{{
-                  "GLOBAL.proyecto_academico" | translate
-                }}</mat-label>
-                <mat-select
-                  formControlName="proyecto_curricular"
-                  (selectionChange)="onProyectoChange($event)"
-                  [disabled]="camposDisabled"
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.subnivel" | translate }}</mat-label>
+            <mat-select
+              formControlName="sub_nivel"
+              (selectionChange)="onSubNivelChange($event)"
+              [disabled]="camposDisabled"
+            >
+              <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
+              <ng-container *ngIf="nivelSeleccionado === 1">
+                <mat-option
+                  *ngFor="let nivel of subNivelesPregrado"
+                  [value]="nivel.Id"
+                  >{{ nivel.Nombre }}</mat-option
                 >
-                  <mat-option>{{
-                    "espacios_academicos.select_proyecto" | translate
-                  }}</mat-option>
-                  <mat-option
-                    *ngFor="let proyecto of proyectosSelect"
-                    [value]="proyecto.Id"
-                    >{{ proyecto.Nombre }}</mat-option
-                  >
-                </mat-select>
-                <mat-hint
-                  *ngIf="
-                    formProyecto?.get('proyecto_curricular')?.touched &&
-                    formProyecto?.get('proyecto_curricular')?.invalid
-                  "
-                  align="start"
-                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+              </ng-container>
+              <ng-container *ngIf="nivelSeleccionado === 2">
+                <mat-option
+                  *ngFor="let nivel of subNivelesPosgrado"
+                  [value]="nivel.Id"
+                  >{{ nivel.Nombre }}</mat-option
                 >
-              </mat-form-field>
-            </div>
-          </div>
+              </ng-container>
+            </mat-select>
+            <mat-hint
+              *ngIf="
+                formProyecto?.get('sub_nivel')?.touched &&
+                formProyecto?.get('sub_nivel')?.invalid
+              "
+              align="start"
+              >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
+            >
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.proyecto_academico" | translate }}</mat-label>
+            <mat-select
+              formControlName="proyecto_curricular"
+              (selectionChange)="onProyectoChange($event)"
+              [disabled]="camposDisabled"
+            >
+              <mat-option>{{
+                "espacios_academicos.select_proyecto" | translate
+              }}</mat-option>
+              <mat-option
+                *ngFor="let proyecto of proyectosSelect"
+                [value]="proyecto.Id"
+                >{{ proyecto.Nombre }}</mat-option
+              >
+            </mat-select>
+            <mat-hint
+              *ngIf="
+                formProyecto?.get('proyecto_curricular')?.touched &&
+                formProyecto?.get('proyecto_curricular')?.invalid
+              "
+              align="start"
+              >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+            >
+          </mat-form-field>
+
           <button mat-flat-button color="accent" matStepperNext>
             {{ "GLOBAL.siguiente" | translate }}
           </button>
@@ -120,7 +106,7 @@
         }}</ng-template>
         <form [formGroup]="formStep2">
           <div class="responsive-form margin-y">
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{ "GLOBAL.nombre" | translate }}</mat-label>
                 <input
@@ -139,7 +125,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{ "GLOBAL.codigo" | translate }}</mat-label>
                 <input
@@ -158,7 +144,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{
                   "GLOBAL.codigo_abreviacion" | translate
@@ -179,7 +165,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{
                   "espacios_academicos.plan_estudios" | translate
@@ -201,7 +187,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{ "GLOBAL.Tipo" | translate }}</mat-label>
                 <mat-select formControlName="tipo" [disabled]="camposDisabled">
@@ -220,7 +206,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{ "GLOBAL.clase" | translate }}</mat-label>
                 <mat-select formControlName="clase" [disabled]="camposDisabled">
@@ -239,7 +225,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{ "GLOBAL.enfoque" | translate }}</mat-label>
                 <mat-select
@@ -263,7 +249,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{ "GLOBAL.creditos" | translate }}</mat-label>
                 <input
@@ -283,7 +269,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{
                   "espacios_academicos.espacio_modular" | translate
@@ -310,7 +296,7 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{
                   "espacios_academicos.agrupacion_espacios" | translate
@@ -320,6 +306,9 @@
                   (selectionChange)="onAgrupacionEspaciosChange($event)"
                   [disabled]="camposDisabled"
                 >
+                  <mat-option [value]="null">{{
+                    "GLOBAL.seleccione_opcion" | translate
+                  }}</mat-option>
                   <mat-option
                     *ngFor="let agrupacion of agrupacionEspacios"
                     [value]="agrupacion._id"
@@ -337,32 +326,51 @@
               </mat-form-field>
             </div>
 
-            <div class="form-item half-width">
+            <div class="form-item form-col1">
               <mat-form-field floatLabel="always" class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.agrupacion_espacios_color" | translate
+                }}</mat-label>
+                <!-- <div
+                [style]="{
+                  'background-color': this.inputBoxColor,
+                  width: '100%',
+                  height: '100%',
+                  display: 'inline-block'
+                }"
+                class="box-color"
+              ></div> -->
                 <input
                   matInput
                   formControlName="agrupacion_espacios_color"
                   type="text"
                   readonly
+                  [value]="inputBoxColor"
+                  [style]="{ background: inputBoxColor, color: inputBoxColor }"
                 />
               </mat-form-field>
             </div>
+            <div class="form-item form-col1">
+              <button
+                mat-flat-button
+                color="accent"
+                class="margin-y"
+                routerLink="/agrupacion-espacios/{{ agrupacionFacultadId }}"
+                [disabled]="btnAgrupaciondisabled"
+              >
+                {{
+                  "espacios_academicos.agregar_agrupacion_espacios" | translate
+                }}
+              </button>
+            </div>
           </div>
-          <button
-            mat-flat-button
-            color="accent"
-            class="margin-y"
-            routerLink="/agrupacion-espacios/{{ agrupacionFacultadId }}"
-            [disabled]="btnAgrupaciondisabled"
-          >
-            {{ "espacios_academicos.agregar_agrupacion_espacios" | translate }}
-          </button>
+
           <div class="horas-trabajo">
             <h2 class="margin-y">
               {{ "espacios_academicos.asignar_horas_trabajo" | translate }}
             </h2>
             <div class="responsive-form">
-              <div class="form-item one-third-width">
+              <div class="form-item form-col1">
                 <mat-form-field class="form-field">
                   <mat-label>{{
                     "espacios_academicos.htd" | translate
@@ -385,7 +393,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="form-item one-third-width">
+              <div class="form-item form-col1">
                 <mat-form-field class="form-field">
                   <mat-label>{{
                     "espacios_academicos.htc" | translate
@@ -408,7 +416,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="form-item one-third-width">
+              <div class="form-item form-col1">
                 <mat-form-field class="form-field">
                   <mat-label>{{
                     "espacios_academicos.hta" | translate
@@ -431,7 +439,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="form-item one-third-width">
+              <div class="form-item form-col1">
                 <mat-form-field class="form-field">
                   <mat-label>{{ "GLOBAL.total" | translate }}</mat-label>
                   <input
@@ -459,7 +467,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="form-item one-third-width">
+              <div class="form-item form-col1">
                 <mat-form-field class="form-field">
                   <mat-label>{{ "GLOBAL.grupos" | translate }}</mat-label>
                   <input
@@ -479,7 +487,7 @@
               </div>
             </div>
 
-            <div class="form-item one-third-width">
+            <div class="form-item form-col1">
               <mat-form-field class="form-field">
                 <mat-label>{{
                   "espacios_academicos.espacios_requeridos" | translate
@@ -538,101 +546,98 @@
           "espacios_academicos.soporte_observacion" | translate
         }}</ng-template>
         <form [formGroup]="formStep3" class="soporte">
-          <p>{{ "GLOBAL.soporte_documental" | translate }}</p>
-          <div class="responsive-form margin-y">
-            <div class="form-item one-third-width">
-              <mat-form-field class="form-field">
-                <div
-                  id="dropzone"
-                  *ngIf="!camposDisabled"
-                  (drop)="onDrop($event)"
-                  (dragover)="onDragOver($event)"
-                >
-                  <p>
-                    {{ "GLOBAL.arrastrar_archivos" | translate }}
-                    <label for="archivos">{{
-                      "GLOBAL.o_hacer_click" | translate
-                    }}</label>
-                  </p>
-                  <input
-                    type="file"
-                    id="archivos"
-                    name="archivos"
-                    (change)="onChangeArchivosSeleccionados($event)"
-                    multiple
-                    accept=".pdf"
-                    max-size="2097152"
-                  />
-                </div>
-                <div
-                  *ngIf="archivosSoporte && accion == 'crear'"
-                  class="archivos-soporte"
-                >
-                  <mat-list role="list">
-                    <mat-list-item
-                      *ngFor="let archivo of archivosSoporte"
-                      role="listitem"
-                      ><a
-                        href="#"
-                        (click)="abrirArchivo(archivo)"
-                        class="link-archivo"
-                        >{{ archivo.name }} </a
-                      ><span
-                        (click)="eliminarArchivo(archivo)"
-                        class="eliminar-archivo"
-                        [ngClass]="{ oculto: camposDisabled }"
-                        >X</span
-                      ></mat-list-item
-                    >
-                  </mat-list>
-                </div>
-                <input
-                  matInput
-                  [readonly]="camposDisabled"
-                  formControlName="soporte"
-                  type="text"
-                  [value]="
-                    archivosSoporte && archivosSoporte.length > 0
-                      ? 'Archivo(s) cargado(s)'
-                      : 'Archivo(s) NO cargado(s)'
-                  "
-                />
-                <mat-hint
-                  *ngIf="
-                    formSoportes?.get('soporte')?.touched &&
-                    validarErrorArchivosSeleccionados()
-                  "
-                  align="start"
-                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                >
-              </mat-form-field>
-            </div>
-            <div class="form-item one-third-width">
-                <mat-form-field *ngIf="IsAdmin" class="form-field">
-                    <mat-label>{{
-                      "espacios_academicos.aprobar_espacio" | translate
-                    }}</mat-label>
-                    <mat-select formControlName="aprobado" [disabled]="visualizar">
-                      <mat-option
-                        *ngFor="let estado of estadosAprobacion"
-                        [value]="estado._id"
-                        >{{ estado.nombre }}</mat-option
-                      >
-                    </mat-select>
-                  </mat-form-field>
-            </div>
-          </div>
+          <h2>{{ "GLOBAL.soporte_documental" | translate }}</h2>
 
-          <div class="form-item one-third-width">
-            <mat-form-field class="form-field">
-                <mat-label>{{ "GLOBAL.observaciones" | translate }}</mat-label>
-                <textarea
-                  matInput
-                  formControlName="observaciones"
-                  [readonly]="visualizar"
-                ></textarea>
-              </mat-form-field>
-          </div>
+          <!-- CARGADOR DE ARCHIVOS -->
+          <mat-form-field class="form-field">
+            <div
+              id="dropzone"
+              *ngIf="!camposDisabled"
+              (drop)="onDrop($event)"
+              (dragover)="onDragOver($event)"
+            >
+              <p>
+                {{ "GLOBAL.arrastrar_archivos" | translate }}
+                <label for="archivos">{{
+                  "GLOBAL.o_hacer_click" | translate
+                }}</label>
+              </p>
+              <input
+                type="file"
+                id="archivos"
+                name="archivos"
+                (change)="onChangeArchivosSeleccionados($event)"
+                multiple
+                accept=".pdf"
+                max-size="2097152"
+              />
+            </div>
+            <div
+              *ngIf="archivosSoporte && accion == 'crear'"
+              class="archivos-soporte"
+            >
+              <mat-list role="list">
+                <mat-list-item
+                  *ngFor="let archivo of archivosSoporte"
+                  role="listitem"
+                  ><a
+                    href="#"
+                    (click)="abrirArchivo(archivo)"
+                    class="link-archivo"
+                    >{{ archivo.name }} </a
+                  ><span
+                    (click)="eliminarArchivo(archivo)"
+                    class="eliminar-archivo"
+                    [ngClass]="{ oculto: camposDisabled }"
+                    >X</span
+                  ></mat-list-item
+                >
+              </mat-list>
+            </div>
+            <input
+              matInput
+              [readonly]="camposDisabled"
+              formControlName="soporte"
+              type="text"
+              [value]="
+                archivosSoporte && archivosSoporte.length > 0
+                  ? 'Archivo(s) cargado(s)'
+                  : 'Archivo(s) NO cargado(s)'
+              "
+            />
+            <mat-hint
+              *ngIf="
+                formSoportes?.get('soporte')?.touched &&
+                validarErrorArchivosSeleccionados()
+              "
+              align="start"
+              >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
+            >
+          </mat-form-field>
+
+          <!-- SELECT DE ESTADO -->
+          <mat-form-field *ngIf="IsAdmin" class="form-field">
+            <mat-label>{{
+              "espacios_academicos.aprobar_espacio" | translate
+            }}</mat-label>
+            <mat-select formControlName="aprobado" [disabled]="visualizar">
+              <mat-option
+                *ngFor="let estado of estadosAprobacion"
+                [value]="estado._id"
+                >{{ estado.nombre }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <!-- OBSERVACIONES -->
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.observaciones" | translate }}</mat-label>
+            <textarea
+              matInput
+              formControlName="observaciones"
+              [readonly]="visualizar"
+            ></textarea>
+          </mat-form-field>
         </form>
         <div class="container-bottons">
           <button mat-flat-button color="warn" matStepperPrevious>

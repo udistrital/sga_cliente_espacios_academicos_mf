@@ -545,7 +545,9 @@
         "item": "Item",
         "evaluar": "Evaluate",
         "arrastrar_archivos": "Drag files to this area",
-        "o_hacer_click": "or click here"
+        "o_hacer_click": "or click here",
+        "opciones" : "Options",
+        "seleccione_opcion": "Select an option"
     },
     "ERROR": {
         "general": "The request could not be satisfied",

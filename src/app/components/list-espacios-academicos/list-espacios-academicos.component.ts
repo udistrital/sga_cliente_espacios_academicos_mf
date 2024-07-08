@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./list-espacios-academicos.component.scss']
 })
 export class ListEspaciosAcademicosComponent implements OnInit {
-  displayedColumns: string[] = ['#', 'nombre', 'codigo', 'estado', 'gestion', 'enviar'];
+  displayedColumns: string[] = [ 'nombre', 'codigo', 'estado', 'acciones'];
   espacios_academicos: EspacioAcademico[] = [];
   estados_aprobacion!: EstadoAprobacion[];
   IsAdmin!: boolean;
