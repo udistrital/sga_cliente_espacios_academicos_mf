@@ -25,7 +25,10 @@ import { EspaciosAcademicosService } from './services/espacios_academicos.servic
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
 import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { environment } from 'src/environments/environment';
+
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
@@ -57,6 +60,8 @@ export function createTranslateLoader(http: HttpClient) {
     MatProgressSpinnerModule,
     MatStepperModule,
     SpinnerUtilModule,
+    MatMenuModule,
+    MatTooltipModule,
     TranslateModule.forRoot({
       loader:{
         provide:TranslateLoader,

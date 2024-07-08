@@ -396,24 +396,34 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   onAgrupacionEspaciosChange(event: any): void {
-    const agrupacion: any = this.agrupacionEspacios.filter(
-      (agrupacion: any) => agrupacion._id === event.value
-    );
-    this.inputBoxColor = agrupacion[0].color_hex;
-    this.btnAgrupaciondisabled = true;
+    if (event.value) {
+      const agrupacion: any = this.agrupacionEspacios.filter(
+        (agrupacion: any) => agrupacion._id === event.value
+      );
+      this.inputBoxColor = agrupacion[0].color_hex;
+      this.btnAgrupaciondisabled = true;
+    } else {
+      this.inputBoxColor = 'white';
+      this.btnAgrupaciondisabled = false;
+    }
   }
 
   onChangeArchivosSeleccionados(event: any) {
     const archivosSeleccionados: FileList | null = event.target.files;
 
     if (archivosSeleccionados) {
+      let fillArhivos = '';
       for (let i = 0; i < archivosSeleccionados.length; i++) {
         const archivo = archivosSeleccionados[i];
         if (archivo.type === 'application/pdf') {
           this.archivosSoporte.push(archivo);
+          fillArhivos += archivo.name + ', ';
         } else {
         }
       }
+      this.formStep3.patchValue({
+        soporte: fillArhivos, // solo para que el campo de formulario no esté vacio y lo valide ok si no se añaden nuevos archivos
+      });
     }
   }
 
@@ -803,6 +813,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       this.formProyecto.markAllAsTouched();
       this.formEspacioAcademico.markAllAsTouched();
       this.formSoportes.markAllAsTouched();
+      this.highlightInvalidFields(); // Llama al método para resaltar campos inválidos
       this.popUpManager.showPopUpGeneric(
         this.translate.instant('espacios_academicos.espacios_academicos'),
         this.translate.instant('espacios_academicos.formulario_no_completo'),
@@ -851,8 +862,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         .then((agrupacion_espacios) => {
           this.agrupacionEspacios = agrupacion_espacios;
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
 
     const agrupacion: any = this.agrupacionEspacios.filter(
@@ -928,5 +938,31 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       aprobado: espacioAcademico.estado_aprobacion_id,
       observaciones: espacioAcademico.observacion,
     });
+  }
+
+  highlightInvalidFields() {
+    const controlGroups: FormGroup[] = [
+      this.formProyecto,
+      this.formEspacioAcademico,
+      this.formSoportes,
+    ];
+
+    for (const controlGroup of controlGroups) {
+      for (const controlKey in controlGroup.controls) {
+        if (controlGroup.controls.hasOwnProperty(controlKey)) {
+          const control = controlGroup.get(controlKey);
+          if (control && control.invalid) {
+            const element = document.querySelector(
+              `[formcontrolname="${controlKey}"]`
+            );
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              element.classList.add('highlight-error');
+              return; // Break after highlighting the first invalid field
+            }
+          }
+        }
+      }
+    }
   }
 }
