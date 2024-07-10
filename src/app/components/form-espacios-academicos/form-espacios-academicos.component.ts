@@ -551,9 +551,20 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       this.gestorDocumentalService
         .uploadFiles(archivos)
         .subscribe((respuesta: any[]) => {
-          const listaIds = respuesta.map((f) => {
-            return f.res.Id;
-          });
+          const listaIds = respuesta.map(
+            (f) => {
+              return f.res.Id;
+            },
+            (error: any) => {
+              this.popUpManager.showAlert(
+                this.translate.instant('GLOBAL.error'),
+                this.translate.instant(
+                  'espacios_academicos.creacion_espacio_fallo'
+                )
+              );
+            }
+          );
+
           resolve(listaIds);
         });
     });
