@@ -6,18 +6,22 @@ import { APP_BASE_HREF } from '@angular/common';
 import { ListEspaciosAcademicosComponent } from './components/list-espacios-academicos/list-espacios-academicos.component';
 import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
 import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
+import { AuthGuard } from 'src/_guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthGuard],
     component: ListEspaciosAcademicosComponent,
   },
   {
     path: 'formulario/:accion/:elemento',
+    canActivate: [AuthGuard],
     component: FormEspaciosAcademicosComponent,
   },
   {
     path: 'agrupacion-espacios/:facultad_id',
+    canActivate: [AuthGuard],
     component: AgrupacionEspaciosAcademicosComponent,
   },
 ];
