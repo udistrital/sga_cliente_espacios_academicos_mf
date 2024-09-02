@@ -466,25 +466,6 @@
                   >
                 </mat-form-field>
               </div>
-
-              <div class="form-item form-col1">
-                <mat-form-field class="form-field">
-                  <mat-label>{{ "GLOBAL.grupos" | translate }}</mat-label>
-                  <input
-                    matInput
-                    formControlName="grupos"
-                    [readonly]="visualizar"
-                  />
-                  <mat-hint
-                    *ngIf="
-                      formEspacioAcademico?.get('grupos')?.touched &&
-                      formEspacioAcademico?.get('grupos')?.invalid
-                    "
-                    align="start"
-                    >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                  >
-                </mat-form-field>
-              </div>
             </div>
 
             <div class="form-item form-col1">
