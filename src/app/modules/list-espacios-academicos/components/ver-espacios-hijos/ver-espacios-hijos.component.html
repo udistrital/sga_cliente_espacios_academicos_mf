@@ -1,0 +1,95 @@
+<mat-card>
+  <div class="container">
+    <div class="justify-between mt-3 mb-3">
+      <h3 class="mt-2">
+        {{ "espacios_academicos.grupos_espacio_academico" | translate }}
+      </h3>
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="volverAListaEspaciosAcademicos()"
+      >
+        <mat-icon>keyboard_arrow_left</mat-icon>
+        {{ "GLOBAL.regresar" | translate }}
+      </button>
+    </div>
+    <div class="alert info class mt-4">
+      <mat-icon class="icon">info</mat-icon>
+      <span>{{
+        "espacios_academicos.mensaje_grupos_espacio_academico" | translate
+      }}</span>
+    </div>
+
+    <div *ngIf="banderaInfoEspacio">
+      <hr class="gradient-hr" />
+      <div class="row mt-4 mb-4 center-v">
+        <div class="col-4 center-v center-h">
+          <mat-icon color="primary">dns</mat-icon>
+          <p class="ml-3">
+            <strong>{{
+              "espacios_academicos.espacio_academico" | translate
+            }}</strong
+            ><br />
+            {{ espacioAcademico.nombre }}
+          </p>
+        </div>
+        <div class="col-4 center-v center-h">
+          <mat-icon color="primary">folder_open</mat-icon>
+          <p class="ml-3">
+            <strong>{{ "GLOBAL.proyecto_academico" | translate }}</strong
+            ><br />
+            {{ espacioAcademico.proyecto_academico }}
+          </p>
+        </div>
+        <div class="col-4 center-v center-h">
+          <mat-icon color="primary">how_to_reg</mat-icon>
+          <p class="ml-3">
+            <strong>{{
+              "espacios_academicos.docente_asignado" | translate
+            }}</strong
+            ><br />
+            <label *ngIf="espacioAcademico.docente">{{
+              espacioAcademico.docente
+            }}</label>
+            <label *ngIf="!espacioAcademico.docente" style="color: #c86984">{{
+              "espacios_academicos.no_asignacion" | translate
+            }}</label>
+          </p>
+        </div>
+      </div>
+      <hr class="gradient-hr" />
+      <div class="mt-4">
+        <form [formGroup]="formPeriodo">
+          <div class="row center-h">
+            <ng-template matStepLabel>{{
+              "gestion_horarios.header_parametros" | translate
+            }}</ng-template>
+            <ng-container *ngFor="let field of selectsFormPeriodo">
+              <mat-form-field class="col-4 medium" appearance="outline">
+                <mat-label>{{ field.label | translate }}</mat-label>
+                <mat-icon class="mat-icon-outlined" color="primary" matPrefix>{{
+                  field.icon
+                }}</mat-icon>
+                <mat-select
+                  [formControlName]="field.name"
+                  (selectionChange)="
+                    field.onChange && this[field.onChange]($event.value)
+                  "
+                >
+                  <mat-option disabled value=""
+                    >--{{ "GLOBAL.seleccionar" | translate }}--</mat-option
+                  >
+                  <mat-option
+                    *ngFor="let item of this[field.options]"
+                    [value]="item"
+                    >{{ item.Nombre }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</mat-card>

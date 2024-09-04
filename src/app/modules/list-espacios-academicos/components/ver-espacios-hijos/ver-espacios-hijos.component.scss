@@ -1,0 +1,10 @@
+.gradient-hr {
+  border: 0;
+  height: 1px; /* Ajusta la altura según tus necesidades */
+  background: linear-gradient(
+    to right,
+    rgba(129, 179, 199, 0),
+    #03678f,
+    rgba(129, 179, 199, 0)
+  );
+}
