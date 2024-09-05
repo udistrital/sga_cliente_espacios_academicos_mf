@@ -145,4 +145,38 @@ export class VerEspaciosHijosComponent implements OnInit {
       }
     });
   }
+
+  preguntarEliminacionGrupo(grupo: any) {
+    this.popUpManager
+      .showConfirmAlert(
+        this.translate.instant('espacios_academicos.esta_seguro_eliminar_grupo')
+      )
+      .then((confirmado) => {
+        if (confirmado.value) {
+          this.eliminarGrupoEspacioAcademico(grupo);
+        }
+      });
+  }
+
+  eliminarGrupoEspacioAcademico(grupo: any) {
+    const grupoId = grupo._id;
+    this.espacioAcademicoMid
+      .delete(`espacios-academicos/grupo`, grupoId)
+      .subscribe((res: any) => {
+        if (res.Message == 'Grupo con colocaciones') {
+          return this.popUpManager.showAlert(
+            '',
+            this.translate.instant('espacios_academicos.no_grupos_para_periodo')
+          );
+        }
+
+        this.popUpManager.showAlert(
+          '',
+          this.translate.instant(
+            'espacios_academicos.grupo_eliminado_correctamente'
+          )
+        );
+        this.obtenerGruposDeEspacioPorPeriodo();
+      });
+  }
 }

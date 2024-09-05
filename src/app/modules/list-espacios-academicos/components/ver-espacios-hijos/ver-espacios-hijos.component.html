@@ -112,6 +112,8 @@
                   >edit</mat-icon
                 >
                 <mat-icon
+                  *ngIf="row.docente == null"
+                  (click)="preguntarEliminacionGrupo(row)"
                   class="icono icono-eliminar"
                   title="{{ 'GLOBAL.eliminar' | translate }}"
                   >delete_outline</mat-icon

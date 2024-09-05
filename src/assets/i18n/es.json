@@ -676,6 +676,9 @@
     "descripcion_editar_grupo": "Edición de indicador de grupo del espacio académico seleccionado",
     "indicador": "Indicador",
     "esta_seguro_editar_grupo": "¿Esta seguro de editar el indicador del grupos?",
-    "grupo_editado_exitosamente": "Grupo editado exitosamente"
+    "esta_seguro_eliminar_grupo": "¿Esta seguro de eliminar el grupo?",
+    "no_poder_eliminar_grupo_tiene_colocaciones": "El grupo no puede ser eliminado ya que cuenta con colocaciones asignadas.",
+    "grupo_eliminado_correctamente": "El grupo fue eliminado exitosamente",
+    "grupo_editado_exitosamente": "El grupo fue editado exitosamente"
   }
 }
