@@ -139,15 +139,10 @@ export class VerEspaciosHijosComponent implements OnInit {
       data: grupo,
     });
 
-    // dialogRef.afterClosed().subscribe((grupoEspacio) => {
-    //   if (grupoEspacio && grupoEspacio.creado) {
-    //     this.cargarGruposDeEspacioAcademico(
-    //       { _id: grupoEspacio.info.espacio_academico_padre },
-    //       index
-    //     ).subscribe((grupos) => {
-    //       this.gruposDeEspacioAcademico[index] = grupos;
-    //     });
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe((grupoEspacio) => {
+      if (grupoEspacio) {
+        this.obtenerGruposDeEspacioPorPeriodo();
+      }
+    });
   }
 }

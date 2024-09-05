@@ -14,7 +14,7 @@ export const gruposContructorTabla = [
   {
     columnDef: 'grupo',
     header: 'espacios_academicos.grupo',
-    cell: (grupo: any) => grupo.nombre + ' (Grupo - ' + grupo.grupo + ')',
+    cell: (grupo: any) => grupo.nombre + ' (Grupo ' + grupo.grupo + ')',
   },
   {
     columnDef: 'codigo',

@@ -672,7 +672,10 @@
     "grupo": "Grupo",
     "nombre_grupo": "Nombre de grupo",
     "edicion_grupo": "Edición de grupo",
-    "descripcion_editar_grupo": "Formulario para editar el grupo de espacio académico seleccionado",
-    "indicador": "Indicador"
+    "mensaje_edicion_grupo": "Solo podra editar el indicador del grupo y cambiar de periodo el espacio académico",
+    "descripcion_editar_grupo": "Edición de indicador de grupo del espacio académico seleccionado",
+    "indicador": "Indicador",
+    "esta_seguro_editar_grupo": "¿Esta seguro de editar el indicador del grupos?",
+    "grupo_editado_exitosamente": "Grupo editado exitosamente"
   }
 }

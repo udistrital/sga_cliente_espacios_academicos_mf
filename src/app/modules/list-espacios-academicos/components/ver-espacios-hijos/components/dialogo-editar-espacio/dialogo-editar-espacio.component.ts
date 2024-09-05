@@ -1,6 +1,10 @@
+import { ResourceLoader } from '@angular/compiler';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { PopUpManager } from 'src/app/managers/popUpManager';
+import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { Parametros } from 'src/utils/Parametros';
 
 @Component({
@@ -14,8 +18,12 @@ export class DialogoEditarEspacioComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public grupo: any,
+    public dialogRef: MatDialogRef<DialogoEditarEspacioComponent>,
+    private espacioAcademicoService: EspaciosAcademicosService,
     private formBuilder: FormBuilder,
-    private parametros: Parametros
+    private parametros: Parametros,
+    private popUpManager: PopUpManager,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -26,8 +34,10 @@ export class DialogoEditarEspacioComponent implements OnInit {
 
   iniciarFormEditarGrupo() {
     this.formEditarGrupo = this.formBuilder.group({
-      indicador: ['', Validators.required],
-      periodo: ['', Validators.required],
+      indicador: [
+        this.grupo.grupo,
+        [Validators.required, Validators.min(1), Validators.max(1000)],
+      ],
     });
   }
 
@@ -37,5 +47,38 @@ export class DialogoEditarEspacioComponent implements OnInit {
     });
   }
 
-  editarGrupoEspacioAcademico() {}
+  preguntarEdicionGrupo() {
+    this.popUpManager
+      .showConfirmAlert(
+        this.translate.instant('espacios_academicos.esta_seguro_editar_grupo')
+      )
+      .then((confirmado) => {
+        if (confirmado.value) {
+          this.editarGrupoEspacioAcademico();
+        }
+      });
+  }
+
+  editarGrupoEspacioAcademico() {
+    const grupoEditado = this.construirObjetoGrupo();
+    const grupoEditadoId = grupoEditado._id;
+    this.espacioAcademicoService
+      .put(`espacio-academico/${grupoEditadoId}`, grupoEditado)
+      .subscribe((res: any) => {
+        if (res.Success) {
+          this.popUpManager.showSuccessAlert(
+            this.translate.instant(
+              'espacios_academicos.grupo_editado_exitosamente'
+            )
+          );
+          this.dialogRef.close(true);
+        }
+      });
+  }
+
+  construirObjetoGrupo() {
+    const grupo = this.grupo;
+    grupo.grupo = String(this.formEditarGrupo.get('indicador')?.value);
+    return grupo;
+  }
 }
