@@ -24,10 +24,12 @@ import { EspaciosAcademicosService } from './services/espacios_academicos.servic
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { AgrupacionEspaciosAcademicosComponent } from './modules/list-espacios-academicos/components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
 import { FormEspaciosAcademicosComponent } from './modules/list-espacios-academicos/components/form-espacios-academicos/form-espacios-academicos.component';
 import { ListEspaciosAcademicosComponent } from './modules/list-espacios-academicos/list-espacios-academicos.component';
+import { DialogoEditarEspacioComponent } from './modules/list-espacios-academicos/components/ver-espacios-hijos/components/dialogo-editar-espacio/dialogo-editar-espacio.component';
 import { VerEspaciosHijosComponent } from './modules/list-espacios-academicos/components/ver-espacios-hijos/ver-espacios-hijos.component';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -45,6 +47,7 @@ export function createTranslateLoader(http: HttpClient) {
     FormEspaciosAcademicosComponent,
     AgrupacionEspaciosAcademicosComponent,
     VerEspaciosHijosComponent,
+    DialogoEditarEspacioComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,7 @@ export function createTranslateLoader(http: HttpClient) {
     SpinnerUtilModule,
     MatMenuModule,
     MatTooltipModule,
+    MatDialogModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -1,0 +1,78 @@
+<mat-card class="dialogo">
+  <mat-card-header class="shadow">
+    <div class="row mb-3">
+      <div class="col-12 center-v center-h">
+        <mat-icon color="primary">edit</mat-icon>
+        <p class="ml-3 mb-0">
+          <strong>{{ "espacios_academicos.edicion_grupo" | translate }}</strong
+          ><br />{{
+            "espacios_academicos.descripcion_editar_grupo" | translate
+          }}
+        </p>
+      </div>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="container">
+      <div class="mt-4 ml-2">
+        <div class="row mb-3">
+          <div class="col-12 center-v">
+            <mat-icon color="primary">group_work</mat-icon>
+            <p class="ml-3 mb-0">
+              <strong>{{ "espacios_academicos.grupo" | translate }}:</strong
+              ><br />{{ grupo.nombre }}
+              <b>(Grupo: {{ formEditarGrupo.get("indicador")?.value }})</b>
+            </p>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="formEditarGrupo">
+        <div class="row mt-4 center-h">
+          <ng-container>
+            <mat-form-field class="col-4 medium" appearance="outline">
+              <mat-label>{{
+                "espacios_academicos.indicador" | translate
+              }}</mat-label>
+              <mat-icon class="mat-icon-outlined" color="primary" matPrefix
+                >indicador</mat-icon
+              >
+              <input type="number" matInput formControlName="indicador" />
+            </mat-form-field>
+          </ng-container>
+          <ng-container>
+            <mat-form-field class="col-8" appearance="outline">
+              <mat-label>{{
+                "espacios_academicos.select_periodo_academico" | translate
+              }}</mat-label>
+              <mat-icon class="mat-icon-outlined" color="primary" matPrefix
+                >today</mat-icon
+              >
+              <mat-select formControlName="periodo">
+                <mat-option disabled value=""
+                  >--{{ "GLOBAL.seleccionar" | translate }}--</mat-option
+                >
+                <mat-option *ngFor="let item of this.periodos" [value]="item">{{
+                  item.Nombre
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </form>
+      <mat-dialog-actions align="start">
+        <button mat-stroked-button color="primary" [mat-dialog-close]>
+          {{ "GLOBAL.cancelar" | translate }}
+        </button>
+        <button
+          [disabled]="!formEditarGrupo.valid"
+          mat-raised-button
+          color="primary"
+          (click)="editarGrupoEspacioAcademico()"
+        >
+          {{ "GLOBAL.guardar" | translate }}
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -666,6 +666,13 @@
     "espacio_academico": "Espacio académico",
     "docente_asignado": "Docente asignado",
     "no_asignacion": "No hay asignación",
-    "select_periodo_academico": "Seleccione el periodo académico"
+    "select_periodo_academico": "Seleccione el periodo académico",
+    "agrupacion_espacio": "Agrupación de espacio",
+    "no_grupos_para_periodo": "No hay grupos registrados para el periodo seleccionado.",
+    "grupo": "Grupo",
+    "nombre_grupo": "Nombre de grupo",
+    "edicion_grupo": "Edición de grupo",
+    "descripcion_editar_grupo": "Formulario para editar el grupo de espacio académico seleccionado",
+    "indicador": "Indicador"
   }
 }
