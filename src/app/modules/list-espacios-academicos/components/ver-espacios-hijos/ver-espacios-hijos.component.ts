@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoEditarEspacioComponent } from './components/dialogo-editar-espacio/dialogo-editar-espacio.component';
+import { ordenarPorPropiedad } from 'src/utils/listas';
 
 @Component({
   selector: 'app-ver-espacios-hijos',
@@ -108,7 +109,11 @@ export class VerEspaciosHijosComponent implements OnInit {
           );
         }
 
-        this.gruposDeEspacioAcademico = res.Data;
+        this.gruposDeEspacioAcademico = ordenarPorPropiedad(
+          res.Data,
+          'grupo',
+          1
+        );
         this.construirTabla();
         this.banderaTablaGrupos = true;
       });
