@@ -66,7 +66,7 @@
                 routerLink="/formulario/editar/{{ element._id }}"
               >
                 <mat-icon color="accent">edit</mat-icon>
-                <span>{{"GLOBAL.tooltip_editar_registro" | translate}}</span>
+                <span>{{ "GLOBAL.tooltip_editar_registro" | translate }}</span>
               </button>
               <button
                 *ngIf="
@@ -77,7 +77,7 @@
                 routerLink="/formulario/visualizar/{{ element._id }}"
               >
                 <mat-icon color="accent">search</mat-icon>
-                <span>{{"GLOBAL.ver" | translate}}</span>
+                <span>{{ "GLOBAL.ver" | translate }}</span>
               </button>
               <button
                 mat-menu-item
@@ -85,7 +85,11 @@
                 [disabled]="IsAdmin || element.estado != 'En Edición'"
               >
                 <mat-icon color="accent">send</mat-icon>
-                <span>{{"GLOBAL.enviar" | translate}}</span>
+                <span>{{ "GLOBAL.enviar" | translate }}</span>
+              </button>
+              <button mat-menu-item routerLink="/grupos/{{ element._id }}">
+                <mat-icon color="accent">list_alt</mat-icon>
+                <span>{{ "espacios_academicos.ver_grupos" | translate }}</span>
               </button>
             </mat-menu>
           </td>

@@ -77,7 +77,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     htc: ['', [Validators.required, Validators.min(0)]],
     hta: ['', [Validators.required, Validators.min(0)]],
     total: ['', Validators.min(0)],
-    grupos: ['', Validators.required],
     espacios_requeridos: [''],
   });
 
@@ -625,8 +624,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   postEspacio_Academico(espacio_academico: EspacioAcademico) {
-    this.espacioAcademicoMidService
-      .post('espacios-academicos/hijos', espacio_academico)
+    this.espaciosAcademicosService
+      .post('espacio-academico', espacio_academico)
       .subscribe(
         (resp: any) => {
           if (resp.Status == '201' || resp.Status == 201) {
@@ -704,7 +703,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       HTC: Number(this.formStep2.get('htc')!.value),
       HTA: Number(this.formStep2.get('hta')!.value),
     };
-    newEspacio_Academico.grupo = this.formStep2.get('grupos')!.value;
     newEspacio_Academico.espacios_requeridos = this.formStep2.get(
       'espacios_requeridos'
     )!.value;
@@ -723,6 +721,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     newEspacio_Academico.periodo_id = 0;
     newEspacio_Academico.docente_id = 0;
     newEspacio_Academico.horario_id = '0';
+    newEspacio_Academico.grupo = "padre"
     this.postEspacio_Academico(newEspacio_Academico);
   }
 
