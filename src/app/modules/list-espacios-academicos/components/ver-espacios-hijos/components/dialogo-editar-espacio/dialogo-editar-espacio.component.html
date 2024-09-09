@@ -1,0 +1,66 @@
+<mat-card class="dialogo">
+  <mat-card-header class="shadow">
+    <div class="row mb-3">
+      <div class="col-12 center-v center-h">
+        <mat-icon color="primary">edit</mat-icon>
+        <p class="ml-3 mb-0">
+          <strong>{{ "espacios_academicos.edicion_grupo" | translate }}</strong
+          ><br />{{
+            "espacios_academicos.descripcion_editar_grupo" | translate
+          }}
+        </p>
+      </div>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="container">
+      <div class="mt-4 ml-2">
+        <div class="row mb-3 center-v">
+          <div class="col-8 center-v">
+            <mat-icon color="primary">group_work</mat-icon>
+            <p class="ml-3 mb-0">
+              <strong>{{ "GLOBAL.nombre" | translate }}:</strong><br />{{
+                grupo.nombre
+              }}
+              <b>(Grupo: {{ formEditarGrupo.get("indicador")?.value }})</b>
+            </p>
+          </div>
+          <div class="col-4">
+            <form [formGroup]="formEditarGrupo">
+              <div class="row mt-4 center-h">
+                <ng-container>
+                  <mat-form-field class="col-12 medium" appearance="outline">
+                    <mat-label>{{
+                      "espacios_academicos.indicador" | translate
+                    }}</mat-label>
+                    <mat-icon
+                      class="mat-icon-outlined"
+                      color="primary"
+                      matPrefix
+                      >indicador</mat-icon
+                    >
+                    <input type="number" matInput formControlName="indicador" />
+                  </mat-form-field>
+                </ng-container>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <mat-dialog-actions align="center">
+        <button mat-stroked-button color="primary" [mat-dialog-close]>
+          {{ "GLOBAL.cancelar" | translate }}
+        </button>
+        <button
+          [disabled]="!formEditarGrupo.valid"
+          mat-raised-button
+          color="primary"
+          (click)="preguntarEdicionGrupo()"
+        >
+          {{ "GLOBAL.editar" | translate }}
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </mat-card-content>
+</mat-card>

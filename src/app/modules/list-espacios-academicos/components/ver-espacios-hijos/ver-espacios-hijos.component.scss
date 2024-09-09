@@ -1,0 +1,41 @@
+.gradient-hr {
+  border: 0;
+  height: 2px; /* Ajusta la altura según tus necesidades */
+  background: linear-gradient(
+    to right,
+    rgba(129, 179, 199, 0),
+    #03678f,
+    #d9c53a,
+    #03678f,
+    rgba(129, 179, 199, 0)
+  );
+}
+
+.icono:hover {
+  cursor: pointer;
+}
+
+.icono-editar:hover {
+  color: #03668e;
+}
+
+.icono-eliminar:hover {
+  color: #c86885;
+}
+
+.mat-column-grupo {
+  width: 35%;
+}
+
+.mat-column-codigo {
+  width: 15%;
+}
+
+.mat-column-docente_asignado {
+  width: 40%;
+}
+
+.mat-column-acciones {
+  width: 10%;
+  text-align: center;
+}
