@@ -8,7 +8,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ListEspaciosAcademicosComponent } from './components/list-espacios-academicos/list-espacios-academicos.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,16 +21,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatListModule } from '@angular/material/list';
 import { EspaciosAcademicosService } from './services/espacios_academicos.service';
-import { FormEspaciosAcademicosComponent } from './components/form-espacios-academicos/form-espacios-academicos.component';
-import { AgrupacionEspaciosAcademicosComponent } from './components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
 import { SpinnerUtilInterceptor, SpinnerUtilModule } from 'spinner-util';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
-
+import { AgrupacionEspaciosAcademicosComponent } from './modules/list-espacios-academicos/components/agrupacion-espacios-academicos/agrupacion-espacios-academicos.component';
+import { FormEspaciosAcademicosComponent } from './modules/list-espacios-academicos/components/form-espacios-academicos/form-espacios-academicos.component';
+import { ListEspaciosAcademicosComponent } from './modules/list-espacios-academicos/list-espacios-academicos.component';
+import { DialogoEditarEspacioComponent } from './modules/list-espacios-academicos/components/ver-espacios-hijos/components/dialogo-editar-espacio/dialogo-editar-espacio.component';
+import { VerEspaciosHijosComponent } from './modules/list-espacios-academicos/components/ver-espacios-hijos/ver-espacios-hijos.component';
 
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, environment.apiUrl + 'assets/i18n/', '.json');
+  return new TranslateHttpLoader(
+    http,
+    environment.apiUrl + 'assets/i18n/',
+    '.json'
+  );
 }
 
 @NgModule({
@@ -39,7 +45,9 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     ListEspaciosAcademicosComponent,
     FormEspaciosAcademicosComponent,
-    AgrupacionEspaciosAcademicosComponent
+    AgrupacionEspaciosAcademicosComponent,
+    VerEspaciosHijosComponent,
+    DialogoEditarEspacioComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,19 +70,24 @@ export function createTranslateLoader(http: HttpClient) {
     SpinnerUtilModule,
     MatMenuModule,
     MatTooltipModule,
+    MatDialogModule,
     TranslateModule.forRoot({
-      loader:{
-        provide:TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps:[HttpClient]
-      }
-    })
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     EspaciosAcademicosService,
     MatSnackBar,
-    { provide: HTTP_INTERCEPTORS, useClass: SpinnerUtilInterceptor, multi: true }
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerUtilInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

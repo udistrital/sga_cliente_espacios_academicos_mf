@@ -24,6 +24,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: AgrupacionEspaciosAcademicosComponent,
   },
+  {
+    path: 'grupos/:espacio-academico-id',
+    component: VerEspaciosHijosComponent,
+  },
 ];
 
 @NgModule({
