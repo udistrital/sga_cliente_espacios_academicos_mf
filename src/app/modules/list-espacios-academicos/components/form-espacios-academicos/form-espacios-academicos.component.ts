@@ -720,8 +720,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     newEspacio_Academico.inscritos = 0;
     newEspacio_Academico.periodo_id = 0;
     newEspacio_Academico.docente_id = 0;
-    newEspacio_Academico.horario_id = '0';
-    newEspacio_Academico.grupo = "padre"
+    newEspacio_Academico.grupo_estudio_id = '0';
+    newEspacio_Academico.grupo = 'padre';
     this.postEspacio_Academico(newEspacio_Academico);
   }
 
@@ -782,7 +782,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     editEspacio_Academico.inscritos = 0;
     editEspacio_Academico.periodo_id = 0;
     editEspacio_Academico.docente_id = 0;
-    editEspacio_Academico.horario_id = '0';
+    editEspacio_Academico.grupo_estudio_id = '0';
     this.putEspacio_Academico(editEspacio_Academico);
   }
 
