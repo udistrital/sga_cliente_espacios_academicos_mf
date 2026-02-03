@@ -348,12 +348,11 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   obtenerEspaciosRequeridos(event: any): void {
-    const espacio: any = this.espaciosAcademicos.filter(
-      (espacio: any) => espacio._id == event.value[event.value.length - 1]
+    const idsSeleccionados: string[] = event.value;
+
+    this.espaciosRequeridos = this.espaciosAcademicos.filter(
+    (espacio: any) => idsSeleccionados.includes(espacio._id)
     );
-    if (espacio) {
-      this.espaciosRequeridos.push(espacio[0]);
-    }
   }
 
   onNivelChange(event: any): void {
