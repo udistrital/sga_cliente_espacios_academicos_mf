@@ -6,7 +6,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://pruebassgaespaciosacademicos.portaloas.udistrital.edu.co/',
+  apiUrl: 'http://localhost:4212/',
   NUXEO_SERVICE: 'https://autenticacion.portaloas.udistrital.edu.co/apioas/gestor_documental_mid/v1/',
   DOCUMENTO_SERVICE:
     'https://autenticacion.portaloas.udistrital.edu.co/apioas/documento_crud/v2/',
