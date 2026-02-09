@@ -77,6 +77,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     htc: ['', [Validators.required, Validators.min(0)]],
     hta: ['', [Validators.required, Validators.min(0)]],
     total: ['', Validators.min(0)],
+    grupos: [''],
     espacios_requeridos: [''],
   });
 
@@ -453,9 +454,21 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     event.preventDefault();
   }
 
-  abrirArchivo(archivo: File) {
-    window.open(URL.createObjectURL(archivo), '_blank');
+  abrirArchivo(archivo: File | { url: string }) {
+  let url: string;
+
+  if (archivo instanceof File) {
+    // Caso 1: File / Blob
+    url = URL.createObjectURL(archivo);
+  } else if (archivo?.url) {
+    // Caso 2: Ya es una URL blob
+    url = archivo.url;
+  } else {
+    return;
   }
+
+  window.open(url, '_blank');
+}
 
   eliminarArchivo(archivo: File) {
     const index = this.archivosSoporte.indexOf(archivo);
@@ -478,7 +491,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     if (archivosErroneos.length > 0) {
       archivosValid = false;
     }
-
+    
     return formsValid && totalHoras && archivosValid;
   }
 
@@ -523,26 +536,41 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     return archivosErroneos;
   }
 
-  prepararArchivos(): any[] {
-    const idTipoDocument = 71; // carpeta Nuxeo
-    let name = '';
-    if (this.archivosSoporte && this.archivosSoporte.length > 0) {
-      return this.archivosSoporte.map((archivo) => {
-        if (archivo.name) {
-          name = archivo.name;
-        } else {
-          name = archivo.nombre;
-        }
-        return {
-          IdDocumento: idTipoDocument,
-          nombre: name.split('.')[0],
-          descripcion: 'Soporte Espacio Academico',
-          file: archivo,
-        };
-      });
-    }
+  async prepararArchivos(): Promise<any[]> {
+  const idTipoDocument = 71; // carpeta Nuxeo
+
+  if (!this.archivosSoporte || this.archivosSoporte.length === 0) {
     return [];
   }
+
+  return Promise.all(
+    this.archivosSoporte.map(async (archivo) => {
+      const name = archivo.name ?? archivo.nombre;
+
+      let file: File;
+
+      if (archivo instanceof File) {
+        file = archivo;
+      } else {
+        const response = await fetch(archivo.url);
+        const blob = await response.blob();
+
+        file = new File(
+          [blob],
+          archivo.nombre,
+          { type: blob.type || archivo.type }
+        );
+      }
+
+      return {
+        IdDocumento: idTipoDocument,
+        nombre: name.split('.')[0],
+        descripcion: 'Soporte Espacio Academico',
+        file: file,
+      };
+    })
+  );
+}
 
   async cargarArchivos(archivos: any[]): Promise<number[]> {
     return new Promise<number[]>((resolve) => {
@@ -705,7 +733,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     newEspacio_Academico.espacios_requeridos = this.formStep2.get(
       'espacios_requeridos'
     )!.value;
-    const archivos = this.prepararArchivos();
+    const archivos = await this.prepararArchivos();
     newEspacio_Academico.soporte_documental = await this.cargarArchivos(
       archivos
     );
@@ -756,8 +784,8 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     editEspacio_Academico.espacios_requeridos = this.formStep2.get(
       'espacios_requeridos'
     )!.value;
-    const archivosNuevos = this.prepararArchivos();
-    if (archivosNuevos.length > this.archivosSoporte.length) {
+    const archivosNuevos = await this.prepararArchivos();
+    if (archivosNuevos.length >= this.archivosSoporte.length) {
       editEspacio_Academico.soporte_documental = await this.cargarArchivos(
         archivosNuevos
       );
