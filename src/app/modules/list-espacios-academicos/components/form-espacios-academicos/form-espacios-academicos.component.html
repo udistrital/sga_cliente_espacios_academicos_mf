@@ -533,7 +533,7 @@
           <mat-form-field class="form-field">
             <div
               id="dropzone"
-              *ngIf="!camposDisabled"
+              *ngIf="accion == 'crear' || accion == 'editar'"
               (drop)="onDrop($event)"
               (dragover)="onDragOver($event)"
             >
@@ -554,7 +554,7 @@
               />
             </div>
             <div
-              *ngIf="archivosSoporte && accion == 'crear'"
+              *ngIf="archivosSoporte && accion == 'crear' || accion == 'editar'"
               class="archivos-soporte"
             >
               <mat-list role="list">
@@ -565,7 +565,7 @@
                     href="#"
                     (click)="abrirArchivo(archivo)"
                     class="link-archivo"
-                    >{{ archivo.name }} </a
+                    >{{ archivo.name || archivo.nombre }}</a
                   ><span
                     (click)="eliminarArchivo(archivo)"
                     class="eliminar-archivo"
