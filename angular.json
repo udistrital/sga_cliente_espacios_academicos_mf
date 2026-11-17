@@ -99,7 +99,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sga-espacios-academicos-mf:build"
+            "buildTarget": "sga-espacios-academicos-mf:build"
           }
         },
         "test": {
