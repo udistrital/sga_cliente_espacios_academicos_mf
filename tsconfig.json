@@ -6,6 +6,8 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "strict": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
@@ -13,7 +15,10 @@
     "sourceMap": false,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "paths": {
+      "single-spa": ["node_modules/single-spa/typings/single-spa.d.ts"]
+    },
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
@@ -24,6 +29,11 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "optionalChainNotNullable": "suppress"
+      }
+    }
   }
 }
