@@ -8,9 +8,10 @@ import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.
 import { Parametros } from 'src/utils/Parametros';
 
 @Component({
-  selector: 'app-dialogo-editar-espacio',
-  templateUrl: './dialogo-editar-espacio.component.html',
-  styleUrls: ['./dialogo-editar-espacio.component.scss'],
+    selector: 'app-dialogo-editar-espacio',
+    templateUrl: './dialogo-editar-espacio.component.html',
+    styleUrls: ['./dialogo-editar-espacio.component.scss'],
+    standalone: false
 })
 export class DialogoEditarEspacioComponent implements OnInit {
   formEditarGrupo!: FormGroup;

@@ -85,13 +85,13 @@
           "builder": "@angular-builders/custom-webpack:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sga-espacios-academicos-mf:build:production"
+              "buildTarget": "sga-espacios-academicos-mf:build:production"
             },
             "development": {
-              "browserTarget": "sga-espacios-academicos-mf:build:development"
+              "buildTarget": "sga-espacios-academicos-mf:build:development"
             },
             "local": {
-              "browserTarget": "sga-espacios-academicos-mf:build:local"
+              "buildTarget": "sga-espacios-academicos-mf:build:local"
             }
           },
           "defaultConfiguration": "local"

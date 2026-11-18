@@ -15,9 +15,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EspacioAcademicoMidService } from 'src/app/services/espacio_academico_mid.service';
 
 @Component({
-  selector: 'app-form-espacios-academicos',
-  templateUrl: './form-espacios-academicos.component.html',
-  styleUrls: ['./form-espacios-academicos.component.scss'],
+    selector: 'app-form-espacios-academicos',
+    templateUrl: './form-espacios-academicos.component.html',
+    styleUrls: ['./form-espacios-academicos.component.scss'],
+    standalone: false
 })
 export class FormEspaciosAcademicosComponent implements OnInit {
   agrupacionEspacios: AgrupacionEspacios[] = [];

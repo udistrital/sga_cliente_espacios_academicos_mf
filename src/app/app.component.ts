@@ -4,9 +4,10 @@ import { fromEvent } from 'rxjs';
 import { getCookie } from 'src/utils/cookie';
 
 @Component({
-  selector: 'sga-espacios-academicos-mf',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'sga-espacios-academicos-mf',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   whatLang$ = fromEvent(window, 'lang');

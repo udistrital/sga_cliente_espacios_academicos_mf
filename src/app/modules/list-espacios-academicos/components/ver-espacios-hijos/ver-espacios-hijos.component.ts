@@ -14,9 +14,10 @@ import { DialogoEditarEspacioComponent } from './components/dialogo-editar-espac
 import { ordenarPorPropiedad } from 'src/utils/listas';
 
 @Component({
-  selector: 'app-ver-espacios-hijos',
-  templateUrl: './ver-espacios-hijos.component.html',
-  styleUrls: ['./ver-espacios-hijos.component.scss'],
+    selector: 'app-ver-espacios-hijos',
+    templateUrl: './ver-espacios-hijos.component.html',
+    styleUrls: ['./ver-espacios-hijos.component.scss'],
+    standalone: false
 })
 export class VerEspaciosHijosComponent implements OnInit {
   [key: string]: any; // Permitir el acceso dinámico con string keys

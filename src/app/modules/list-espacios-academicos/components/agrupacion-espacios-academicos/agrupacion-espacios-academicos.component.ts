@@ -8,9 +8,10 @@ import { PopUpManager } from 'src/app/managers/popUpManager';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-agrupacion-espacios-academicos',
-  templateUrl: './agrupacion-espacios-academicos.component.html',
-  styleUrls: ['./agrupacion-espacios-academicos.component.scss']
+    selector: 'app-agrupacion-espacios-academicos',
+    templateUrl: './agrupacion-espacios-academicos.component.html',
+    styleUrls: ['./agrupacion-espacios-academicos.component.scss'],
+    standalone: false
 })
 export class AgrupacionEspaciosAcademicosComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'descripcion', 'color'];

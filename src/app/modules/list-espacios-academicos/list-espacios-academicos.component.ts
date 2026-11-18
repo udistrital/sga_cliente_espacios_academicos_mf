@@ -12,9 +12,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'list-espacios-academicos',
-  templateUrl: './list-espacios-academicos.component.html',
-  styleUrls: ['./list-espacios-academicos.component.scss'],
+    selector: 'list-espacios-academicos',
+    templateUrl: './list-espacios-academicos.component.html',
+    styleUrls: ['./list-espacios-academicos.component.scss'],
+    standalone: false
 })
 export class ListEspaciosAcademicosComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'codigo', 'estado', 'acciones'];
