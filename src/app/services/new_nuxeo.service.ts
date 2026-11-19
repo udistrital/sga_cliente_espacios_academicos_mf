@@ -119,7 +119,9 @@ export class NewNuxeoService {
     getByIdLocal(id: number) {
         const documentsSubject = new Subject<any>();
         const documents$ = documentsSubject.asObservable();
-        const doc = this.documentsList.find(doc => doc.Id === id);
+        const doc = this.documentsList.find(
+            doc => doc && String(doc.Id) === String(id)
+        );
         if (doc != undefined) {
             setTimeout(() => {
                 documentsSubject.next({"Id": doc.Id, "nombre": doc.Nombre, "url": doc.Url, "type": doc.TipoArchivo});

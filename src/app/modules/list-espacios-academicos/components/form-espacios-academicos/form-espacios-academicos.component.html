@@ -19,7 +19,6 @@
             <mat-select
               formControlName="nivel"
               (selectionChange)="onNivelChange($event)"
-              [disabled]="camposDisabled"
               >
               <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
               @for (nivel of niveles; track nivel) {
@@ -44,7 +43,6 @@
               <mat-select
                 formControlName="sub_nivel"
                 (selectionChange)="onSubNivelChange($event)"
-                [disabled]="camposDisabled"
                 >
                 <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
                 @if (nivelSeleccionado === 1) {
@@ -80,7 +78,6 @@
                     <mat-select
                       formControlName="proyecto_curricular"
                       (selectionChange)="onProyectoChange($event)"
-                      [disabled]="camposDisabled"
                       >
                       <mat-option>{{
                         "espacios_academicos.select_proyecto" | translate
@@ -202,7 +199,7 @@
                                 <div class="form-item form-col1">
                                   <mat-form-field class="form-field">
                                     <mat-label>{{ "GLOBAL.Tipo" | translate }}</mat-label>
-                                    <mat-select formControlName="tipo" [disabled]="camposDisabled">
+                                    <mat-select formControlName="tipo">
                                       @for (tipo of tipos; track tipo) {
                                         <mat-option [value]="tipo.Id">{{
                                           tipo.Nombre
@@ -224,7 +221,7 @@
                                   <div class="form-item form-col1">
                                     <mat-form-field class="form-field">
                                       <mat-label>{{ "GLOBAL.clase" | translate }}</mat-label>
-                                      <mat-select formControlName="clase" [disabled]="camposDisabled">
+                                      <mat-select formControlName="clase">
                                         @for (clase of clases; track clase) {
                                           <mat-option [value]="clase.Id">{{
                                             clase.Nombre
@@ -248,7 +245,6 @@
                                         <mat-label>{{ "GLOBAL.enfoque" | translate }}</mat-label>
                                         <mat-select
                                           formControlName="enfoque"
-                                          [disabled]="camposDisabled"
                                           >
                                           @for (enfoque of enfoques; track enfoque) {
                                             <mat-option
@@ -297,7 +293,6 @@
                                               }}</mat-label>
                                               <mat-select
                                                 formControlName="espacio_modular"
-                                                [disabled]="camposDisabled"
                                                 >
                                                 <mat-option [value]="true">{{
                                                   "GLOBAL.si" | translate
@@ -326,7 +321,6 @@
                                                 <mat-select
                                                   formControlName="agrupacion_espacios"
                                                   (selectionChange)="onAgrupacionEspaciosChange($event)"
-                                                  [disabled]="camposDisabled"
                                                   >
                                                   <mat-option [value]="null">{{
                                                     "GLOBAL.seleccione_opcion" | translate
@@ -506,7 +500,6 @@
                                                               formControlName="espacios_requeridos"
                                                               multiple
                                                               (selectionChange)="obtenerEspaciosRequeridos($event)"
-                                                              [disabled]="camposDisabled"
                                                               >
                                                               @for (espacio of espaciosAcademicos; track espacio) {
                                                                 <mat-option
@@ -637,7 +630,7 @@
                                                                   <mat-label>{{
                                                                     "espacios_academicos.aprobar_espacio" | translate
                                                                   }}</mat-label>
-                                                                  <mat-select formControlName="aprobado" [disabled]="visualizar">
+                                                                  <mat-select formControlName="aprobado">
                                                                     @for (estado of estadosAprobacion; track estado) {
                                                                       <mat-option
                                                                         [value]="estado._id"
