@@ -28,8 +28,8 @@ export class DialogoEditarEspacioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cargarPeriodos();
     this.iniciarFormEditarGrupo();
+    Promise.resolve().then(() => this.cargarPeriodos());
     console.log(this.grupo);
   }
 

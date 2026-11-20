@@ -70,6 +70,7 @@ export class PopUpManager {
 
   showConfirmAlert(text: string, title: string = this.translate.instant('GLOBAL.atencion')): Promise<any> {
     return Swal.fire({
+      target: 'mat-dialog-container',
       title: title,
       text: text,
       icon: 'warning',
