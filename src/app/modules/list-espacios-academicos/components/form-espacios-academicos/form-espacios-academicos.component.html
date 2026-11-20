@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <button mat-mini-fab color="primary" routerLink="">
+      <button mat-mini-fab color="primary" routerLink="" class="back-button">
         <mat-icon>arrow_back</mat-icon>
       </button>
       {{ "espacios_academicos.crear_espacios" | translate }}
@@ -483,7 +483,7 @@
                                                               formEspacioAcademico?.get('total')?.touched &&
                                                               validarErrorHorasCredito()
                                                               ) {
-                                                              <mat-hint
+                                                              <mat-hint class="horas-error-hint"
                                                                 >{{ mensajeTotalHoras }}</mat-hint
                                                                 >
                                                               }

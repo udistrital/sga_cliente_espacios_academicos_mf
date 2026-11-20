@@ -59,6 +59,23 @@ export class ListEspaciosAcademicosComponent implements OnInit {
       this.ajustarBotonesSegunEstado(espacio);
     });
 
+    this.espacios_academicos.sort((a, b) => {
+      const idA = String(a._id);
+      const idB = String(b._id);
+      const idsAreNumeric = /^\d+$/.test(idA) && /^\d+$/.test(idB);
+
+      if (idsAreNumeric) {
+        const normalizedA = idA.replace(/^0+(?=\d)/, '');
+        const normalizedB = idB.replace(/^0+(?=\d)/, '');
+        return (
+          normalizedB.length - normalizedA.length ||
+          normalizedB.localeCompare(normalizedA)
+        );
+      }
+
+      return idB.localeCompare(idA);
+    });
+
     this.dataSource = new MatTableDataSource<EspacioAcademico>(
       this.espacios_academicos
     );
