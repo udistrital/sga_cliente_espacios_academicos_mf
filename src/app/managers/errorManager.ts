@@ -1,15 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { Injectable, forwardRef, Inject, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpErrorManager {
-  constructor(
-    public snack: MatSnackBar,
-   ) {}
+  constructor(public snack: MatSnackBar) {}
 
   public handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -20,18 +18,21 @@ export class HttpErrorManager {
       // The response body may contain clues as to what went wrong,
 
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: `, error.error);
+        `Backend returned code ${error.status}, ` + `body was: `,
+        error.error,
+      );
     }
     // return an observable with a user-facing error message
-    if(error.status === 200){
-      return []
-    }else {
-      return throwError(error.error/* {
+    if (error.status === 200) {
+      return [];
+    } else {
+      return throwError(
+        error.error /* {
         status: error.status,
         System: error.error.System,
         message: 'Something bad happened; please try again later.',
-      } */);
+      } */,
+      );
     }
-  };
+  }
 }

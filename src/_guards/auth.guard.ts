@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import {
+  CanActivate,
+  RouterStateSnapshot,
+  ActivatedRouteSnapshot,
+} from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { PopUpManager } from 'src/app/managers/popUpManager';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
-    private popUpManager: PopUpManager,
-    private translate: TranslateService
+    private readonly popUpManager: PopUpManager,
+    private readonly translate: TranslateService,
   ) {}
 
-  canActivate(_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): boolean {
+  canActivate(
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot,
+  ): boolean {
     const menuItems = readMenuItemsFromStorage('menu');
     const targetPath = getGlobalPath(); // ✅ Single-SPA safe
 
@@ -25,7 +32,7 @@ export class AuthGuard implements CanActivate {
     if (ok) return true;
 
     this.popUpManager.showErrorAlert(
-      this.translate.instant('ERROR.rol_insuficiente_titulo')
+      this.translate.instant('ERROR.rol_insuficiente_titulo'),
     );
     return false;
   }
@@ -42,13 +49,21 @@ function readMenuItemsFromStorage(key: string): any[] {
   return Array.isArray(items) ? items : [];
 }
 
-function tryParseJson(s: string | null): any | null {
+function tryParseJson(s: string | null) {
   if (!s) return null;
-  try { return JSON.parse(s); } catch { return null; }
+  try {
+    return JSON.parse(s);
+  } catch {
+    return null;
+  }
 }
 
 function atobSafe(s: string): string | null {
-  try { return atob(s); } catch { return null; }
+  try {
+    return atob(s);
+  } catch {
+    return null;
+  }
 }
 
 /** Soporta menús envueltos: array directo, {Opciones}, {menu}, {data}, etc. */
@@ -101,7 +116,7 @@ function collectAllowedUrls(menuItems: any[]): string[] {
 function isAllowed(
   target: string,
   allowedUrls: string[],
-  opts: { allowSubroutes: boolean }
+  opts: { allowSubroutes: boolean },
 ): boolean {
   if (!allowedUrls.length) return false;
 
@@ -110,7 +125,7 @@ function isAllowed(
 
   // prefijo (subrutas)
   if (opts.allowSubroutes) {
-    return allowedUrls.some(u => u !== '/' && target.startsWith(u + '/'));
+    return allowedUrls.some((u) => u !== '/' && target.startsWith(u + '/'));
   }
 
   return false;

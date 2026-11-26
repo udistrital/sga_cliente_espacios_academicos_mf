@@ -6,25 +6,24 @@ import { getCookie } from 'src/utils/cookie';
 @Component({
   selector: 'sga-espacios-academicos-mf',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent {
   whatLang$ = fromEvent(window, 'lang');
- 
+
   ngOnInit(): void {
     this.validateLang();
   }
- 
-  constructor(
-    private translate: TranslateService
-  ) {}
- 
+
+  constructor(private readonly translate: TranslateService) {}
+
   validateLang() {
-    let lang = getCookie('lang') || 'es';
-    this.whatLang$.subscribe((x:any) => {
+    let lang = getCookie('lang') ?? 'es';
+    this.whatLang$.subscribe((x: any) => {
       lang = x['detail']['answer'];
-      this.translate.setDefaultLang(lang)
+      this.translate.setDefaultLang(lang);
     });
-    this.translate.setDefaultLang(getCookie('lang') || 'es');
+    this.translate.setDefaultLang(getCookie('lang') ?? 'es');
   }
 }

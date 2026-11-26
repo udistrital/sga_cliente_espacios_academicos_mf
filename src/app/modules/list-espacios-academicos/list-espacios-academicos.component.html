@@ -20,11 +20,6 @@
 
     <div class="table">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z5">
-        <!-- <ng-container matColumnDef="#">
-          <th mat-header-cell *matHeaderCellDef>#</th>
-          <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-        </ng-container> -->
-
         <ng-container matColumnDef="nombre">
           <th mat-header-cell *matHeaderCellDef>
             {{ "GLOBAL.nombre" | translate }}
@@ -60,25 +55,29 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menuEspaciosAcademicos="matMenu">
-              <button
-                *ngIf="element.estado == 'En Edición'"
-                mat-menu-item
-                routerLink="/formulario/editar/{{ element._id }}"
-              >
-                <mat-icon color="accent">edit</mat-icon>
-                <span>{{ "GLOBAL.tooltip_editar_registro" | translate }}</span>
-              </button>
-              <button
-                *ngIf="
-                  element.estado == 'Aprobado' ||
-                  element.estado == 'Enviado a Revisión'
-                "
-                mat-menu-item
-                routerLink="/formulario/visualizar/{{ element._id }}"
-              >
-                <mat-icon color="accent">search</mat-icon>
-                <span>{{ "GLOBAL.ver" | translate }}</span>
-              </button>
+              @if (element.estado == "En Edición") {
+                <button
+                  mat-menu-item
+                  routerLink="/formulario/editar/{{ element._id }}"
+                >
+                  <mat-icon color="accent">edit</mat-icon>
+                  <span>{{
+                    "GLOBAL.tooltip_editar_registro" | translate
+                  }}</span>
+                </button>
+              }
+              @if (
+                element.estado == "Aprobado" ||
+                element.estado == "Enviado a Revisión"
+              ) {
+                <button
+                  mat-menu-item
+                  routerLink="/formulario/visualizar/{{ element._id }}"
+                >
+                  <mat-icon color="accent">search</mat-icon>
+                  <span>{{ "GLOBAL.ver" | translate }}</span>
+                </button>
+              }
               <button
                 mat-menu-item
                 (click)="enviaraRevision(element._id)"
