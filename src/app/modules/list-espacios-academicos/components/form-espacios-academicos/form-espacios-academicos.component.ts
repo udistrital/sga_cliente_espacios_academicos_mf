@@ -184,7 +184,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   async cargarNiveles(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.projectService
         .get('nivel_formacion?query=Activo:true&sortby=Id&order=asc&limit=0')
         .subscribe((response: any) => {
@@ -213,7 +213,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   async cargarProyectos(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.projectService
         .get(
           'proyecto_academico_institucion?query=Activo:true&sortby=Nombre&order=asc&limit=0',
@@ -228,7 +228,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   async cargarTipos(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       this.parametrosService
         .get(
           `parametro?query=Activo:true,TipoParametroId:67&sortby=Nombre&order=asc&limit=0`,
@@ -244,7 +244,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
   async cargarClases(): Promise<any> {
     const idClases = 51;
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       this.parametrosService
         .get(
           `parametro?query=Activo:true,TipoParametroId:${idClases}&sortby=Nombre&order=asc&limit=0`,
@@ -260,7 +260,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
   async cargarEnfoques(): Promise<any> {
     const idEnfoques = 68;
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       this.parametrosService
         .get(
           `parametro?query=Activo:true,TipoParametroId:${idEnfoques}&sortby=Nombre&order=asc&limit=0`,
@@ -281,7 +281,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     if (byFacultad != undefined) {
       facuId = `,facultad_id:${byFacultad}`;
     }
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       this.espaciosAcademicosService
         .get('agrupacion-espacios?query=activo:true' + facuId + '&limit=0')
         .subscribe((response: any) => {
@@ -293,36 +293,26 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   async cargarEspaciosAcademicos() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.espaciosAcademicosService
         .get(
           'espacio-academico?query=espacio_academico_padre,activo:true&limit=0',
         )
-        .subscribe(
-          (response: any) => {
-            this.espaciosAcademicos = response['Data'];
-            resolve(true);
-          },
-          (error) => {
-            reject(error);
-          },
-        );
+        .subscribe((response: any) => {
+          this.espaciosAcademicos = response['Data'];
+          resolve(true);
+        });
     });
   }
 
   async cargarEstadosAprobacion() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.espaciosAcademicosService
         .get('estado-aprobacion?query=activo:true&limit=0')
-        .subscribe(
-          (response: any) => {
-            this.estadosAprobacion = response['Data'];
-            resolve(true);
-          },
-          (error) => {
-            reject(error);
-          },
-        );
+        .subscribe((response: any) => {
+          this.estadosAprobacion = response['Data'];
+          resolve(true);
+        });
     });
   }
 
@@ -609,7 +599,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   descargarArchivos(idArchivos: any[]): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<any>((resolve) => {
       this.checkIfAlreadyDownloaded(idArchivos).then((faltantes) => {
         const limitQuery = faltantes.length;
         let idsForQuery = '';
@@ -622,16 +612,11 @@ export class FormEspaciosAcademicosComponent implements OnInit {
             .getManyFiles(
               '?query=Id__in:' + idsForQuery + '&limit=' + limitQuery,
             )
-            .subscribe(
-              (r) => {
-                if (r.downloadProgress === undefined) {
-                  resolve(true);
-                }
-              },
-              (e) => {
-                reject(false);
-              },
-            );
+            .subscribe((r) => {
+              if (r.downloadProgress === undefined) {
+                resolve(true);
+              }
+            });
         } else {
           resolve(true);
         }

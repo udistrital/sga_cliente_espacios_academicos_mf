@@ -74,7 +74,7 @@ export class NewNuxeoService {
       };
       reader.onerror = () =>
         reject(
-          new Error(reader.error?.message || 'No fue posible leer el archivo.'),
+          new Error(reader.error?.message ?? 'No fue posible leer el archivo.'),
         );
     });
   }

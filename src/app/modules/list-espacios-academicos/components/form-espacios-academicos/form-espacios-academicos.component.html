@@ -541,13 +541,15 @@
                       >
                         {{ archivo.name || archivo.nombre }}
                       </a>
-                      <span
+                      <button
+                        type="button"
                         (click)="eliminarArchivo(archivo)"
                         class="eliminar-archivo"
                         [ngClass]="{ oculto: camposDisabled }"
+                        [attr.aria-label]="'GLOBAL.eliminar' | translate"
                       >
                         X
-                      </span>
+                      </button>
                     </li>
                   }
                 </ul>

@@ -116,27 +116,37 @@
                           }
                           @case ('acciones') {
                             <div>
-                              <mat-icon
+                              <button
+                                mat-icon-button
+                                type="button"
                                 (click)="abrirDialogoEditarEspacio(row)"
-                                class="icono icono-editar"
+                                [attr.aria-label]="'GLOBAL.editar' | translate"
                                 title="{{ 'GLOBAL.editar' | translate }}"
-                                >edit</mat-icon
+                              >
+                                <mat-icon class="icono icono-editar">
+                                  edit
+                                </mat-icon>
+                              </button>
+                              @if (row.docente == null) {
+                                <button
+                                  mat-icon-button
+                                  type="button"
+                                  (click)="preguntarEliminacionGrupo(row)"
+                                  [attr.aria-label]="'GLOBAL.eliminar' | translate"
+                                  title="{{ 'GLOBAL.eliminar' | translate }}"
                                 >
-                                @if (row.docente == null) {
-                                  <mat-icon
-                                    (click)="preguntarEliminacionGrupo(row)"
-                                    class="icono icono-eliminar"
-                                    title="{{ 'GLOBAL.eliminar' | translate }}"
-                                    >delete_outline</mat-icon
-                                    >
-                                  }
-                                </div>
+                                  <mat-icon class="icono icono-eliminar">
+                                    delete_outline
+                                  </mat-icon>
+                                </button>
                               }
-                              @default {
-                                <span>{{ columna.cell(row) }}</span>
-                              }
-                            }
-                          </ng-template>
+                            </div>
+                          }
+                          @default {
+                            <span>{{ columna.cell(row) }}</span>
+                          }
+                        }
+                      </ng-template>
                         </ng-container>
                       }
                       <tr mat-header-row *matHeaderRowDef="tablaColumnas"></tr>
