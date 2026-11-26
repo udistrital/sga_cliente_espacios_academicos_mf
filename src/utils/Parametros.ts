@@ -8,7 +8,7 @@ import { ordenarPorPropiedad } from './listas';
   providedIn: 'root',
 })
 export class Parametros {
-  constructor(private parametrosService: ParametrosService) {}
+  constructor(private readonly parametrosService: ParametrosService) {}
 
   periodos(): Observable<any[]> {
     return this.parametrosService
@@ -22,7 +22,7 @@ export class Parametros {
         }),
         catchError((error) => {
           return of([]);
-        })
+        }),
       );
   }
 }

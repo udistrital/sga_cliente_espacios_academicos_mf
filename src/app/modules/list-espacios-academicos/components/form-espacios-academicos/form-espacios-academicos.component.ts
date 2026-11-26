@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { PopUpManager } from 'src/app/managers/popUpManager';
 import { ProyectoAcademicoService } from 'src/app/services/proyecto_academico.service';
 import { ParametrosService } from 'src/app/services/parametros.service';
@@ -41,14 +41,14 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   inputBoxColor: string = 'white';
   agrupacionFacultadId!: string;
   archivosSoporte: any[] = [];
-  accion!: String;
+  accion!: string;
   editar!: boolean;
   visualizar!: boolean;
   camposDisabled: boolean = false;
   modificandoEspacio: boolean = false;
   readonly horasCredito: number = 48;
   valorHorasTotal: number = 0;
-  mensajeTotalHoras!: String;
+  mensajeTotalHoras!: string;
   IsAdmin!: boolean;
   btnAgrupaciondisabled: boolean = false;
 
@@ -89,16 +89,16 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   });
 
   constructor(
-    private translate: TranslateService,
-    private fb: FormBuilder,
-    private projectService: ProyectoAcademicoService,
-    private parametrosService: ParametrosService,
-    private espaciosAcademicosService: EspaciosAcademicosService,
-    private gestorDocumentalService: NewNuxeoService,
-    private espacioAcademicoMidService: EspacioAcademicoMidService,
-    private autenticationService: ImplicitAutenticationService,
-    private popUpManager: PopUpManager,
-    private activatedRoute: ActivatedRoute,
+    private readonly translate: TranslateService,
+    private readonly fb: FormBuilder,
+    private readonly projectService: ProyectoAcademicoService,
+    private readonly parametrosService: ParametrosService,
+    private readonly espaciosAcademicosService: EspaciosAcademicosService,
+    private readonly gestorDocumentalService: NewNuxeoService,
+    private readonly espacioAcademicoMidService: EspacioAcademicoMidService,
+    private readonly autenticationService: ImplicitAutenticationService,
+    private readonly popUpManager: PopUpManager,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
   ) {}
 
@@ -166,9 +166,7 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       'espacio_modular',
       'agrupacion_espacios',
       'espacios_requeridos',
-    ].forEach((control) =>
-      this.formEspacioAcademico.get(control)?.disable(),
-    );
+    ].forEach((control) => this.formEspacioAcademico.get(control)?.disable());
   }
 
   async cargarDatosSelect() {
@@ -904,6 +902,38 @@ export class FormEspaciosAcademicosComponent implements OnInit {
 
   async cargarFormulario(espacioAcademico: EspacioAcademico) {
     this.limpiarFormulario();
+    const contexto = this.obtenerContextoFormulario(espacioAcademico);
+    if (!contexto) {
+      return;
+    }
+
+    await this.cargarAgrupacionesFormulario(
+      contexto.proyecto,
+      espacioAcademico.agrupacion_espacios_id,
+    );
+
+    this.formStep1.patchValue({
+      nivel: contexto.nivel.Id,
+      sub_nivel: contexto.subnivel.Id,
+      proyecto_curricular: contexto.proyecto.Id,
+    });
+
+    const espaciosRequeridos = this.cargarEspaciosRequeridos(espacioAcademico);
+    this.formStep2.patchValue(
+      this.obtenerValoresFormularioEspacio(
+        espacioAcademico,
+        espaciosRequeridos,
+      ),
+    );
+    this.CalcularHorasTotal();
+    this.cargarSoportesDocumentales(espacioAcademico);
+    this.formStep3.patchValue({
+      aprobado: espacioAcademico.estado_aprobacion_id,
+      observaciones: espacioAcademico.observacion,
+    });
+  }
+
+  private obtenerContextoFormulario(espacioAcademico: EspacioAcademico) {
     const proyecto = this.proyectos.find(
       (proyecto) => proyecto.Id == espacioAcademico.proyecto_academico_id,
     );
@@ -912,64 +942,58 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       this.popUpManager.showErrorToast(
         'No se encontró el nivel de formación del proyecto.',
       );
-      return;
+      return null;
     }
 
-    const subnivel = this.subNiveles.find(
-      (nivel) => nivel.Id == nivelFormacion.Id,
-    ) ?? nivelFormacion;
+    const subnivel =
+      this.subNiveles.find((nivel) => nivel.Id == nivelFormacion.Id) ??
+      nivelFormacion;
     const nivelId =
       nivelFormacion.NivelFormacionPadreId?.Id ?? nivelFormacion.Id;
-    const nivel = this.niveles.find(
-      (nivel) => nivel.Id == nivelId,
-    );
+    const nivel = this.niveles.find((nivel) => nivel.Id == nivelId);
     if (!nivel) {
       this.popUpManager.showErrorToast(
         'No se encontró el nivel de formación asociado al proyecto.',
       );
-      return;
+      return null;
     }
 
     this.nivelSeleccionado = nivel.Id;
     this.subNivelSeleccionado = subnivel.Id;
-    this.proyectosSelect = [];
-    this.proyectos.forEach((proyecto) => {
-      if (
+    this.proyectosSelect = this.proyectos.filter(
+      (proyecto) =>
         proyecto.NivelFormacionId &&
-        proyecto.NivelFormacionId.Id == subnivel.Id
-      ) {
-        this.proyectosSelect.push(proyecto);
-      }
-    });
+        proyecto.NivelFormacionId.Id == subnivel.Id,
+    );
 
-    const proyectoSelect: any = this.proyectosSelect.filter(
+    return { proyecto, nivel, subnivel };
+  }
+
+  private async cargarAgrupacionesFormulario(
+    proyecto: any,
+    agrupacionId: string,
+  ) {
+    const proyectoSelect = this.proyectosSelect.find(
       (item: any) => item.Id === proyecto.Id,
     );
     if (proyectoSelect) {
-      await this.cargarAgrupacionEspacios(proyectoSelect[0].FacultadId)
+      await this.cargarAgrupacionEspacios(proyectoSelect.FacultadId)
         .then((agrupacion_espacios) => {
           this.agrupacionEspacios = agrupacion_espacios;
         })
-        .catch((error) => {});
+        .catch(() => {});
     }
 
-    const agrupacion: any = this.agrupacionEspacios.filter(
-      (agrupacion: any) =>
-        agrupacion._id === espacioAcademico.agrupacion_espacios_id,
+    const agrupacion = this.agrupacionEspacios.find(
+      (item: any) => item._id === agrupacionId,
     );
-    if (agrupacion[0]) {
-      this.inputBoxColor = agrupacion[0].color_hex;
+    if (agrupacion) {
+      this.inputBoxColor = agrupacion.color_hex;
     }
-
-    this.formStep1.patchValue({
-      nivel: nivel.Id,
-      sub_nivel: subnivel.Id,
-      proyecto_curricular: proyecto.Id,
-    });
-
-    const horas: any = espacioAcademico.distribucion_horas;
     this.btnAgrupaciondisabled = true;
+  }
 
+  private cargarEspaciosRequeridos(espacioAcademico: EspacioAcademico) {
     const espaciosRequeridos: any[] = Array.isArray(
       espacioAcademico.espacios_requeridos,
     )
@@ -977,29 +1001,39 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       : espacioAcademico.espacios_requeridos
         ? [espacioAcademico.espacios_requeridos]
         : [];
+
     for (const idEspacio of espaciosRequeridos) {
       const espacio = this.espaciosAcademicos.find(
-        (espacio: any) => espacio._id == idEspacio,
+        (item: any) => item._id == idEspacio,
       );
       if (espacio) {
         this.espaciosRequeridos.push(espacio);
       }
     }
+    return espaciosRequeridos;
+  }
 
-    this.formStep2.patchValue({
+  private obtenerValoresFormularioEspacio(
+    espacioAcademico: EspacioAcademico,
+    espaciosRequeridos: any[],
+  ) {
+    const horas: any = espacioAcademico.distribucion_horas;
+    return {
       nombre: espacioAcademico.nombre,
       codigo: espacioAcademico.codigo,
       codigo_abreviacion: espacioAcademico.codigo_abreviacion,
       plan_estudios: espacioAcademico.plan_estudio_id,
-      tipo: this.tipos.find(
-        (tipo) => tipo.Id == espacioAcademico.tipo_espacio_id,
-      )?.Id ?? espacioAcademico.tipo_espacio_id,
-      clase: this.clases.find(
-        (clase) => clase.Id == espacioAcademico.clasificacion_espacio_id,
-      )?.Id ?? espacioAcademico.clasificacion_espacio_id,
-      enfoque: this.enfoques.find(
-        (enfoque) => enfoque.Id == espacioAcademico.enfoque_id,
-      )?.Id ?? espacioAcademico.enfoque_id,
+      tipo:
+        this.tipos.find((tipo) => tipo.Id == espacioAcademico.tipo_espacio_id)
+          ?.Id ?? espacioAcademico.tipo_espacio_id,
+      clase:
+        this.clases.find(
+          (clase) => clase.Id == espacioAcademico.clasificacion_espacio_id,
+        )?.Id ?? espacioAcademico.clasificacion_espacio_id,
+      enfoque:
+        this.enfoques.find(
+          (enfoque) => enfoque.Id == espacioAcademico.enfoque_id,
+        )?.Id ?? espacioAcademico.enfoque_id,
       creditos: espacioAcademico.creditos,
       espacio_modular: espacioAcademico.espacio_modular,
       agrupacion_espacios: espacioAcademico.agrupacion_espacios_id,
@@ -1009,9 +1043,10 @@ export class FormEspaciosAcademicosComponent implements OnInit {
       total: Number(horas.HTD) + Number(horas.HTC) + Number(horas.HTA),
       grupos: espacioAcademico.grupo,
       espacios_requeridos: espaciosRequeridos,
-    });
-    this.CalcularHorasTotal();
+    };
+  }
 
+  private cargarSoportesDocumentales(espacioAcademico: EspacioAcademico) {
     let fillSoporte = '';
     const soportesDocumentalesRaw: any[] = Array.isArray(
       espacioAcademico.soporte_documental,
@@ -1051,24 +1086,18 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     this.descargarArchivos(soportesDocumentales)
       .then(() => {
         soportesDocumentales.forEach((idSoporte: any) => {
-          this.gestorDocumentalService.getByIdLocal(idSoporte).subscribe(
-            (f) => {
+          this.gestorDocumentalService
+            .getByIdLocal(idSoporte)
+            .subscribe((f) => {
               this.archivosSoporte.push(f);
               fillSoporte += f.nombre + ', ';
               this.formStep3.patchValue({
                 soporte: fillSoporte, // solo para que el campo de formulario no esté vacio y lo valide ok si no se añaden nuevos archivos
               });
-            },
-            notificarErrorSoporte,
-          );
+            }, notificarErrorSoporte);
         });
       })
       .catch(notificarErrorSoporte);
-
-    this.formStep3.patchValue({
-      aprobado: espacioAcademico.estado_aprobacion_id,
-      observaciones: espacioAcademico.observacion,
-    });
   }
 
   highlightInvalidFields() {
@@ -1079,21 +1108,37 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     ];
 
     for (const controlGroup of controlGroups) {
-      for (const controlKey in controlGroup.controls) {
-        if (controlGroup.controls.hasOwnProperty(controlKey)) {
-          const control = controlGroup.get(controlKey);
-          if (control && control.invalid) {
-            const element = document.querySelector(
-              `[formcontrolname="${controlKey}"]`,
-            );
-            if (element) {
-              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              element.classList.add('highlight-error');
-              return; // Break after highlighting the first invalid field
-            }
-          }
-        }
+      if (this.highlightInvalidControl(controlGroup)) {
+        return;
       }
     }
+  }
+
+  private highlightInvalidControl(controlGroup: FormGroup): boolean {
+    for (const controlKey in controlGroup.controls) {
+      if (
+        !Object.prototype.hasOwnProperty.call(controlGroup.controls, controlKey)
+      ) {
+        continue;
+      }
+
+      const control = controlGroup.get(controlKey);
+      if (!control?.invalid) {
+        continue;
+      }
+
+      const element = document.querySelector(
+        `[formcontrolname="${controlKey}"]`,
+      );
+      if (!element) {
+        continue;
+      }
+
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.classList.add('highlight-error');
+      return true;
+    }
+
+    return false;
   }
 }

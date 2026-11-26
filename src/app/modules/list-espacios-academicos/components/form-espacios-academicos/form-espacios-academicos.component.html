@@ -19,654 +19,604 @@
             <mat-select
               formControlName="nivel"
               (selectionChange)="onNivelChange($event)"
-              >
+            >
               <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
               @for (nivel of niveles; track nivel) {
-                <mat-option [value]="nivel.Id">{{
-                  nivel.Nombre
+                <mat-option [value]="nivel.Id">{{ nivel.Nombre }}</mat-option>
+              }
+            </mat-select>
+            @if (
+              formProyecto?.get("nivel")?.touched &&
+              formProyecto?.get("nivel")?.invalid
+            ) {
+              <mat-hint align="start"
+                >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
+              >
+            }
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.subnivel" | translate }}</mat-label>
+            <mat-select
+              formControlName="sub_nivel"
+              (selectionChange)="onSubNivelChange($event)"
+            >
+              <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
+              @if (nivelSeleccionado === 1) {
+                @for (nivel of subNivelesPregrado; track nivel) {
+                  <mat-option [value]="nivel.Id">{{ nivel.Nombre }}</mat-option>
+                }
+              }
+              @if (nivelSeleccionado === 2) {
+                @for (nivel of subNivelesPosgrado; track nivel) {
+                  <mat-option [value]="nivel.Id">{{ nivel.Nombre }}</mat-option>
+                }
+              }
+            </mat-select>
+            @if (
+              formProyecto?.get("sub_nivel")?.touched &&
+              formProyecto?.get("sub_nivel")?.invalid
+            ) {
+              <mat-hint align="start"
+                >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
+              >
+            }
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.proyecto_academico" | translate }}</mat-label>
+            <mat-select
+              formControlName="proyecto_curricular"
+              (selectionChange)="onProyectoChange($event)"
+            >
+              <mat-option>{{
+                "espacios_academicos.select_proyecto" | translate
+              }}</mat-option>
+              @for (proyecto of proyectosSelect; track proyecto) {
+                <mat-option [value]="proyecto.Id">{{
+                  proyecto.Nombre
                 }}</mat-option>
               }
             </mat-select>
             @if (
-              formProyecto?.get('nivel')?.touched &&
-              formProyecto?.get('nivel')?.invalid
-              ) {
-              <mat-hint
-                align="start"
-                >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                >
-              }
-            </mat-form-field>
+              formProyecto?.get("proyecto_curricular")?.touched &&
+              formProyecto?.get("proyecto_curricular")?.invalid
+            ) {
+              <mat-hint align="start">{{
+                "GLOBAL.falta_campo" | translate
+              }}</mat-hint>
+            }
+          </mat-form-field>
 
-            <mat-form-field class="form-field">
-              <mat-label>{{ "GLOBAL.subnivel" | translate }}</mat-label>
-              <mat-select
-                formControlName="sub_nivel"
-                (selectionChange)="onSubNivelChange($event)"
-                >
-                <mat-option>{{ "GLOBAL.seleccionar" | translate }}</mat-option>
-                @if (nivelSeleccionado === 1) {
-                  @for (nivel of subNivelesPregrado; track nivel) {
-                    <mat-option
-                      [value]="nivel.Id"
-                      >{{ nivel.Nombre }}</mat-option
-                      >
-                    }
+          <button mat-flat-button color="accent" matStepperNext>
+            {{ "GLOBAL.siguiente" | translate }}
+          </button>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="formStep2">
+        <ng-template matStepLabel>{{
+          "espacios_academicos.info_espacio_academico" | translate
+        }}</ng-template>
+        <form [formGroup]="formStep2">
+          <div class="responsive-form margin-y">
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.nombre" | translate }}</mat-label>
+                <input
+                  matInput
+                  formControlName="nombre"
+                  [readonly]="visualizar"
+                />
+                @if (
+                  formEspacioAcademico?.get("nombre")?.touched &&
+                  formEspacioAcademico?.get("nombre")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.codigo" | translate }}</mat-label>
+                <input
+                  matInput
+                  formControlName="codigo"
+                  [readonly]="visualizar"
+                />
+                @if (
+                  formEspacioAcademico?.get("codigo")?.touched &&
+                  formEspacioAcademico?.get("codigo")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "GLOBAL.codigo_abreviacion" | translate
+                }}</mat-label>
+                <input
+                  matInput
+                  formControlName="codigo_abreviacion"
+                  [readonly]="visualizar"
+                />
+                @if (
+                  formEspacioAcademico?.get("codigo_abreviacion")?.touched &&
+                  formEspacioAcademico?.get("codigo_abreviacion")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.plan_estudios" | translate
+                }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="plan_estudios"
+                  [readonly]="visualizar"
+                />
+                @if (
+                  formEspacioAcademico?.get("plan_estudios")?.touched &&
+                  formEspacioAcademico?.get("plan_estudios")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.Tipo" | translate }}</mat-label>
+                <mat-select formControlName="tipo">
+                  @for (tipo of tipos; track tipo) {
+                    <mat-option [value]="tipo.Id">{{ tipo.Nombre }}</mat-option>
                   }
-                  @if (nivelSeleccionado === 2) {
-                    @for (nivel of subNivelesPosgrado; track nivel) {
-                      <mat-option
-                        [value]="nivel.Id"
-                        >{{ nivel.Nombre }}</mat-option
-                        >
-                      }
-                    }
-                  </mat-select>
+                </mat-select>
+                @if (
+                  formEspacioAcademico?.get("tipo")?.touched &&
+                  formEspacioAcademico?.get("tipo")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.clase" | translate }}</mat-label>
+                <mat-select formControlName="clase">
+                  @for (clase of clases; track clase) {
+                    <mat-option [value]="clase.Id">{{
+                      clase.Nombre
+                    }}</mat-option>
+                  }
+                </mat-select>
+                @if (
+                  formEspacioAcademico?.get("clase")?.touched &&
+                  formEspacioAcademico?.get("clase")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.enfoque" | translate }}</mat-label>
+                <mat-select formControlName="enfoque">
+                  @for (enfoque of enfoques; track enfoque) {
+                    <mat-option [value]="enfoque.Id">{{
+                      enfoque.Nombre
+                    }}</mat-option>
+                  }
+                </mat-select>
+                @if (
+                  formEspacioAcademico?.get("enfoque")?.touched &&
+                  formEspacioAcademico?.get("enfoque")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{ "GLOBAL.creditos" | translate }}</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  formControlName="creditos"
+                  [readonly]="visualizar"
+                />
+                @if (
+                  formEspacioAcademico?.get("creditos")?.touched &&
+                  formEspacioAcademico?.get("creditos")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.espacio_modular" | translate
+                }}</mat-label>
+                <mat-select formControlName="espacio_modular">
+                  <mat-option [value]="true">{{
+                    "GLOBAL.si" | translate
+                  }}</mat-option>
+                  <mat-option [value]="false">{{
+                    "GLOBAL.no" | translate
+                  }}</mat-option>
+                </mat-select>
+                @if (
+                  formEspacioAcademico?.get("espacio_modular")?.touched &&
+                  formEspacioAcademico?.get("espacio_modular")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.agrupacion_espacios" | translate
+                }}</mat-label>
+                <mat-select
+                  formControlName="agrupacion_espacios"
+                  (selectionChange)="onAgrupacionEspaciosChange($event)"
+                >
+                  <mat-option [value]="null">{{
+                    "GLOBAL.seleccione_opcion" | translate
+                  }}</mat-option>
+                  @for (agrupacion of agrupacionEspacios; track agrupacion) {
+                    <mat-option [value]="agrupacion._id">{{
+                      agrupacion.nombre
+                    }}</mat-option>
+                  }
+                </mat-select>
+                @if (
+                  formEspacioAcademico?.get("agrupacion_espacios")?.touched &&
+                  formEspacioAcademico?.get("agrupacion_espacios")?.invalid
+                ) {
+                  <mat-hint align="start">{{
+                    "GLOBAL.falta_campo" | translate
+                  }}</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="form-item form-col1">
+              <mat-form-field floatLabel="always" class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.agrupacion_espacios_color" | translate
+                }}</mat-label>
+                <input
+                  matInput
+                  formControlName="agrupacion_espacios_color"
+                  type="text"
+                  readonly
+                  [value]="inputBoxColor"
+                  [style]="{ background: inputBoxColor, color: inputBoxColor }"
+                />
+              </mat-form-field>
+            </div>
+            <div class="form-item form-col1">
+              <button
+                mat-flat-button
+                color="accent"
+                class="margin-y"
+                routerLink="/agrupacion-espacios/{{ agrupacionFacultadId }}"
+                [disabled]="btnAgrupaciondisabled"
+              >
+                {{
+                  "espacios_academicos.agregar_agrupacion_espacios" | translate
+                }}
+              </button>
+            </div>
+          </div>
+
+          <div class="horas-trabajo">
+            <h2 class="margin-y">
+              {{ "espacios_academicos.asignar_horas_trabajo" | translate }}
+            </h2>
+            <div class="responsive-form">
+              <div class="form-item form-col1">
+                <mat-form-field class="form-field">
+                  <mat-label>{{
+                    "espacios_academicos.htd" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="htd"
+                    (change)="CalcularHorasTotal()"
+                    [readonly]="visualizar"
+                  />
                   @if (
-                    formProyecto?.get('sub_nivel')?.touched &&
-                    formProyecto?.get('sub_nivel')?.invalid
-                    ) {
-                    <mat-hint
-                      align="start"
-                      >** {{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                      >
-                    }
-                  </mat-form-field>
+                    formEspacioAcademico?.get("htd")?.touched &&
+                    formEspacioAcademico?.get("htd")?.invalid
+                  ) {
+                    <mat-hint align="start">{{
+                      "GLOBAL.falta_campo" | translate
+                    }}</mat-hint>
+                  }
+                </mat-form-field>
+              </div>
 
-                  <mat-form-field class="form-field">
-                    <mat-label>{{ "GLOBAL.proyecto_academico" | translate }}</mat-label>
-                    <mat-select
-                      formControlName="proyecto_curricular"
-                      (selectionChange)="onProyectoChange($event)"
-                      >
-                      <mat-option>{{
-                        "espacios_academicos.select_proyecto" | translate
-                      }}</mat-option>
-                      @for (proyecto of proyectosSelect; track proyecto) {
-                        <mat-option
-                          [value]="proyecto.Id"
-                          >{{ proyecto.Nombre }}</mat-option
-                          >
-                        }
-                      </mat-select>
-                      @if (
-                        formProyecto?.get('proyecto_curricular')?.touched &&
-                        formProyecto?.get('proyecto_curricular')?.invalid
-                        ) {
-                        <mat-hint
-                          align="start"
-                          >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                          >
-                        }
-                      </mat-form-field>
+              <div class="form-item form-col1">
+                <mat-form-field class="form-field">
+                  <mat-label>{{
+                    "espacios_academicos.htc" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="htc"
+                    (change)="CalcularHorasTotal()"
+                    [readonly]="visualizar"
+                  />
+                  @if (
+                    formEspacioAcademico?.get("htc")?.touched &&
+                    formEspacioAcademico?.get("htc")?.invalid
+                  ) {
+                    <mat-hint align="start">{{
+                      "GLOBAL.falta_campo" | translate
+                    }}</mat-hint>
+                  }
+                </mat-form-field>
+              </div>
 
-                      <button mat-flat-button color="accent" matStepperNext>
-                        {{ "GLOBAL.siguiente" | translate }}
-                      </button>
-                    </form>
-                  </mat-step>
-                  <mat-step [stepControl]="formStep2">
-                    <ng-template matStepLabel>{{
-                      "espacios_academicos.info_espacio_academico" | translate
-                    }}</ng-template>
-                    <form [formGroup]="formStep2">
-                      <div class="responsive-form margin-y">
-                        <div class="form-item form-col1">
-                          <mat-form-field class="form-field">
-                            <mat-label>{{ "GLOBAL.nombre" | translate }}</mat-label>
-                            <input
-                              matInput
-                              formControlName="nombre"
-                              [readonly]="visualizar"
-                              />
-                            @if (
-                              formEspacioAcademico?.get('nombre')?.touched &&
-                              formEspacioAcademico?.get('nombre')?.invalid
-                              ) {
-                              <mat-hint
-                                align="start"
-                                >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                >
-                              }
-                            </mat-form-field>
-                          </div>
+              <div class="form-item form-col1">
+                <mat-form-field class="form-field">
+                  <mat-label>{{
+                    "espacios_academicos.hta" | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="hta"
+                    (change)="CalcularHorasTotal()"
+                    [readonly]="visualizar"
+                  />
+                  @if (
+                    formEspacioAcademico?.get("hta")?.touched &&
+                    formEspacioAcademico?.get("hta")?.invalid
+                  ) {
+                    <mat-hint align="start">{{
+                      "GLOBAL.falta_campo" | translate
+                    }}</mat-hint>
+                  }
+                </mat-form-field>
+              </div>
 
-                          <div class="form-item form-col1">
-                            <mat-form-field class="form-field">
-                              <mat-label>{{ "GLOBAL.codigo" | translate }}</mat-label>
-                              <input
-                                matInput
-                                formControlName="codigo"
-                                [readonly]="visualizar"
-                                />
-                              @if (
-                                formEspacioAcademico?.get('codigo')?.touched &&
-                                formEspacioAcademico?.get('codigo')?.invalid
-                                ) {
-                                <mat-hint
-                                  align="start"
-                                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                  >
-                                }
-                              </mat-form-field>
-                            </div>
+              <div class="form-item form-col1">
+                <mat-form-field class="form-field">
+                  <mat-label>{{ "GLOBAL.total" | translate }}</mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    formControlName="total"
+                    readonly
+                    [value]="valorHorasTotal"
+                  />
+                  @if (
+                    formEspacioAcademico?.get("total")?.touched &&
+                    formEspacioAcademico?.get("total")?.invalid
+                  ) {
+                    <mat-hint align="start">{{
+                      "GLOBAL.falta_campo" | translate
+                    }}</mat-hint>
+                  }
+                  @if (
+                    formEspacioAcademico?.get("total")?.touched &&
+                    validarErrorHorasCredito()
+                  ) {
+                    <mat-hint class="horas-error-hint">{{
+                      mensajeTotalHoras
+                    }}</mat-hint>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
 
-                            <div class="form-item form-col1">
-                              <mat-form-field class="form-field">
-                                <mat-label>{{
-                                  "GLOBAL.codigo_abreviacion" | translate
-                                }}</mat-label>
-                                <input
-                                  matInput
-                                  formControlName="codigo_abreviacion"
-                                  [readonly]="visualizar"
-                                  />
-                                @if (
-                                  formEspacioAcademico?.get('codigo_abreviacion')?.touched &&
-                                  formEspacioAcademico?.get('codigo_abreviacion')?.invalid
-                                  ) {
-                                  <mat-hint
-                                    align="start"
-                                    >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                    >
-                                  }
-                                </mat-form-field>
-                              </div>
+            <div class="form-item form-col1">
+              <mat-form-field class="form-field">
+                <mat-label>{{
+                  "espacios_academicos.espacios_requeridos" | translate
+                }}</mat-label>
+                <mat-select
+                  formControlName="espacios_requeridos"
+                  multiple
+                  (selectionChange)="obtenerEspaciosRequeridos($event)"
+                >
+                  @for (espacio of espaciosAcademicos; track espacio) {
+                    <mat-option [value]="espacio._id">{{
+                      espacio.nombre
+                    }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+        <mat-card class="margin-y">
+          <mat-card-header>
+            <mat-card-title>
+              {{ "espacios_academicos.espacios_requeridos" | translate }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list role="list">
+              @if (espaciosRequeridos) {
+                @for (espacio of espaciosRequeridos; track espacio) {
+                  <mat-list-item role="listitem">{{
+                    espacio.nombre
+                  }}</mat-list-item>
+                }
+              }
+              @if (!espaciosRequeridos?.length) {
+                <mat-list-item role="listitem">{{
+                  "espacios_academicos.no_requeridos" | translate
+                }}</mat-list-item>
+              }
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
 
-                              <div class="form-item form-col1">
-                                <mat-form-field class="form-field">
-                                  <mat-label>{{
-                                    "espacios_academicos.plan_estudios" | translate
-                                  }}</mat-label>
-                                  <input
-                                    matInput
-                                    type="number"
-                                    formControlName="plan_estudios"
-                                    [readonly]="visualizar"
-                                    />
-                                  @if (
-                                    formEspacioAcademico?.get('plan_estudios')?.touched &&
-                                    formEspacioAcademico?.get('plan_estudios')?.invalid
-                                    ) {
-                                    <mat-hint
-                                      align="start"
-                                      >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                      >
-                                    }
-                                  </mat-form-field>
-                                </div>
+        <div class="container-bottons">
+          <button mat-flat-button color="warn" matStepperPrevious>
+            {{ "GLOBAL.regresar" | translate }}
+          </button>
+          <button mat-flat-button color="accent" matStepperNext>
+            {{ "GLOBAL.siguiente" | translate }}
+          </button>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="formStep3">
+        <ng-template matStepLabel>{{
+          "espacios_academicos.soporte_observacion" | translate
+        }}</ng-template>
+        <form [formGroup]="formStep3" class="soporte">
+          <h2>{{ "GLOBAL.soporte_documental" | translate }}</h2>
 
-                                <div class="form-item form-col1">
-                                  <mat-form-field class="form-field">
-                                    <mat-label>{{ "GLOBAL.Tipo" | translate }}</mat-label>
-                                    <mat-select formControlName="tipo">
-                                      @for (tipo of tipos; track tipo) {
-                                        <mat-option [value]="tipo.Id">{{
-                                          tipo.Nombre
-                                        }}</mat-option>
-                                      }
-                                    </mat-select>
-                                    @if (
-                                      formEspacioAcademico?.get('tipo')?.touched &&
-                                      formEspacioAcademico?.get('tipo')?.invalid
-                                      ) {
-                                      <mat-hint
-                                        align="start"
-                                        >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                        >
-                                      }
-                                    </mat-form-field>
-                                  </div>
-
-                                  <div class="form-item form-col1">
-                                    <mat-form-field class="form-field">
-                                      <mat-label>{{ "GLOBAL.clase" | translate }}</mat-label>
-                                      <mat-select formControlName="clase">
-                                        @for (clase of clases; track clase) {
-                                          <mat-option [value]="clase.Id">{{
-                                            clase.Nombre
-                                          }}</mat-option>
-                                        }
-                                      </mat-select>
-                                      @if (
-                                        formEspacioAcademico?.get('clase')?.touched &&
-                                        formEspacioAcademico?.get('clase')?.invalid
-                                        ) {
-                                        <mat-hint
-                                          align="start"
-                                          >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                          >
-                                        }
-                                      </mat-form-field>
-                                    </div>
-
-                                    <div class="form-item form-col1">
-                                      <mat-form-field class="form-field">
-                                        <mat-label>{{ "GLOBAL.enfoque" | translate }}</mat-label>
-                                        <mat-select
-                                          formControlName="enfoque"
-                                          >
-                                          @for (enfoque of enfoques; track enfoque) {
-                                            <mat-option
-                                              [value]="enfoque.Id"
-                                              >{{ enfoque.Nombre }}</mat-option
-                                              >
-                                            }
-                                          </mat-select>
-                                          @if (
-                                            formEspacioAcademico?.get('enfoque')?.touched &&
-                                            formEspacioAcademico?.get('enfoque')?.invalid
-                                            ) {
-                                            <mat-hint
-                                              align="start"
-                                              >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                              >
-                                            }
-                                          </mat-form-field>
-                                        </div>
-
-                                        <div class="form-item form-col1">
-                                          <mat-form-field class="form-field">
-                                            <mat-label>{{ "GLOBAL.creditos" | translate }}</mat-label>
-                                            <input
-                                              matInput
-                                              type="number"
-                                              formControlName="creditos"
-                                              [readonly]="visualizar"
-                                              />
-                                            @if (
-                                              formEspacioAcademico?.get('creditos')?.touched &&
-                                              formEspacioAcademico?.get('creditos')?.invalid
-                                              ) {
-                                              <mat-hint
-                                                align="start"
-                                                >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                >
-                                              }
-                                            </mat-form-field>
-                                          </div>
-
-                                          <div class="form-item form-col1">
-                                            <mat-form-field class="form-field">
-                                              <mat-label>{{
-                                                "espacios_academicos.espacio_modular" | translate
-                                              }}</mat-label>
-                                              <mat-select
-                                                formControlName="espacio_modular"
-                                                >
-                                                <mat-option [value]="true">{{
-                                                  "GLOBAL.si" | translate
-                                                }}</mat-option>
-                                                <mat-option [value]="false">{{
-                                                  "GLOBAL.no" | translate
-                                                }}</mat-option>
-                                              </mat-select>
-                                              @if (
-                                                formEspacioAcademico?.get('espacio_modular')?.touched &&
-                                                formEspacioAcademico?.get('espacio_modular')?.invalid
-                                                ) {
-                                                <mat-hint
-                                                  align="start"
-                                                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                  >
-                                                }
-                                              </mat-form-field>
-                                            </div>
-
-                                            <div class="form-item form-col1">
-                                              <mat-form-field class="form-field">
-                                                <mat-label>{{
-                                                  "espacios_academicos.agrupacion_espacios" | translate
-                                                }}</mat-label>
-                                                <mat-select
-                                                  formControlName="agrupacion_espacios"
-                                                  (selectionChange)="onAgrupacionEspaciosChange($event)"
-                                                  >
-                                                  <mat-option [value]="null">{{
-                                                    "GLOBAL.seleccione_opcion" | translate
-                                                  }}</mat-option>
-                                                  @for (agrupacion of agrupacionEspacios; track agrupacion) {
-                                                    <mat-option
-                                                      [value]="agrupacion._id"
-                                                      >{{ agrupacion.nombre }}</mat-option
-                                                      >
-                                                    }
-                                                  </mat-select>
-                                                  @if (
-                                                    formEspacioAcademico?.get('agrupacion_espacios')?.touched &&
-                                                    formEspacioAcademico?.get('agrupacion_espacios')?.invalid
-                                                    ) {
-                                                    <mat-hint
-                                                      align="start"
-                                                      >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                      >
-                                                    }
-                                                  </mat-form-field>
-                                                </div>
-
-                                                <div class="form-item form-col1">
-                                                  <mat-form-field floatLabel="always" class="form-field">
-                                                    <mat-label>{{
-                                                      "espacios_academicos.agrupacion_espacios_color" | translate
-                                                    }}</mat-label>
-                                                    <!-- <div
-                [style]="{
-                  'background-color': this.inputBoxColor,
-                  width: '100%',
-                  height: '100%',
-                  display: 'inline-block'
-                }"
-                                                    class="box-color"
-                                                  ></div> -->
-                                                  <input
-                                                    matInput
-                                                    formControlName="agrupacion_espacios_color"
-                                                    type="text"
-                                                    readonly
-                                                    [value]="inputBoxColor"
-                                                    [style]="{ background: inputBoxColor, color: inputBoxColor }"
-                                                    />
-                                                </mat-form-field>
-                                              </div>
-                                              <div class="form-item form-col1">
-                                                <button
-                                                  mat-flat-button
-                                                  color="accent"
-                                                  class="margin-y"
-                                                  routerLink="/agrupacion-espacios/{{ agrupacionFacultadId }}"
-                                                  [disabled]="btnAgrupaciondisabled"
-                                                  >
-                                                  {{
-                                                  "espacios_academicos.agregar_agrupacion_espacios" | translate
-                                                  }}
-                                                </button>
-                                              </div>
-                                            </div>
-
-                                            <div class="horas-trabajo">
-                                              <h2 class="margin-y">
-                                                {{ "espacios_academicos.asignar_horas_trabajo" | translate }}
-                                              </h2>
-                                              <div class="responsive-form">
-                                                <div class="form-item form-col1">
-                                                  <mat-form-field class="form-field">
-                                                    <mat-label>{{
-                                                      "espacios_academicos.htd" | translate
-                                                    }}</mat-label>
-                                                    <input
-                                                      matInput
-                                                      type="number"
-                                                      formControlName="htd"
-                                                      (change)="CalcularHorasTotal()"
-                                                      [readonly]="visualizar"
-                                                      />
-                                                    @if (
-                                                      formEspacioAcademico?.get('htd')?.touched &&
-                                                      formEspacioAcademico?.get('htd')?.invalid
-                                                      ) {
-                                                      <mat-hint
-                                                        align="start"
-                                                        >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                        >
-                                                      }
-                                                    </mat-form-field>
-                                                  </div>
-
-                                                  <div class="form-item form-col1">
-                                                    <mat-form-field class="form-field">
-                                                      <mat-label>{{
-                                                        "espacios_academicos.htc" | translate
-                                                      }}</mat-label>
-                                                      <input
-                                                        matInput
-                                                        type="number"
-                                                        formControlName="htc"
-                                                        (change)="CalcularHorasTotal()"
-                                                        [readonly]="visualizar"
-                                                        />
-                                                      @if (
-                                                        formEspacioAcademico?.get('htc')?.touched &&
-                                                        formEspacioAcademico?.get('htc')?.invalid
-                                                        ) {
-                                                        <mat-hint
-                                                          align="start"
-                                                          >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                          >
-                                                        }
-                                                      </mat-form-field>
-                                                    </div>
-
-                                                    <div class="form-item form-col1">
-                                                      <mat-form-field class="form-field">
-                                                        <mat-label>{{
-                                                          "espacios_academicos.hta" | translate
-                                                        }}</mat-label>
-                                                        <input
-                                                          matInput
-                                                          type="number"
-                                                          formControlName="hta"
-                                                          (change)="CalcularHorasTotal()"
-                                                          [readonly]="visualizar"
-                                                          />
-                                                        @if (
-                                                          formEspacioAcademico?.get('hta')?.touched &&
-                                                          formEspacioAcademico?.get('hta')?.invalid
-                                                          ) {
-                                                          <mat-hint
-                                                            align="start"
-                                                            >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                            >
-                                                          }
-                                                        </mat-form-field>
-                                                      </div>
-
-                                                      <div class="form-item form-col1">
-                                                        <mat-form-field class="form-field">
-                                                          <mat-label>{{ "GLOBAL.total" | translate }}</mat-label>
-                                                          <input
-                                                            matInput
-                                                            type="number"
-                                                            formControlName="total"
-                                                            readonly
-                                                            [value]="valorHorasTotal"
-                                                            />
-                                                          @if (
-                                                            formEspacioAcademico?.get('total')?.touched &&
-                                                            formEspacioAcademico?.get('total')?.invalid
-                                                            ) {
-                                                            <mat-hint
-                                                              align="start"
-                                                              >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                              >
-                                                            }
-                                                            @if (
-                                                              formEspacioAcademico?.get('total')?.touched &&
-                                                              validarErrorHorasCredito()
-                                                              ) {
-                                                              <mat-hint class="horas-error-hint"
-                                                                >{{ mensajeTotalHoras }}</mat-hint
-                                                                >
-                                                              }
-                                                            </mat-form-field>
-                                                          </div>
-                                                        </div>
-
-                                                        <div class="form-item form-col1">
-                                                          <mat-form-field class="form-field">
-                                                            <mat-label>{{
-                                                              "espacios_academicos.espacios_requeridos" | translate
-                                                            }}</mat-label>
-                                                            <mat-select
-                                                              formControlName="espacios_requeridos"
-                                                              multiple
-                                                              (selectionChange)="obtenerEspaciosRequeridos($event)"
-                                                              >
-                                                              @for (espacio of espaciosAcademicos; track espacio) {
-                                                                <mat-option
-                                                                  [value]="espacio._id"
-                                                                  >{{ espacio.nombre }}</mat-option
-                                                                  >
-                                                                }
-                                                              </mat-select>
-                                                            </mat-form-field>
-                                                          </div>
-                                                        </div>
-                                                      </form>
-                                                      <mat-card class="margin-y">
-                                                        <mat-card-header>
-                                                          <mat-card-title>
-                                                            {{ "espacios_academicos.espacios_requeridos" | translate }}
-                                                          </mat-card-title>
-                                                        </mat-card-header>
-                                                        <mat-card-content>
-                                                          <mat-list role="list">
-                                                            @if (espaciosRequeridos) {
-                                                              @for (espacio of espaciosRequeridos; track espacio) {
-                                                                <mat-list-item
-                                                                  role="listitem"
-                                                                  >{{ espacio.nombre }}</mat-list-item
-                                                                  >
-                                                                }
-                                                              }
-                                                              @if (!espaciosRequeridos?.length) {
-                                                                <mat-list-item role="listitem">{{
-                                                                  "espacios_academicos.no_requeridos" | translate
-                                                                }}</mat-list-item>
-                                                              }
-                                                            </mat-list>
-                                                          </mat-card-content>
-                                                        </mat-card>
-
-                                                        <div class="container-bottons">
-                                                          <button mat-flat-button color="warn" matStepperPrevious>
-                                                            {{ "GLOBAL.regresar" | translate }}
-                                                          </button>
-                                                          <button mat-flat-button color="accent" matStepperNext>
-                                                            {{ "GLOBAL.siguiente" | translate }}
-                                                          </button>
-                                                        </div>
-                                                      </mat-step>
-                                                      <mat-step [stepControl]="formStep3">
-                                                        <ng-template matStepLabel>{{
-                                                          "espacios_academicos.soporte_observacion" | translate
-                                                        }}</ng-template>
-                                                        <form [formGroup]="formStep3" class="soporte">
-                                                          <h2>{{ "GLOBAL.soporte_documental" | translate }}</h2>
-
-                                                          <!-- CARGADOR DE ARCHIVOS -->
-                                                          <mat-form-field class="form-field">
-                                                            @if (accion == 'crear' || accion == 'editar') {
-                                                              <div
-                                                                id="dropzone"
-                                                                (drop)="onDrop($event)"
-                                                                (dragover)="onDragOver($event)"
-                                                                >
-                                                                <p>
-                                                                  {{ "GLOBAL.arrastrar_archivos" | translate }}
-                                                                  <label for="archivos">{{
-                                                                    "GLOBAL.o_hacer_click" | translate
-                                                                  }}</label>
-                                                                </p>
-                                                                <input
-                                                                  type="file"
-                                                                  id="archivos"
-                                                                  name="archivos"
-                                                                  (change)="onChangeArchivosSeleccionados($event)"
-                                                                  multiple
-                                                                  accept=".pdf"
-                                                                  max-size="2097152"
-                                                                  />
-                                                              </div>
-                                                            }
-                                                            @if (archivosSoporte && accion == 'crear' || accion == 'editar') {
-                                                              <div
-                                                                class="archivos-soporte"
-                                                                >
-                                                                <mat-list role="list">
-                                                                  @for (archivo of archivosSoporte; track archivo) {
-                                                                    <mat-list-item
-                                                                      role="listitem"
-                                                                      ><a
-                                                                      href="#"
-                                                                      (click)="abrirArchivo(archivo)"
-                                                                      class="link-archivo"
-                                                                      >{{ archivo.name || archivo.nombre }}</a
-                                                                      ><span
-                                                                      (click)="eliminarArchivo(archivo)"
-                                                                      class="eliminar-archivo"
-                                                                      [ngClass]="{ oculto: camposDisabled }"
-                                                                      >X</span
-                                                                      ></mat-list-item
-                                                                      >
-                                                                    }
-                                                                  </mat-list>
-                                                                </div>
-                                                              }
-                                                              <input
-                                                                matInput
-                                                                [readonly]="camposDisabled"
-                                                                formControlName="soporte"
-                                                                type="text"
+          <!-- CARGADOR DE ARCHIVOS -->
+          <mat-form-field class="form-field">
+            @if (accion == "crear" || accion == "editar") {
+              <div
+                id="dropzone"
+                (drop)="onDrop($event)"
+                (dragover)="onDragOver($event)"
+              >
+                <p>
+                  {{ "GLOBAL.arrastrar_archivos" | translate }}
+                  <label for="archivos">{{
+                    "GLOBAL.o_hacer_click" | translate
+                  }}</label>
+                </p>
+                <input
+                  type="file"
+                  id="archivos"
+                  name="archivos"
+                  (change)="onChangeArchivosSeleccionados($event)"
+                  multiple
+                  accept=".pdf"
+                  max-size="2097152"
+                />
+              </div>
+            }
+            @if ((archivosSoporte && accion == "crear") || accion == "editar") {
+              <div class="archivos-soporte">
+                <mat-list role="list">
+                  @for (archivo of archivosSoporte; track archivo) {
+                    <mat-list-item role="listitem"
+                      ><a
+                        href="#"
+                        (click)="abrirArchivo(archivo)"
+                        class="link-archivo"
+                        >{{ archivo.name || archivo.nombre }}</a
+                      ><span
+                        (click)="eliminarArchivo(archivo)"
+                        class="eliminar-archivo"
+                        [ngClass]="{ oculto: camposDisabled }"
+                        >X</span
+                      ></mat-list-item
+                    >
+                  }
+                </mat-list>
+              </div>
+            }
+            <input
+              matInput
+              [readonly]="camposDisabled"
+              formControlName="soporte"
+              type="text"
               [value]="
                 archivosSoporte && archivosSoporte.length > 0
                   ? 'Archivo(s) cargado(s)'
                   : 'Archivo(s) NO cargado(s)'
               "
-                                                                />
-                                                              @if (
-                                                                formSoportes?.get('soporte')?.touched &&
-                                                                validarErrorArchivosSeleccionados()
-                                                                ) {
-                                                                <mat-hint
-                                                                  align="start"
-                                                                  >{{ "GLOBAL.falta_campo" | translate }}</mat-hint
-                                                                  >
-                                                                }
-                                                              </mat-form-field>
+            />
+            @if (
+              formSoportes?.get("soporte")?.touched &&
+              validarErrorArchivosSeleccionados()
+            ) {
+              <mat-hint align="start">{{
+                "GLOBAL.falta_campo" | translate
+              }}</mat-hint>
+            }
+          </mat-form-field>
 
-                                                              <!-- SELECT DE ESTADO -->
-                                                              @if (IsAdmin) {
-                                                                <mat-form-field class="form-field">
-                                                                  <mat-label>{{
-                                                                    "espacios_academicos.aprobar_espacio" | translate
-                                                                  }}</mat-label>
-                                                                  <mat-select formControlName="aprobado">
-                                                                    @for (estado of estadosAprobacion; track estado) {
-                                                                      <mat-option
-                                                                        [value]="estado._id"
-                                                                        >{{ estado.nombre }}</mat-option
-                                                                        >
-                                                                      }
-                                                                    </mat-select>
-                                                                  </mat-form-field>
-                                                                }
+          <!-- SELECT DE ESTADO -->
+          @if (IsAdmin) {
+            <mat-form-field class="form-field">
+              <mat-label>{{
+                "espacios_academicos.aprobar_espacio" | translate
+              }}</mat-label>
+              <mat-select formControlName="aprobado">
+                @for (estado of estadosAprobacion; track estado) {
+                  <mat-option [value]="estado._id">{{
+                    estado.nombre
+                  }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
 
-                                                                <!-- OBSERVACIONES -->
-                                                                <mat-form-field class="form-field">
-                                                                  <mat-label>{{ "GLOBAL.observaciones" | translate }}</mat-label>
-                                                                  <textarea
-                                                                    matInput
-                                                                    formControlName="observaciones"
-                                                                    [readonly]="visualizar"
-                                                                  ></textarea>
-                                                                </mat-form-field>
-                                                              </form>
-                                                              <div class="container-bottons">
-                                                                <button mat-flat-button color="warn" matStepperPrevious>
-                                                                  {{ "GLOBAL.regresar" | translate }}
-                                                                </button>
-                                                              </div>
-                                                            </mat-step>
-                                                          </mat-stepper>
-                                                          @if (modificandoEspacio) {
-                                                            <div class="container-bottons">
-                                                              <button mat-flat-button color="warn" routerLink="">
-                                                                {{ "GLOBAL.cancelar" | translate }}
-                                                              </button>
-                                                              <button mat-flat-button color="accent" (click)="elegirAccion()">
-                                                                {{ "GLOBAL.guardar" | translate }}
-                                                              </button>
-                                                            </div>
-                                                          }
-                                                        </mat-card-content>
-                                                      </mat-card>
+          <!-- OBSERVACIONES -->
+          <mat-form-field class="form-field">
+            <mat-label>{{ "GLOBAL.observaciones" | translate }}</mat-label>
+            <textarea
+              matInput
+              formControlName="observaciones"
+              [readonly]="visualizar"
+            ></textarea>
+          </mat-form-field>
+        </form>
+        <div class="container-bottons">
+          <button mat-flat-button color="warn" matStepperPrevious>
+            {{ "GLOBAL.regresar" | translate }}
+          </button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+    @if (modificandoEspacio) {
+      <div class="container-bottons">
+        <button mat-flat-button color="warn" routerLink="">
+          {{ "GLOBAL.cancelar" | translate }}
+        </button>
+        <button mat-flat-button color="accent" (click)="elegirAccion()">
+          {{ "GLOBAL.guardar" | translate }}
+        </button>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

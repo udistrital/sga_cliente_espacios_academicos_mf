@@ -6,7 +6,6 @@ import { PopUpManager } from 'src/app/managers/popUpManager';
 import { EspacioAcademicoMidService } from 'src/app/services/espacio_academico_mid.service';
 import { gruposContructorTabla, selectsFormPeriodo } from './utilidades';
 import { Parametros } from 'src/utils/Parametros';
-import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,10 +13,10 @@ import { DialogoEditarEspacioComponent } from './components/dialogo-editar-espac
 import { ordenarPorPropiedad } from 'src/utils/listas';
 
 @Component({
-    selector: 'app-ver-espacios-hijos',
-    templateUrl: './ver-espacios-hijos.component.html',
-    styleUrls: ['./ver-espacios-hijos.component.scss'],
-    standalone: false
+  selector: 'app-ver-espacios-hijos',
+  templateUrl: './ver-espacios-hijos.component.html',
+  styleUrls: ['./ver-espacios-hijos.component.scss'],
+  standalone: false,
 })
 export class VerEspaciosHijosComponent implements OnInit {
   [key: string]: any; // Permitir el acceso dinámico con string keys
@@ -37,14 +36,14 @@ export class VerEspaciosHijosComponent implements OnInit {
   banderaTablaGrupos: boolean = false;
 
   constructor(
-    private espacioAcademicoMid: EspacioAcademicoMidService,
+    private readonly espacioAcademicoMid: EspacioAcademicoMidService,
     public dialog: MatDialog,
-    private fb: FormBuilder,
-    private parametros: Parametros,
-    private popUpManager: PopUpManager,
-    private translate: TranslateService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly parametros: Parametros,
+    private readonly popUpManager: PopUpManager,
+    private readonly translate: TranslateService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +54,7 @@ export class VerEspaciosHijosComponent implements OnInit {
 
   obtenerEspacioAcademicoId() {
     this.espacioAcademicoId = this.route.snapshot.paramMap.get(
-      'espacio-academico-id'
+      'espacio-academico-id',
     );
 
     this.espacioAcademicoMid
@@ -65,8 +64,8 @@ export class VerEspaciosHijosComponent implements OnInit {
           if (res.Data == null) {
             this.popUpManager.showErrorAlert(
               this.translate.instant(
-                'espacios_academicos.no_exite_espacio_academico'
-              )
+                'espacios_academicos.no_exite_espacio_academico',
+              ),
             );
             this.router.navigate(['/']);
           }
@@ -76,7 +75,7 @@ export class VerEspaciosHijosComponent implements OnInit {
         (Error) => {
           this.popUpManager.showErrorAlert(this.translate.instant('ERROR.500'));
           this.router.navigate(['/']);
-        }
+        },
       );
   }
 
@@ -100,20 +99,22 @@ export class VerEspaciosHijosComponent implements OnInit {
 
     this.espacioAcademicoMid
       .get(
-        `espacios-academicos/grupos?espacio-academico-id=${espacioAcademicoId}&periodo-id=${periodoId}`
+        `espacios-academicos/grupos?espacio-academico-id=${espacioAcademicoId}&periodo-id=${periodoId}`,
       )
       .subscribe((res: any) => {
         if (!(res.Data.length > 0)) {
           return this.popUpManager.showAlert(
             '',
-            this.translate.instant('espacios_academicos.no_grupos_para_periodo')
+            this.translate.instant(
+              'espacios_academicos.no_grupos_para_periodo',
+            ),
           );
         }
 
         this.gruposDeEspacioAcademico = ordenarPorPropiedad(
           res.Data,
           'grupo',
-          1
+          1,
         );
         this.construirTabla();
         this.banderaTablaGrupos = true;
@@ -123,11 +124,11 @@ export class VerEspaciosHijosComponent implements OnInit {
   construirTabla() {
     this.gruposContructorTabla = gruposContructorTabla;
     this.tablaColumnas = this.gruposContructorTabla.map(
-      (column: any) => column.columnDef
+      (column: any) => column.columnDef,
     );
     //Asigna la info a la tabla
     this.gruposDeEspacioAcademico = new MatTableDataSource(
-      this.gruposDeEspacioAcademico
+      this.gruposDeEspacioAcademico,
     );
     setTimeout(() => {
       this.gruposDeEspacioAcademico.paginator = this.paginator;
@@ -155,7 +156,9 @@ export class VerEspaciosHijosComponent implements OnInit {
   preguntarEliminacionGrupo(grupo: any) {
     this.popUpManager
       .showConfirmAlert(
-        this.translate.instant('espacios_academicos.esta_seguro_eliminar_grupo')
+        this.translate.instant(
+          'espacios_academicos.esta_seguro_eliminar_grupo',
+        ),
       )
       .then((confirmado) => {
         if (confirmado.value) {
@@ -172,15 +175,17 @@ export class VerEspaciosHijosComponent implements OnInit {
         if (res.Message == 'Grupo con colocaciones') {
           return this.popUpManager.showAlert(
             '',
-            this.translate.instant('espacios_academicos.no_grupos_para_periodo')
+            this.translate.instant(
+              'espacios_academicos.no_grupos_para_periodo',
+            ),
           );
         }
 
         this.popUpManager.showAlert(
           '',
           this.translate.instant(
-            'espacios_academicos.grupo_eliminado_correctamente'
-          )
+            'espacios_academicos.grupo_eliminado_correctamente',
+          ),
         );
         this.obtenerGruposDeEspacioPorPeriodo();
       });

@@ -5,8 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -36,52 +40,58 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(
     http,
     environment.apiUrl + 'assets/i18n/',
-    '.json'
+    '.json',
   );
 }
 
-@NgModule({ declarations: [
-        AppComponent,
-        ListEspaciosAcademicosComponent,
-        FormEspaciosAcademicosComponent,
-        AgrupacionEspaciosAcademicosComponent,
-        VerEspaciosHijosComponent,
-        DialogoEditarEspacioComponent,
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatPaginatorModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatProgressSpinnerModule,
-        MatStepperModule,
-        SpinnerUtilModule,
-        MatMenuModule,
-        MatTooltipModule,
-        MatDialogModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient],
-            },
-        })], providers: [
-        EspaciosAcademicosService,
-        MatSnackBar,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: SpinnerUtilInterceptor,
-            multi: true,
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEspaciosAcademicosComponent,
+    FormEspaciosAcademicosComponent,
+    AgrupacionEspaciosAcademicosComponent,
+    VerEspaciosHijosComponent,
+    DialogoEditarEspacioComponent,
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatStepperModule,
+    SpinnerUtilModule,
+    MatMenuModule,
+    MatTooltipModule,
+    MatDialogModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
+  ],
+  providers: [
+    EspaciosAcademicosService,
+    MatSnackBar,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerUtilInterceptor,
+      multi: true,
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
+})
 export class AppModule {}

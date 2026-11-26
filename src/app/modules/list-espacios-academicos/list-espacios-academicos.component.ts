@@ -1,21 +1,20 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { EspacioAcademico } from 'src/app/models/espacio_academico';
 import { EstadoAprobacion, STD } from 'src/app/models/estado_aprobacion';
 import { ROLES, ACTIONS, MODALS } from 'src/app/models/diccionario';
 import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.service';
 import { ImplicitAutenticationService } from 'src/app/services/implicit_autentication.service';
 import { PopUpManager } from 'src/app/managers/popUpManager';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'list-espacios-academicos',
-    templateUrl: './list-espacios-academicos.component.html',
-    styleUrls: ['./list-espacios-academicos.component.scss'],
-    standalone: false
+  selector: 'list-espacios-academicos',
+  templateUrl: './list-espacios-academicos.component.html',
+  styleUrls: ['./list-espacios-academicos.component.scss'],
+  standalone: false,
 })
 export class ListEspaciosAcademicosComponent implements OnInit {
   displayedColumns: string[] = ['nombre', 'codigo', 'estado', 'acciones'];
@@ -26,11 +25,11 @@ export class ListEspaciosAcademicosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private translate: TranslateService,
-    private espaciosAcademicosService: EspaciosAcademicosService,
-    private popUpManager: PopUpManager,
-    private autenticationService: ImplicitAutenticationService,
-    private router: Router
+    private readonly translate: TranslateService,
+    private readonly espaciosAcademicosService: EspaciosAcademicosService,
+    private readonly popUpManager: PopUpManager,
+    private readonly autenticationService: ImplicitAutenticationService,
+    private readonly router: Router,
   ) {}
 
   async ngOnInit() {
@@ -77,7 +76,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
     });
 
     this.dataSource = new MatTableDataSource<EspacioAcademico>(
-      this.espacios_academicos
+      this.espacios_academicos,
     );
     this.dataSource.paginator = this.paginator;
   }
@@ -86,7 +85,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.espaciosAcademicosService
         .get(
-          'espacio-academico?query=espacio_academico_padre,activo:true&limit=0'
+          'espacio-academico?query=espacio_academico_padre,activo:true&limit=0',
         )
         .subscribe(
           (response: any) => {
@@ -95,7 +94,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
           },
           (error) => {
             reject(error);
-          }
+          },
         );
     });
   }
@@ -111,14 +110,14 @@ export class ListEspaciosAcademicosComponent implements OnInit {
           },
           (error) => {
             reject(error);
-          }
+          },
         );
     });
   }
 
   ajustarBotonesSegunEstado(espacio: any) {
     const estado = this.estados_aprobacion.find(
-      (estado) => estado._id == espacio.estado_aprobacion_id
+      (estado) => estado._id == espacio.estado_aprobacion_id,
     );
     if (estado) {
       espacio['estado'] = estado.nombre;
@@ -171,7 +170,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
 
   enviaraRevision(id: string) {
     const espacio: any = this.espacios_academicos.filter(
-      (espacio: any) => espacio._id === id
+      (espacio: any) => espacio._id === id,
     );
     let espacio_edit = espacio[0];
 
@@ -180,12 +179,12 @@ export class ListEspaciosAcademicosComponent implements OnInit {
         this.translate.instant('espacios_academicos.espacios_academicos'),
         this.translate.instant('espacios_academicos.enviar_revision_pregunta'),
         MODALS.INFO,
-        true
+        true,
       )
       .then((action) => {
         if (action.value) {
           espacio_edit.estado_aprobacion_id = this.estados_aprobacion.find(
-            (estado) => estado.codigo_abreviacion == STD.IN_REV
+            (estado) => estado.codigo_abreviacion == STD.IN_REV,
           )?._id;
           this.espaciosAcademicosService
             .put('espacio-academico/' + id, espacio_edit)
@@ -194,25 +193,25 @@ export class ListEspaciosAcademicosComponent implements OnInit {
                 if (resp.Status == '200') {
                   this.popUpManager.showSuccessAlert(
                     this.translate.instant(
-                      'espacios_academicos.enviar_revision_ok'
-                    )
+                      'espacios_academicos.enviar_revision_ok',
+                    ),
                   );
                   this.recargarEspaciosAcademicos();
                 } else {
                   this.popUpManager.showErrorAlert(
                     this.translate.instant(
-                      'espacios_academicos.enviar_revision_fallo'
-                    )
+                      'espacios_academicos.enviar_revision_fallo',
+                    ),
                   );
                 }
               },
               (err) => {
                 this.popUpManager.showErrorAlert(
                   this.translate.instant(
-                    'espacios_academicos.enviar_revision_fallo'
-                  )
+                    'espacios_academicos.enviar_revision_fallo',
+                  ),
                 );
-              }
+              },
             );
         }
       });
@@ -229,7 +228,7 @@ export class ListEspaciosAcademicosComponent implements OnInit {
           this.translate.instant('espacios_academicos.espacios_academicos') +
           '</b>.',
         MODALS.WARNING,
-        false
+        false,
       );
     }
   }

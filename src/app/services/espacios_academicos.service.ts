@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { RequestManager } from '../managers/requestManager'; 
+import { RequestManager } from '../managers/requestManager';
 
 @Injectable()
 export class EspaciosAcademicosService {
-
-  constructor(private requestManager: RequestManager) {
+  constructor(private readonly requestManager: RequestManager) {
     this.requestManager.setPath('ESPACIOS_ACADEMICOS_SERVICE');
   }
 
@@ -23,9 +22,8 @@ export class EspaciosAcademicosService {
     return this.requestManager.put(endpoint, element);
   }
 
-  delete(endpoint: any, element: { Id: any; }) {
+  delete(endpoint: any, element: { Id: any }) {
     this.requestManager.setPath('ESPACIOS_ACADEMICOS_SERVICE');
     return this.requestManager.delete(endpoint, element.Id);
   }
-
 }

@@ -1,4 +1,3 @@
-import { ResourceLoader } from '@angular/compiler';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -8,10 +7,10 @@ import { EspaciosAcademicosService } from 'src/app/services/espacios_academicos.
 import { Parametros } from 'src/utils/Parametros';
 
 @Component({
-    selector: 'app-dialogo-editar-espacio',
-    templateUrl: './dialogo-editar-espacio.component.html',
-    styleUrls: ['./dialogo-editar-espacio.component.scss'],
-    standalone: false
+  selector: 'app-dialogo-editar-espacio',
+  templateUrl: './dialogo-editar-espacio.component.html',
+  styleUrls: ['./dialogo-editar-espacio.component.scss'],
+  standalone: false,
 })
 export class DialogoEditarEspacioComponent implements OnInit {
   formEditarGrupo!: FormGroup;
@@ -20,11 +19,11 @@ export class DialogoEditarEspacioComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public grupo: any,
     public dialogRef: MatDialogRef<DialogoEditarEspacioComponent>,
-    private espacioAcademicoService: EspaciosAcademicosService,
-    private formBuilder: FormBuilder,
-    private parametros: Parametros,
-    private popUpManager: PopUpManager,
-    private translate: TranslateService
+    private readonly espacioAcademicoService: EspaciosAcademicosService,
+    private readonly formBuilder: FormBuilder,
+    private readonly parametros: Parametros,
+    private readonly popUpManager: PopUpManager,
+    private readonly translate: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -51,7 +50,7 @@ export class DialogoEditarEspacioComponent implements OnInit {
   preguntarEdicionGrupo() {
     this.popUpManager
       .showConfirmAlert(
-        this.translate.instant('espacios_academicos.esta_seguro_editar_grupo')
+        this.translate.instant('espacios_academicos.esta_seguro_editar_grupo'),
       )
       .then((confirmado) => {
         if (confirmado.value) {
@@ -69,8 +68,8 @@ export class DialogoEditarEspacioComponent implements OnInit {
         if (res.Success) {
           this.popUpManager.showSuccessAlert(
             this.translate.instant(
-              'espacios_academicos.grupo_editado_exitosamente'
-            )
+              'espacios_academicos.grupo_editado_exitosamente',
+            ),
           );
           this.dialogRef.close(true);
         }

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 import { RequestManager } from '../managers/requestManager';
 
 const httpOptions = {
@@ -24,8 +22,8 @@ const path = environment.ESPACIO_ACADEMICO_MID_SERVICE;
 })
 export class EspacioAcademicoMidService {
   constructor(
-    private requestManager: RequestManager,
-    private http: HttpClient
+    private readonly requestManager: RequestManager,
+    private readonly http: HttpClient,
   ) {
     this.requestManager.setPath('ESPACIO_ACADEMICO_MID_SERVICE');
   }
