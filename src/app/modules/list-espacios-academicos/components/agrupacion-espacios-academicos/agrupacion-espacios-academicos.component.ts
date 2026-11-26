@@ -65,18 +65,11 @@ export class AgrupacionEspaciosAcademicosComponent implements OnInit {
     return new Promise<any>((resolve, reject) => {
       this.espaciosAcademicosService
         .get('agrupacion-espacios?query=activo:true' + facuId + '&limit=0')
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response.Data[0]).length > 0) {
-              resolve(response.Data);
-            } else {
-              reject({ agrupacion_espacios: null });
-            }
-          },
-          (err) => {
-            reject({ agrupacion_espacios: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response.Data[0]).length > 0) {
+            resolve(response.Data);
+          }
+        });
     });
   }
 

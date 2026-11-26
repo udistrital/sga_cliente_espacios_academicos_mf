@@ -72,7 +72,10 @@ export class NewNuxeoService {
         }
         resolve(encoded);
       };
-      reader.onerror = (error) => reject(error);
+      reader.onerror = () =>
+        reject(
+          new Error(reader.error?.message || 'No fue posible leer el archivo.'),
+        );
     });
   }
 

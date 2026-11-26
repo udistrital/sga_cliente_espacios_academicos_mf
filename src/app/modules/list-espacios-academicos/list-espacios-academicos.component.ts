@@ -87,15 +87,10 @@ export class ListEspaciosAcademicosComponent implements OnInit {
         .get(
           'espacio-academico?query=espacio_academico_padre,activo:true&limit=0',
         )
-        .subscribe(
-          (response: any) => {
-            this.espacios_academicos = response['Data'];
-            resolve(true);
-          },
-          (error) => {
-            reject(error);
-          },
-        );
+        .subscribe((response: any) => {
+          this.espacios_academicos = response['Data'];
+          resolve(true);
+        });
     });
   }
 
@@ -103,15 +98,10 @@ export class ListEspaciosAcademicosComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.espaciosAcademicosService
         .get('estado-aprobacion?query=activo:true&limit=0')
-        .subscribe(
-          (response: any) => {
-            this.estados_aprobacion = response['Data'];
-            resolve(true);
-          },
-          (error) => {
-            reject(error);
-          },
-        );
+        .subscribe((response: any) => {
+          this.estados_aprobacion = response['Data'];
+          resolve(true);
+        });
     });
   }
 

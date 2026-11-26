@@ -187,35 +187,28 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.projectService
         .get('nivel_formacion?query=Activo:true&sortby=Id&order=asc&limit=0')
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response[0]).length > 0) {
-              this.niveles = response.filter(
-                (nivel: any) => nivel.NivelFormacionPadreId == undefined,
-              );
-              this.subNivelesPregrado = response.filter(
-                (nivel: any) =>
-                  nivel.NivelFormacionPadreId &&
-                  nivel.NivelFormacionPadreId.Id == 1,
-              );
-              this.subNivelesPosgrado = response.filter(
-                (nivel: any) =>
-                  nivel.NivelFormacionPadreId &&
-                  nivel.NivelFormacionPadreId.Id == 2,
-              );
-              this.subNiveles = [
-                ...this.subNivelesPosgrado,
-                ...this.subNivelesPregrado,
-              ];
-              resolve(true);
-            } else {
-              reject({ nivel: null });
-            }
-          },
-          (err) => {
-            reject({ nivel: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response[0]).length > 0) {
+            this.niveles = response.filter(
+              (nivel: any) => nivel.NivelFormacionPadreId == undefined,
+            );
+            this.subNivelesPregrado = response.filter(
+              (nivel: any) =>
+                nivel.NivelFormacionPadreId &&
+                nivel.NivelFormacionPadreId.Id == 1,
+            );
+            this.subNivelesPosgrado = response.filter(
+              (nivel: any) =>
+                nivel.NivelFormacionPadreId &&
+                nivel.NivelFormacionPadreId.Id == 2,
+            );
+            this.subNiveles = [
+              ...this.subNivelesPosgrado,
+              ...this.subNivelesPregrado,
+            ];
+            resolve(true);
+          }
+        });
     });
   }
 
@@ -225,19 +218,12 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         .get(
           'proyecto_academico_institucion?query=Activo:true&sortby=Nombre&order=asc&limit=0',
         )
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response[0]).length > 0) {
-              this.proyectos = response;
-              resolve(true);
-            } else {
-              reject({ proyecto: null });
-            }
-          },
-          (err) => {
-            reject({ proyecto: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response[0]).length > 0) {
+            this.proyectos = response;
+            resolve(true);
+          }
+        });
     });
   }
 
@@ -247,19 +233,12 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         .get(
           `parametro?query=Activo:true,TipoParametroId:67&sortby=Nombre&order=asc&limit=0`,
         )
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response.Data[0]).length > 0) {
-              this.tipos = response.Data;
-              resolve(true);
-            } else {
-              reject({ tipo: null });
-            }
-          },
-          (err) => {
-            reject({ tipo: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response.Data[0]).length > 0) {
+            this.tipos = response.Data;
+            resolve(true);
+          }
+        });
     });
   }
 
@@ -270,19 +249,12 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         .get(
           `parametro?query=Activo:true,TipoParametroId:${idClases}&sortby=Nombre&order=asc&limit=0`,
         )
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response.Data[0]).length > 0) {
-              this.clases = response.Data;
-              resolve(true);
-            } else {
-              reject({ clase: null });
-            }
-          },
-          (err) => {
-            reject({ clase: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response.Data[0]).length > 0) {
+            this.clases = response.Data;
+            resolve(true);
+          }
+        });
     });
   }
 
@@ -293,19 +265,12 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         .get(
           `parametro?query=Activo:true,TipoParametroId:${idEnfoques}&sortby=Nombre&order=asc&limit=0`,
         )
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response.Data[0]).length > 0) {
-              this.enfoques = response.Data;
-              resolve(true);
-            } else {
-              reject({ enfoque: null });
-            }
-          },
-          (err) => {
-            reject({ enfoque: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response.Data[0]).length > 0) {
+            this.enfoques = response.Data;
+            resolve(true);
+          }
+        });
     });
   }
 
@@ -319,18 +284,11 @@ export class FormEspaciosAcademicosComponent implements OnInit {
     return new Promise<any>((resolve, reject) => {
       this.espaciosAcademicosService
         .get('agrupacion-espacios?query=activo:true' + facuId + '&limit=0')
-        .subscribe(
-          (response: any) => {
-            if (Object.keys(response.Data[0]).length > 0) {
-              resolve(response.Data);
-            } else {
-              reject({ agrupacion_espacios: null });
-            }
-          },
-          (err) => {
-            reject({ agrupacion_espacios: err });
-          },
-        );
+        .subscribe((response: any) => {
+          if (Object.keys(response.Data[0]).length > 0) {
+            resolve(response.Data);
+          }
+        });
     });
   }
 
@@ -437,7 +395,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         if (archivo.type === 'application/pdf') {
           this.archivosSoporte.push(archivo);
           fillArhivos += archivo.name + ', ';
-        } else {
         }
       }
       this.formStep3.patchValue({
@@ -456,7 +413,6 @@ export class FormEspaciosAcademicosComponent implements OnInit {
         const archivo = archivosArrastrados[i];
         if (archivo.type === 'application/pdf') {
           this.archivosSoporte.push(archivo);
-        } else {
         }
       }
     }

@@ -72,7 +72,7 @@ export class VerEspaciosHijosComponent implements OnInit {
           this.espacioAcademico = res.Data;
           this.banderaInfoEspacio = true;
         },
-        (Error) => {
+        () => {
           this.popUpManager.showErrorAlert(this.translate.instant('ERROR.500'));
           this.router.navigate(['/']);
         },

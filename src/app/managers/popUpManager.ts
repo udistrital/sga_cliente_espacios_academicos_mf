@@ -114,12 +114,7 @@ export class PopUpManager {
       cancelButtonText: this.translate.instant('GLOBAL.cancelar'),
       preConfirm: () => {
         const results: any = {};
-        form.ids.forEach((id) => {
-          const element = <HTMLInputElement>(
-            Swal.getPopup()!.querySelector('#' + id)
-          );
-          //  results[id] = element.value;
-        });
+        form.ids.forEach((id) => {});
         return results;
       },
     });

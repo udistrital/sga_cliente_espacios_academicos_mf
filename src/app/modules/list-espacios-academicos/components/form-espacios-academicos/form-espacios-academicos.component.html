@@ -475,20 +475,16 @@
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <mat-list role="list">
+            <ul>
               @if (espaciosRequeridos) {
                 @for (espacio of espaciosRequeridos; track espacio) {
-                  <mat-list-item role="listitem">{{
-                    espacio.nombre
-                  }}</mat-list-item>
+                  <li>{{ espacio.nombre }}</li>
                 }
               }
               @if (!espaciosRequeridos?.length) {
-                <mat-list-item role="listitem">{{
-                  "espacios_academicos.no_requeridos" | translate
-                }}</mat-list-item>
+                <li>{{ "espacios_academicos.no_requeridos" | translate }}</li>
               }
-            </mat-list>
+            </ul>
           </mat-card-content>
         </mat-card>
 
@@ -535,23 +531,26 @@
             }
             @if ((archivosSoporte && accion == "crear") || accion == "editar") {
               <div class="archivos-soporte">
-                <mat-list role="list">
+                <ul>
                   @for (archivo of archivosSoporte; track archivo) {
-                    <mat-list-item role="listitem"
-                      ><a
+                    <li>
+                      <a
                         href="#"
                         (click)="abrirArchivo(archivo)"
                         class="link-archivo"
-                        >{{ archivo.name || archivo.nombre }}</a
-                      ><span
+                      >
+                        {{ archivo.name || archivo.nombre }}
+                      </a>
+                      <span
                         (click)="eliminarArchivo(archivo)"
                         class="eliminar-archivo"
                         [ngClass]="{ oculto: camposDisabled }"
-                        >X</span
-                      ></mat-list-item
-                    >
+                      >
+                        X
+                      </span>
+                    </li>
                   }
-                </mat-list>
+                </ul>
               </div>
             }
             <input
