@@ -184,7 +184,7 @@ export class NewNuxeoService {
 
     const documentos: any[] = [];
 
-    files.map(async (file) => {
+    files.forEach(async (file) => {
       const sendFileDataandSigners = [
         {
           IdTipoDocumento: file.IdDocumento,

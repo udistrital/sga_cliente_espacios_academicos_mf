@@ -935,13 +935,12 @@ export class FormEspaciosAcademicosComponent implements OnInit {
   }
 
   private cargarEspaciosRequeridos(espacioAcademico: EspacioAcademico) {
-    const espaciosRequeridos: any[] = Array.isArray(
-      espacioAcademico.espacios_requeridos,
-    )
-      ? espacioAcademico.espacios_requeridos
-      : espacioAcademico.espacios_requeridos
-        ? [espacioAcademico.espacios_requeridos]
-        : [];
+    let espaciosRequeridos: any[] = [];
+    if (Array.isArray(espacioAcademico.espacios_requeridos)) {
+      espaciosRequeridos = espacioAcademico.espacios_requeridos;
+    } else if (espacioAcademico.espacios_requeridos) {
+      espaciosRequeridos = [espacioAcademico.espacios_requeridos];
+    }
 
     for (const idEspacio of espaciosRequeridos) {
       const espacio = this.espaciosAcademicos.find(
