@@ -115,10 +115,11 @@
                             </div>
                           }
                           @case ('acciones') {
-                            <div>
+                            <div class="acciones-container">
                               <button
                                 mat-icon-button
                                 type="button"
+                                class="action-button"
                                 (click)="abrirDialogoEditarEspacio(row)"
                                 [attr.aria-label]="'GLOBAL.editar' | translate"
                                 title="{{ 'GLOBAL.editar' | translate }}"
@@ -131,6 +132,7 @@
                                 <button
                                   mat-icon-button
                                   type="button"
+                                  class="action-button"
                                   (click)="preguntarEliminacionGrupo(row)"
                                   [attr.aria-label]="'GLOBAL.eliminar' | translate"
                                   title="{{ 'GLOBAL.eliminar' | translate }}"
@@ -139,6 +141,8 @@
                                     delete_outline
                                   </mat-icon>
                                 </button>
+                              } @else {
+                                <span class="acciones-spacer" aria-hidden="true"></span>
                               }
                             </div>
                           }

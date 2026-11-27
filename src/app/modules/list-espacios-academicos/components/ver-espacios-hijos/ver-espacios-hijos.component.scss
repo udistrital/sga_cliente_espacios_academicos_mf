@@ -15,12 +15,32 @@
   cursor: pointer;
 }
 
-.icono-editar:hover {
+.acciones-container {
+  display: grid;
+  grid-template-columns: repeat(2, 48px);
+  justify-content: center;
+  align-items: center;
+}
+
+.action-button {
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.icono-editar {
   color: #03668e;
 }
 
-.icono-eliminar:hover {
+.icono-eliminar {
   color: #c86885;
+}
+
+.action-button:hover {
+  background-color: var(--color100);
+}
+
+.acciones-spacer {
+  width: 48px;
+  height: 48px;
 }
 
 .mat-column-grupo {
@@ -36,6 +56,6 @@
 }
 
 .mat-column-acciones {
-  width: 10%;
+  width: 12%;
   text-align: center;
 }

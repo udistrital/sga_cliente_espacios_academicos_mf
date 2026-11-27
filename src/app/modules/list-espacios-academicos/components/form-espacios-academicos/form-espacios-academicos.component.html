@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>
+    <mat-card-title class="card-title">
       <button mat-mini-fab color="primary" routerLink="" class="back-button">
         <mat-icon>arrow_back</mat-icon>
       </button>
@@ -13,7 +13,7 @@
         <ng-template matStepLabel>{{
           "espacios_academicos.select_proyecto" | translate
         }}</ng-template>
-        <form [formGroup]="formStep1">
+        <form [formGroup]="formStep1" class="step-content-form">
           <mat-form-field class="form-field">
             <mat-label>{{ "GLOBAL.nivel" | translate }}</mat-label>
             <mat-select
@@ -468,23 +468,43 @@
             </div>
           </div>
         </form>
-        <mat-card class="margin-y">
-          <mat-card-header>
-            <mat-card-title>
-              {{ "espacios_academicos.espacios_requeridos" | translate }}
-            </mat-card-title>
-          </mat-card-header>
+        <mat-card class="margin-y prerequisitos-card">
+          <div class="prerequisitos-heading">
+            <div class="prerequisitos-title">
+              <mat-icon>menu_book</mat-icon>
+              <h3>
+                {{ "espacios_academicos.espacios_requeridos" | translate }}
+              </h3>
+            </div>
+            @if (espaciosRequeridos?.length) {
+              <span class="prerequisitos-count">
+                {{ espaciosRequeridos.length }}
+              </span>
+            }
+          </div>
           <mat-card-content>
-            <ul>
-              @if (espaciosRequeridos) {
-                @for (espacio of espaciosRequeridos; track espacio) {
-                  <li>{{ espacio.nombre }}</li>
+            @if (espaciosRequeridos?.length) {
+              <ul class="prerequisitos-list">
+                @for (
+                  espacio of espaciosRequeridos;
+                  track $index;
+                  let index = $index
+                ) {
+                  <li class="prerequisito-item">
+                    <span class="prerequisito-index">{{ index + 1 }}</span>
+                    <mat-icon class="prerequisito-icon">school</mat-icon>
+                    <span class="prerequisito-name">{{ espacio.nombre }}</span>
+                  </li>
                 }
-              }
-              @if (!espaciosRequeridos?.length) {
-                <li>{{ "espacios_academicos.no_requeridos" | translate }}</li>
-              }
-            </ul>
+              </ul>
+            } @else {
+              <div class="prerequisitos-empty">
+                <mat-icon>check_circle_outline</mat-icon>
+                <span>{{
+                  "espacios_academicos.no_requeridos" | translate
+                }}</span>
+              </div>
+            }
           </mat-card-content>
         </mat-card>
 
@@ -501,7 +521,7 @@
         <ng-template matStepLabel>{{
           "espacios_academicos.soporte_observacion" | translate
         }}</ng-template>
-        <form [formGroup]="formStep3" class="soporte">
+        <form [formGroup]="formStep3" class="soporte step-content-form">
           <h2>{{ "GLOBAL.soporte_documental" | translate }}</h2>
 
           <!-- CARGADOR DE ARCHIVOS -->
